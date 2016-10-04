@@ -1,6 +1,6 @@
 import * as gulp from 'gulp';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 
 /**
  * Executes the build process, generating the manifest file using `angular2-service-worker`.

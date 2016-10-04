@@ -2,7 +2,7 @@ import * as gulp from 'gulp';
 import * as gulpLoadPlugins from 'gulp-load-plugins';
 import { join } from 'path';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 import { makeTsProject, templateLocals,  } from '../../utils';
 
 const plugins = <any>gulpLoadPlugins();

@@ -17,6 +17,7 @@ export class APIService {
      * @constructor
      */
     constructor(private http: Http) {
+        console.log("envConfig", Config);
         this.baseUrl = Config.API;
         if (!this.baseUrl.endsWith('/')) this.baseUrl += '/';
     }

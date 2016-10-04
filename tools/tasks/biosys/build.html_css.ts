@@ -6,7 +6,7 @@ import * as merge from 'merge-stream';
 import * as util from 'gulp-util';
 import { join } from 'path';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 
 const plugins = <any>gulpLoadPlugins();
 const cleanCss = require('gulp-clean-css');

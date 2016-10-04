@@ -1,7 +1,7 @@
 import * as gulp from 'gulp';
 import { join } from 'path';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 
 /**
  * Executes the build task, copying all TypeScript files over to the `dist/tmp` directory.

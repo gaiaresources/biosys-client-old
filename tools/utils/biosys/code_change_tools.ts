@@ -1,7 +1,7 @@
 import * as browserSync from 'browser-sync';
 // import * as path from 'path';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 
 /**
  * Initialises BrowserSync with the configuration defined in biosys.config.ts (or if overriden: project.config.ts).

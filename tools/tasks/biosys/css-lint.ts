@@ -7,7 +7,7 @@ import * as reporter from 'postcss-reporter';
 import * as stylelint from 'stylelint';
 import { join } from 'path';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 
 const plugins = <any>gulpLoadPlugins();
 

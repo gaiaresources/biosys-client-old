@@ -1,7 +1,7 @@
 import { join } from 'path';
 import * as Builder from 'systemjs-builder';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 
 const BUNDLER_OPTIONS = {
   format: 'cjs',

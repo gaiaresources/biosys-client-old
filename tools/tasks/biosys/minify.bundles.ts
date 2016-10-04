@@ -3,7 +3,7 @@ import * as gulpLoadPlugins from 'gulp-load-plugins';
 import * as merge from 'merge-stream';
 import { join } from 'path';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 
 const plugins = <any>gulpLoadPlugins();
 

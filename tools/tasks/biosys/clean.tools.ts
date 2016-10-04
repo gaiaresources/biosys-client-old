@@ -3,7 +3,7 @@ import * as util from 'gulp-util';
 import * as rimraf from 'rimraf';
 import { join } from 'path';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 
 /**
  * Executes the build process, deleting all JavaScrip files (which were transpiled from the TypeScript sources) with in

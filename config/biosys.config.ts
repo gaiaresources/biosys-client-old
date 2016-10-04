@@ -2,7 +2,7 @@ import {join} from 'path';
 import * as slash from 'slash';
 import {argv} from 'yargs';
 
-import {Environments, InjectableDependency, EnvConfig} from './biosys.config.interfaces';
+import {Environments, InjectableDependency} from './biosys.config.interfaces';
 
 /**
  * The enumeration of available environments.
@@ -13,7 +13,6 @@ export const ENVIRONMENTS: Environments = {
     PRODUCTION: 'prod'
 };
 
-export const Config: EnvConfig = JSON.parse('<%= ENV_CONFIG %>');
 
 /**
  * This class represents the basic configuration of biosys.
@@ -528,7 +527,6 @@ export class BiosysConfig {
     getInjectableStyleExtension() {
         return this.ENV === ENVIRONMENTS.PRODUCTION && this.ENABLE_SCSS ? 'scss' : 'css';
     }
-
 }
 
 /**

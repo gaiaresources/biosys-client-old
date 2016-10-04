@@ -6,7 +6,7 @@ import { join } from 'path';
 import { writeFileSync, readFileSync } from 'fs';
 import { CodeGenerator } from '@angular/compiler-cli';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 
 function codegen(
     ngOptions: tsc.AngularCompilerOptions, cliOptions: tsc.NgcCliOptions, program: ts.Program,

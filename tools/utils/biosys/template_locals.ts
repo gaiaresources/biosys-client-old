@@ -2,7 +2,7 @@ import * as util from 'gulp-util';
 import {argv} from 'yargs';
 import {join} from 'path';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 
 const getConfig = (path: string, env: string): any => {
     const configPath = join(path, env);

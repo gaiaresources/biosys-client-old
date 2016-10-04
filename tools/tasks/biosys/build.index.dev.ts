@@ -3,7 +3,7 @@ import * as gulpLoadPlugins from 'gulp-load-plugins';
 import { join } from 'path';
 import * as slash from 'slash';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 import { templateLocals } from '../../utils';
 
 const plugins = <any>gulpLoadPlugins();

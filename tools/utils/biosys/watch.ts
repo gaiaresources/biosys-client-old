@@ -2,7 +2,7 @@ import * as gulpLoadPlugins from 'gulp-load-plugins';
 import { join } from 'path';
 import * as runSequence from 'run-sequence';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 import { notifyLiveReload } from '../../utils';
 
 const plugins = <any>gulpLoadPlugins();

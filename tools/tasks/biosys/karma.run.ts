@@ -1,5 +1,5 @@
 import { startKarma } from '../../utils/biosys/karma.start';
-import Config from '../../config';
+import Config from '../../../config/config';
 
 /**
  * Executes the build process, running all unit tests using `karma`.

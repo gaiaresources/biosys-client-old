@@ -10,8 +10,3 @@ export interface Environments {
     PRODUCTION: string;
     [key: string]: string;
 }
-
-export interface EnvConfig {
-    API?: string;
-    ENV?: string;
-}

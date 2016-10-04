@@ -4,7 +4,7 @@ import * as openResource from 'open';
 import { resolve } from 'path';
 
 import * as codeChangeTool from './code_change_tools';
-import Config from '../../config';
+import Config from '../../../config/config';
 
 /**
  * Serves the Single Page Application. More specifically, calls the `listen` method, which itself launches BrowserSync.

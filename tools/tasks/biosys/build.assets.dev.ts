@@ -1,7 +1,7 @@
 import * as gulp from 'gulp';
 import { join } from 'path';
 
-import Config from '../../config';
+import Config from '../../../config/config';
 
 /**
  * Executes the build process, copying the assets located in `src/client` over to the appropriate

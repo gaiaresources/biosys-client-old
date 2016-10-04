@@ -2,7 +2,7 @@
 // import * as gulpLoadPlugins from 'gulp-load-plugins';
 // import { join } from 'path';
 //
-// import { APP_SRC, APP_TITLE, DOCS_DEST } from '../../config';
+// import { APP_SRC, APP_TITLE, DOCS_DEST } from '../../../config/config';
 //
 // const plugins = <any>gulpLoadPlugins();
 //
