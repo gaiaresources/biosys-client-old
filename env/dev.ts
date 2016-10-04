@@ -1,4 +1,4 @@
-import {AppConfig} from '../config/app.config.interfaces';
+import { AppConfig } from '../src/app/shared/config/app.config';
 
 const DevConfig: AppConfig = {
     ENV: 'DEV',

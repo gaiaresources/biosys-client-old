@@ -1,4 +1,7 @@
-import { AppConfig } from '../../../../config/app.config.interfaces'
+export interface AppConfig {
+    API?: string;
+    ENV?: string;
+}
 
 const appConfig: AppConfig = JSON.parse('<%= APP_CONFIG %>');
 
