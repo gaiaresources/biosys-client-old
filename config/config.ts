@@ -1,4 +1,4 @@
-import { BiosysConfig } from './biosys.config';
+import { ProjectConfig } from './project.config';
 
-const config: BiosysConfig = new BiosysConfig();
-export default config;
+const projectConfig: ProjectConfig = new ProjectConfig();
+export default projectConfig;

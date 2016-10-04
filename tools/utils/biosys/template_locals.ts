@@ -18,8 +18,7 @@ const getConfig = (path: string, env: string): any => {
 };
 
 /**
- * Returns the project configuration (consisting of the base configuration provided by biosys.config.ts and the additional
- * project specific overrides as defined in project.config.ts)
+ * Returns the project configuration (consisting of the base configuration provided by projectConfig.ts)
  */
 export function templateLocals() {
     const configEnvName = argv['config-env'] || 'dev';
@@ -33,9 +32,8 @@ export function templateLocals() {
     if (!config) {
         throw new Error('Invalid configuration name');
     }
-
     return Object.assign(Config, {
-        ENV_CONFIG: JSON.stringify(Object.assign(baseConfig, config))
+        APP_CONFIG: JSON.stringify(Object.assign(baseConfig, config))
     });
 }
 

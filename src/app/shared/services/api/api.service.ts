@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {Config} from '../../config/env.config';
+import appConfig from '../../config/app.config';
 
 
 /**
@@ -17,8 +17,8 @@ export class APIService {
      * @constructor
      */
     constructor(private http: Http) {
-        console.log("envConfig", Config);
-        this.baseUrl = Config.API;
+        console.log("envConfig", appConfig);
+        this.baseUrl = appConfig.API;
         if (!this.baseUrl.endsWith('/')) this.baseUrl += '/';
     }
 

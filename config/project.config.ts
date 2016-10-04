@@ -2,7 +2,7 @@ import {join} from 'path';
 import * as slash from 'slash';
 import {argv} from 'yargs';
 
-import {Environments, InjectableDependency} from './biosys.config.interfaces';
+import {Environments, InjectableDependency} from './project.config.interfaces';
 
 /**
  * The enumeration of available environments.
@@ -26,7 +26,7 @@ export const ENVIRONMENTS: Environments = {
  * - BrowserSync configuration
  * - Utilities
  */
-export class BiosysConfig {
+export class ProjectConfig {
 
     /**
      * The port where the application will run.
@@ -42,7 +42,7 @@ export class BiosysConfig {
 
     /**
      * The current environment.
-     * The default environment is `dev`, which can be overriden by the `--config-env ENV_NAME` flag when running `npm start`.
+     * The default environment is `dev`, which can be overriden by the `--projectConfig-env ENV_NAME` flag when running `npm start`.
      */
     ENV = getEnvironment();
 
@@ -349,7 +349,7 @@ export class BiosysConfig {
 
             'rxjs/*': 'node_modules/rxjs/*',
             'app/*': '/app/*',
-            // For test config
+            // For test projectConfig
             'dist/dev/*': '/base/dist/dev/*',
             '*': 'node_modules/*'
         },
@@ -448,7 +448,7 @@ export class BiosysConfig {
     COLOR_GUARD_WHITE_LIST: [string, string][] = [];
 
     /**
-     * Configurations for NPM module configurations. Add to or override in project.config.ts.
+     * Configurations for NPM module configurations. Add to or override in project.projectConfig.ts.
      * If you like, use the mergeObject() method to assist with this.
      */
     PLUGIN_CONFIGS: any = {

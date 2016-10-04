@@ -5,7 +5,7 @@ import {APIService} from '../../shared/index';
     moduleId: module.id,
     selector: 'bios-playground',
     templateUrl: 'playground.component.html',
-    // styleUrls: ['home.component.css'],
+    styleUrls: [],
 })
 
 export class PlaygroundComponent implements OnInit {

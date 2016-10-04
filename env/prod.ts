@@ -1,6 +1,6 @@
-import { EnvConfig } from '../config/biosys.config.interfaces';
+import {AppConfig} from '../config/app.config.interfaces';
 
-const ProdConfig: EnvConfig = {
+const ProdConfig: AppConfig = {
   ENV: 'PROD'
 };
 

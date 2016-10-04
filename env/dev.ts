@@ -1,8 +1,8 @@
-import { EnvConfig } from '../config/biosys.config.interfaces';
+import {AppConfig} from '../config/app.config.interfaces';
 
-const DevConfig: EnvConfig = {
-  ENV: 'DEV',
-  API: 'http://localhost:8000/api/'
+const DevConfig: AppConfig = {
+    ENV: 'DEV',
+    API: 'http://localhost:8000/api/'
 };
 
 export = DevConfig;
