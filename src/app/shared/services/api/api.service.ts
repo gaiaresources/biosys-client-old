@@ -2,24 +2,15 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, ResponseContentType } from '@angular/http';
 import { Observable, Observer } from 'rxjs';
 import appConfig from '../../config/app.config';
+import {
+    FetchOptions,
+    APIError,
+    Project
+} from './api.interfaces';
 
-
-export interface APIError {
-    status: number;
-    statusText: string;
-    msg: string;
-}
-
-export interface FetchOptions {
-    method?: string;
-    headers?: {[key: string]: string};
-    urlParams?: {[key: string]: string};
-    data?: {[key: string]: string};
-    map?: (resp: any) => any;
-}
 
 /**
- * This class provides the Biosys service.
+ * This class provides the Biosys API service.
  */
 @Injectable()
 export class APIService {
@@ -76,12 +67,21 @@ export class APIService {
         });
     }
 
-    public getAllProjects(): Observable<any[]> {
+    public getAllProjects(): Observable<Project[]> {
         return this.fetch('projects', {});
     }
-    public getProject(id: number): Observable<any[]> {
-        return this.fetch('projects/' + id, {});
+
+    public getProject(id: number): Observable<Project> {
+        return this.fetch('projects' + id, {});
     }
+
+    public createProject(project: Project): Observable<Project> {
+        return this.fetch('projects', {
+            method: 'Post',
+            data: project
+        });
+    }
+
     public fetch(path: string, options: FetchOptions): Observable<any> {
         if (path && !path.endsWith('/')) {
             // enforce '/' at the end
