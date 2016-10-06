@@ -12,7 +12,6 @@ export interface FetchOptions {
     map?: (resp: any) => any;
 }
 
-
 // remote models
 export interface Geometry {
     type: string;
