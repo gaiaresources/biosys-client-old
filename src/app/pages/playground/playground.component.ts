@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, APIError } from '../../shared/index';
+import { APIService, APIError, Project } from '../../shared/index';
 
 @Component({
     moduleId: module.id,
@@ -17,28 +17,25 @@ export class PlaygroundComponent implements OnInit {
 
     ngOnInit() {
         this.apiService.authenticate('admin', 'password')
-            .subscribe(
-                () => {
-                    this.getProjects();
-                },
-                (error: APIError) => console.log('error', error.msg)
-            );
-    }
-
-    getProjects() {
-        this.apiService.getAllProjects()
-            .subscribe(
-                projects => {
+            .flatMap(
+                () => this.apiService.getAllProjects()
+            )
+            .flatMap(
+                (projects: Project[]) => {
                     this.projects = projects;
-                    for (let proj of projects) {
-                        this.apiService.getProject(proj.id)
-                            .subscribe(
-                                project => console.log(project['title'], project),
-                                (error: APIError) => console.log('error', error.msg)
-                            );
+                    let newProjectTitle = 'Test from client';
+                    if (projects.map(p => p.title).indexOf(newProjectTitle) >= 0) {
+                        newProjectTitle += '1';
                     }
-                },
-                error => this.errorMessage = <any>error
+                    return this.apiService.createProject({
+                        title: newProjectTitle,
+                        code: 'TST'
+                    });
+                }
+            )
+            .subscribe(
+                project => console.log('Project created', project),
+                (error: APIError) => this.errorMessage = error.msg
             );
     }
 
