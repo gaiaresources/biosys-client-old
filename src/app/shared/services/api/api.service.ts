@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, ResponseContentType } from '@angular/http';
 import { Observable, Observer } from 'rxjs';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+
 import appConfig from '../../config/app.config';
 import {
     FetchOptions,
