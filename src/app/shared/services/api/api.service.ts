@@ -39,7 +39,6 @@ export class APIService {
         if (!this.baseUrl.endsWith('/')) this.baseUrl += '/';
     }
 
-
     public authenticate(username: string, password: string): Observable<string> {
         // fetch token and set it.
         return Observable.create((observer: Observer<string>) => {
@@ -54,6 +53,10 @@ export class APIService {
                 error => observer.error(error)
             );
         });
+    }
+
+    public isAuthenticated(): boolean {
+        return !!APIService.authToken;
     }
 
     public getAuthToken(username: string, password: string): Observable<string> {
@@ -71,13 +74,20 @@ export class APIService {
         return this.fetch('projects', {});
     }
 
-    public getProject(id: number): Observable<Project> {
+    public getProjectById(id: number): Observable<Project> {
         return this.fetch('projects' + id, {});
     }
 
     public createProject(project: Project): Observable<Project> {
         return this.fetch('projects', {
             method: 'Post',
+            data: project
+        });
+    }
+
+    public updateProject(id: number, project: Project): Observable<Project> {
+        return this.fetch('projects/' + id, {
+            method: 'Patch',
             data: project
         });
     }
