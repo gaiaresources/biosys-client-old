@@ -281,7 +281,7 @@ export class ProjectConfig {
     ENABLE_SCSS = argv['scss'] || false;
 
     /**
-     * The list of NPM dependcies to be injected in the `index.html`.
+     * The list of NPM dependencies to be injected in the `index.html`.
      * @type {InjectableDependency[]}
      */
     NPM_DEPENDENCIES: InjectableDependency[] = [
@@ -289,6 +289,9 @@ export class ProjectConfig {
         {src: 'core-js/client/shim.min.js', inject: 'shims'},
         {src: 'systemjs/dist/system.src.js', inject: 'shims', env: ENVIRONMENTS.DEVELOPMENT},
         {src: 'rxjs/bundles/Rx.min.js', inject: 'libs', env: ENVIRONMENTS.DEVELOPMENT},
+        { src: 'ng2-bootstrap/bundles/ng2-bootstrap', inject: 'lib' },
+        { src: 'bootstrap/dist/css/bootstrap.css', inject: true },
+        { src: 'font-awesome/css/font-awesome.min.css', inject: true }
     ];
 
     /**
@@ -346,7 +349,7 @@ export class ProjectConfig {
             '@angular/platform-browser/testing': 'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
             '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
             '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
-
+            //'leaflet/*': 'node_modules/leaflet/*',
             'rxjs/*': 'node_modules/rxjs/*',
             'app/*': '/app/*',
             // For test projectConfig

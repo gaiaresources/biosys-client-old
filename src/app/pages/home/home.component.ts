@@ -5,7 +5,7 @@ import {Component, OnInit} from '@angular/core';
  */
 @Component({
     moduleId: module.id,
-    selector: 'sd-home',
+    selector: 'home',
     templateUrl: 'home.component.html',
     styleUrls: ['home.component.css'],
 })
