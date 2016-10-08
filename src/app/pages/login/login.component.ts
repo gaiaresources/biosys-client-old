@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Http, Headers } from '@angular/http';
-import { APIService, APIError, Project } from '../../shared/index';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { APIService, APIError } from '../../shared/index';
 
 @Component({
     moduleId: module.id,
@@ -17,9 +16,13 @@ export class LoginComponent {
     private apiService: APIService;
     private router: Router;
 
+    private errorMessages: String;
+
     constructor(fb: FormBuilder, apiService:APIService, router: Router) {
         this.apiService = apiService;
         this.router = router;
+
+
 
         this.loginForm = fb.group({
             username: ["", Validators.required],
@@ -39,8 +42,7 @@ export class LoginComponent {
         .subscribe(
             () => this.router.navigate(['/']),
             (error: APIError) => {
-                
-                //error.msg
+                this.errorMessages = JSON.parse(error.msg)['non_field_errors'];
             }
         );
 
