@@ -1,8 +1,8 @@
-import {join} from 'path';
+import { join } from 'path';
 import * as slash from 'slash';
-import {argv} from 'yargs';
+import { argv } from 'yargs';
 
-import {Environments, InjectableDependency} from './project.config.interfaces';
+import { Environments, InjectableDependency } from './project.config.interfaces';
 
 /**
  * The enumeration of available environments.
@@ -289,9 +289,9 @@ export class ProjectConfig {
         {src: 'core-js/client/shim.min.js', inject: 'shims'},
         {src: 'systemjs/dist/system.src.js', inject: 'shims', env: ENVIRONMENTS.DEVELOPMENT},
         {src: 'rxjs/bundles/Rx.min.js', inject: 'libs', env: ENVIRONMENTS.DEVELOPMENT},
-        { src: 'ng2-bootstrap/ng2-bootstrap', inject: 'lib' },
-        { src: 'bootstrap/dist/css/bootstrap.css', inject: true },
-        { src: 'font-awesome/css/font-awesome.min.css', inject: true }
+        {src: 'ng2-bootstrap/ng2-bootstrap', inject: 'lib'},
+        {src: 'bootstrap/dist/css/bootstrap.css', inject: true},
+        {src: 'font-awesome/css/font-awesome.min.css', inject: true}
     ];
 
     /**
