@@ -6,13 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title><%= APP_TITLE %></title>
   <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- inject:css -->
   <!-- endinject -->
 </head>
 <body>
 
-  <sd-app>Loading...</sd-app>
+  <biosys-app></biosys-app>
 
   <script>
   // Fixes undefined module function in SystemJS bundle
@@ -36,8 +36,7 @@
   <script>
   System.import('<%= BOOTSTRAP_MODULE %>')
     .catch(function (e) {
-      console.error(e,
-        'Report this error at https://github.com/mgechev/angular2-seed/issues');
+      console.error(e)
     });
   </script>
   <% } %>

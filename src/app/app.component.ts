@@ -8,7 +8,7 @@ import './operators';
  */
 @Component({
   moduleId: module.id,
-  selector: 'sd-app',
+  selector: 'biosys-app',
   templateUrl: 'app.component.html',
 })
 
