@@ -14,6 +14,6 @@ import './operators';
 
 export class AppComponent {
   constructor() {
-    console.log('App Config', appConfig);
+    // console.log('App Config', appConfig);
   }
 }

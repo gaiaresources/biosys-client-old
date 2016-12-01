@@ -22,11 +22,9 @@ export class LoginComponent {
         this.apiService = apiService;
         this.router = router;
 
-
-
         this.loginForm = fb.group({
-            username: ["", Validators.required],
-            password: ["", Validators.required]
+            username: ['', Validators.required],
+            password: ['', Validators.required]
         });
 
         this.username = this.loginForm.controls['username'];
@@ -35,9 +33,6 @@ export class LoginComponent {
 
     login(event) {
         event.preventDefault();
-
-        console.log(this.loginForm.value);
-
         this.apiService.authenticate(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe(
             () => this.router.navigate(['/']),
