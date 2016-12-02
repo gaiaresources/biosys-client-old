@@ -1,14 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, ResponseContentType } from '@angular/http';
-import { Observable, Observer } from 'rxjs';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-
-import appConfig from '../../config/app.config';
-import {
-    FetchOptions,
-    APIError,
-    Project
-} from './api.interfaces';
+import { Injectable } from "@angular/core";
+import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, ResponseContentType } from "@angular/http";
+import { Observable } from "rxjs";
+import { AuthService } from "../index";
+import appConfig from "../../config/app.config";
+import { FetchOptions, APIError, Project } from "./api.interfaces";
 
 
 /**
@@ -16,8 +11,8 @@ import {
  */
 @Injectable()
 export class APIService {
-    static authToken: string = null;
     baseUrl: string;
+    private authToken;
 
     /**
      * Handle HTTP error
@@ -38,27 +33,8 @@ export class APIService {
      */
     constructor(private http: Http) {
         this.baseUrl = appConfig.API;
+        this.authToken = AuthService.getAuthToken();
         if (!this.baseUrl.endsWith('/')) this.baseUrl += '/';
-    }
-
-    public authenticate(username: string, password: string): Observable<string> {
-        // fetch token and set it.
-        return Observable.create((observer: Observer<string>) => {
-            let obs = this.getAuthToken(username, password);
-            obs.subscribe(
-                token => {
-                    // set the token
-                    APIService.authToken = token;
-                    observer.next(token);
-                    observer.complete();
-                },
-                error => observer.error(error)
-            );
-        });
-    }
-
-    public isAuthenticated(): boolean {
-        return !!APIService.authToken;
     }
 
     public getAuthToken(username: string, password: string): Observable<string> {
@@ -101,8 +77,8 @@ export class APIService {
         }
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        if (APIService.authToken) {
-            headers.append('Authorization', 'Token ' + APIService.authToken);
+        if (this.authToken) {
+            headers.append('Authorization', 'Token ' + this.authToken);
         }
         if (options.headers) {
             for (let key in options.headers) {
@@ -131,5 +107,4 @@ export class APIService {
             })
             .catch(APIService.handleError);
     }
-
 }

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { APIService, APIError } from '../../shared/index';
+import { Component } from "@angular/core";
+import { Router } from "@angular/router";
+import { FormGroup, FormBuilder, Validators, AbstractControl } from "@angular/forms";
+import { APIError, AuthService } from "../../shared/index";
 
 @Component({
     moduleId: module.id,
@@ -13,13 +13,13 @@ export class LoginComponent {
     private username: AbstractControl;
     private password: AbstractControl;
 
-    private apiService: APIService;
+    private authService: AuthService;
     private router: Router;
 
     private errorMessages: String;
 
-    constructor(fb: FormBuilder, apiService:APIService, router: Router) {
-        this.apiService = apiService;
+    constructor(fb: FormBuilder, authService: AuthService, router: Router) {
+        this.authService = authService;
         this.router = router;
 
         this.loginForm = fb.group({
@@ -33,7 +33,7 @@ export class LoginComponent {
 
     login(event) {
         event.preventDefault();
-        this.apiService.authenticate(this.loginForm.value.username, this.loginForm.value.password)
+        this.authService.login(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe(
             () => this.router.navigate(['/']),
             (error: APIError) => {
