@@ -16,10 +16,10 @@ import { SharedModule } from "./shared/shared.module";
         BrowserModule,
         HttpModule,
         RouterModule.forRoot(routes),
+        SharedModule,
         LoginModule,
         HomeModule,
-        PlaygroundModule,
-        SharedModule
+        PlaygroundModule
     ],
     declarations: [AppComponent],
     providers: [
