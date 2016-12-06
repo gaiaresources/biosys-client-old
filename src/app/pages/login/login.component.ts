@@ -31,7 +31,7 @@ export class LoginComponent {
         this.password = this.loginForm.controls['password'];
     }
 
-    login(event) {
+    login(event: any) {
         event.preventDefault();
         this.authService.login(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe(

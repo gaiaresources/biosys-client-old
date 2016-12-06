@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -11,10 +11,6 @@ import {Component, OnInit} from '@angular/core';
 })
 
 export class HomeComponent implements OnInit {
-
-    newName: string = '';
-    errorMessage: string;
-    names: any[] = [];
 
     /**
      */

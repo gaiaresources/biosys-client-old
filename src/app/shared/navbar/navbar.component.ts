@@ -1,4 +1,6 @@
-import {Component} from '@angular/core';
+import { Component } from "@angular/core";
+import { AuthService } from "../services/index";
+import { Router } from "@angular/router";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -7,9 +9,14 @@ import {Component} from '@angular/core';
     moduleId: module.id,
     selector: 'biosys-navbar',
     templateUrl: 'navbar.component.html',
-    styleUrls: ['navbar.component.css'],
+    styleUrls: ['navbar.component.css']
 })
 export class NavbarComponent {
-    constructor() {
+    constructor(private auth: AuthService, private router: Router) {
+    }
+
+    logout() {
+        this.auth.logout();
+        this.router.navigate(['/login']);
     }
 }

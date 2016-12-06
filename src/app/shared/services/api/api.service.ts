@@ -12,7 +12,7 @@ import { FetchOptions, APIError, Project } from "./api.interfaces";
 @Injectable()
 export class APIService {
     baseUrl: string;
-    private authToken;
+    private authToken: string;
 
     /**
      * Handle HTTP error
