@@ -21,8 +21,18 @@ export class APIService {
         let error: APIError = {
             status: res.status,
             statusText: res.statusText,
-            msg: res.text()
+            text: res.text(),
+            msg: ''
         };
+        // The error message is usually in the body as 'detail' or 'non_field_errors'
+        let body = res.json();
+        if ('detail' in body) {
+            error.msg = body['detail']
+        } else if ('non_field_errors' in body) {
+            error.msg = body['non_field_errors']
+        } else {
+            error.msg = body
+        }
         return Observable.throw(error);
     }
 

@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
-import { AuthService } from "../services/index";
 import { Router } from "@angular/router";
+import { AuthService } from "../services/index";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -16,7 +16,8 @@ export class NavbarComponent {
     }
 
     logout() {
-        this.auth.logout();
-        this.router.navigate(['/login']);
+        this.auth.logout().subscribe(
+            () => this.router.navigate(['/login'])
+        );
     }
 }

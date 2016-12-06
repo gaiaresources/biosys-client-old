@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormGroup, FormBuilder, Validators, AbstractControl } from "@angular/forms";
-import { APIError, AuthService } from "../../shared/index";
+import { AuthService } from "../../shared/index";
 
 @Component({
     moduleId: module.id,
@@ -16,7 +16,7 @@ export class LoginComponent {
     private authService: AuthService;
     private router: Router;
 
-    private errorMessages: String;
+    public errorMessages: string[];
 
     constructor(fb: FormBuilder, authService: AuthService, router: Router) {
         this.authService = authService;
@@ -36,9 +36,7 @@ export class LoginComponent {
         this.authService.login(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe(
             () => this.router.navigate(['/']),
-            (error: APIError) => {
-                this.errorMessages = JSON.parse(error.msg)['non_field_errors'];
-            }
+            () => this.errorMessages = ['Invalid username/password.']
         );
 
         event.preventDefault();

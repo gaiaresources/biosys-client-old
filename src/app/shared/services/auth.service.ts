@@ -17,25 +17,21 @@ export class AuthService {
     }
 
     login(username: string, password: string) {
-        // fetch token and set it.
-        return Observable.create((observer: Observer<string>) => {
-            let obs = this.api.getAuthToken(username, password);
-            obs.subscribe(
-                token => {
-                    // set the token
-                    localStorage.setItem('auth_token', token);
-                    this.loggedIn = true;
-                    observer.next(token);
-                    observer.complete();
-                },
-                error => observer.error(error)
-            );
-        });
+        return this.api.getAuthToken(username, password)
+            .map(token => {
+                // set the token
+                localStorage.setItem('auth_token', token);
+                this.loggedIn = true;
+            });
     }
 
     logout() {
-        localStorage.removeItem('auth_token');
-        this.loggedIn = false;
+        return Observable.create((observer: Observer<boolean>) => {
+            localStorage.removeItem('auth_token');
+            this.loggedIn = false;
+            observer.next(true);
+            observer.complete();
+        });
     }
 
     isLoggedIn() {
