@@ -9,6 +9,7 @@ import { AuthService } from "../../shared/index";
     templateUrl: 'login.component.html'
 })
 export class LoginComponent {
+    public errorMessages: string[];
     private loginForm: FormGroup;
     private username: AbstractControl;
     private password: AbstractControl;
@@ -16,7 +17,6 @@ export class LoginComponent {
     private authService: AuthService;
     private router: Router;
 
-    public errorMessages: string[];
 
     constructor(fb: FormBuilder, authService: AuthService, router: Router) {
         this.authService = authService;

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 //import { Map } from 'leaflet';
 
 @Component({
@@ -15,7 +15,6 @@ export class MapComponent implements OnInit {
      */
     constructor() {
         console.log('map');
-        
 //        this.baseMaps = {
 //            OpenStreetMap: new L.TileLayer("http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
 //                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'

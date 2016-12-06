@@ -8,7 +8,7 @@ export class AuthService {
     private loggedIn = false;
 
     static getAuthToken() {
-        return localStorage.getItem('auth_token')
+        return localStorage.getItem('auth_token');
     }
 
     constructor(api: APIService) {

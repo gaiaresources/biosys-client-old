@@ -1,12 +1,10 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-
-import { HeaderComponent } from './header/index';
-import { NavbarComponent } from './navbar/index';
-import { APIService } from './services/api/index'
-
+import { NgModule, ModuleWithProviders } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
+import { HeaderComponent } from "./header/index";
+import { NavbarComponent } from "./navbar/index";
+import { APIService } from "./services/api/index";
 
 
 /**
