@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, ResponseContentType } from "@angular/http";
-import { Observable } from "rxjs";
-import { AuthService } from "../index";
-import appConfig from "../../config/app.config";
-import { FetchOptions, APIError, Project } from "./api.interfaces";
+import { Injectable } from '@angular/core';
+import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, ResponseContentType } from '@angular/http';
+import { Observable } from 'rxjs';
+import { AuthService } from '../index';
+import appConfig from '../../config/app.config';
+import { FetchOptions, APIError, Project } from './api.interfaces';
 
 
 /**

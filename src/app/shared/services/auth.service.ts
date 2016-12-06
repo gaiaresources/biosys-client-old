@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { APIService } from "./index";
-import { Observable, Observer } from "rxjs";
+import { Injectable } from '@angular/core';
+import { APIService } from './index';
+import { Observable, Observer } from 'rxjs';
 
 @Injectable()
 export class AuthService {

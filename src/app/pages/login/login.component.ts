@@ -1,7 +1,7 @@
-import { Component } from "@angular/core";
-import { Router } from "@angular/router";
-import { FormGroup, FormBuilder, Validators, AbstractControl } from "@angular/forms";
-import { AuthService } from "../../shared/index";
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { AuthService } from '../../shared/index';
 
 @Component({
     moduleId: module.id,

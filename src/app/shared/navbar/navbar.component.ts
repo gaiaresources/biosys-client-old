@@ -1,6 +1,6 @@
-import { Component } from "@angular/core";
-import { Router } from "@angular/router";
-import { AuthService } from "../services/index";
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/index';
 
 /**
  * This class represents the lazy loaded HomeComponent.

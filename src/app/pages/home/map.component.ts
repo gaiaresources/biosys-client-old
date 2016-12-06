@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 //import { Map } from 'leaflet';
 
 @Component({
@@ -30,7 +30,6 @@ export class MapComponent implements OnInit {
 
     ngOnInit() {
         console.log('map');
-
 //        let map:Map = new L.Map('map', {
 //            zoomControl: false,
 //            center: new L.LatLng(40.731253, -73.996139),

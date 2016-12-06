@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import appConfig  from './shared/config/app.config';
 import './operators';
 
 /**
