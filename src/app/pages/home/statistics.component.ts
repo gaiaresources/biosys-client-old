@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
     moduleId: module.id,
     selector: 'statistics',
     templateUrl: 'statistics.component.html',
-    //styleUrls: ['statistics.component.css'],
+    styleUrls: [],
 })
 
 export class StatisticsComponent implements OnInit {

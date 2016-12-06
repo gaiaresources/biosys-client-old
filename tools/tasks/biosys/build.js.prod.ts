@@ -8,9 +8,10 @@ import { makeTsProject, templateLocals } from '../../utils';
 const plugins = <any>gulpLoadPlugins();
 
 const INLINE_OPTIONS = {
-  base: Config.TMP_DIR,
-  useRelativePaths: true,
-  removeLineBreaks: true
+    base: Config.TMP_DIR,
+    useRelativePaths: true,
+    removeLineBreaks: true,
+    supportNonExistentFiles: true
 };
 
 /**
@@ -18,25 +19,25 @@ const INLINE_OPTIONS = {
  */
 
 export = () => {
-  let tsProject = makeTsProject({}, Config.TMP_DIR);
-  let src = [
-    Config.TOOLS_DIR + '/manual_typings/**/*.d.ts',
-    join(Config.TMP_DIR, '**/*.ts'),
-    '!' + join(Config.TMP_DIR, `**/${Config.BOOTSTRAP_FACTORY_PROD_MODULE}.ts`)
-  ];
-  let result = gulp.src(src)
-    .pipe(plugins.plumber())
-    .pipe(plugins.inlineNg2Template(INLINE_OPTIONS))
-    .pipe(tsProject())
-    .once('error', function(e: any) {
-      this.once('finish', () => process.exit(1));
-    });
+    let tsProject = makeTsProject({}, Config.TMP_DIR);
+    let src = [
+        Config.TOOLS_DIR + '/manual_typings/**/*.d.ts',
+        join(Config.TMP_DIR, '**/*.ts'),
+        '!' + join(Config.TMP_DIR, `**/${Config.BOOTSTRAP_FACTORY_PROD_MODULE}.ts`)
+    ];
+    let result = gulp.src(src)
+        .pipe(plugins.plumber())
+        .pipe(plugins.inlineNg2Template(INLINE_OPTIONS))
+        .pipe(tsProject())
+        .once('error', function (e: any) {
+            this.once('finish', () => process.exit(1));
+        });
 
 
-  return result.js
-    .pipe(plugins.template(templateLocals()))
-    .pipe(gulp.dest(Config.TMP_DIR))
-    .on('error', (e: any) => {
-      console.log(e);
-    });
+    return result.js
+        .pipe(plugins.template(templateLocals()))
+        .pipe(gulp.dest(Config.TMP_DIR))
+        .on('error', (e: any) => {
+            console.log(e);
+        });
 };
