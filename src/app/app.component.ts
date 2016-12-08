@@ -13,6 +13,6 @@ import './operators';
 
 export class AppComponent {
   constructor() {
-    // console.log('App Config', appConfig);
+
   }
 }

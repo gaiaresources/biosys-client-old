@@ -19,14 +19,12 @@ export function main() {
   describe('App component', () => {
 
     let config: Route[] = [
-//      { path: '', component: HomeComponent },
     ];
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [FormsModule, RouterTestingModule.withRoutes(config)],
         declarations: [TestComponent,
           AppComponent,
-          //HomeComponent,
          ],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' }
