@@ -1,20 +1,19 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <form class="form-horizontal" role="form">
-        <div class="form-group">
-          <label for="filter-project"
-                 class="col-lg-1 col-sm-2 col-xs-12 control-label">Project</label>
-
-          <div class="col-lg-5 col-sm-4 col-xs-12">
-            <select class="form-control" id="filter-project">
-              <option></option>
-              <option *ngFor="let project of projects" value="{{project.id}}">{{project.title}}</option>
-            </select>
-          </div>
+    <biosys-header></biosys-header>
+    <biosys-navbar></biosys-navbar>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="filter-project">Project</label>
+                    <div>
+                        <select class="form-control" id="filter-project">
+                            <option></option>
+                            <option *ngFor="let project of projects" value="{{project.id}}">{{project.title}}</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
         </div>
-      </form>
     </div>
-
-  </div>
 </div>

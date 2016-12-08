@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import appConfig  from './shared/config/app.config';
 import './operators';
 
 /**
@@ -8,12 +7,12 @@ import './operators';
  */
 @Component({
   moduleId: module.id,
-  selector: 'sd-app',
+  selector: 'biosys-app',
   templateUrl: 'app.component.html',
 })
 
 export class AppComponent {
   constructor() {
-    console.log('App Config', appConfig);
+
   }
 }
