@@ -63,7 +63,7 @@ export class APIService {
     }
 
     public getProjectById(id: number): Observable<Project> {
-        return this.fetch('projects' + id, {});
+        return this.fetch('projects/' + id, {});
     }
 
     public createProject(project: Project): Observable<Project> {

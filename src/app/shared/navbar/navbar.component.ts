@@ -22,6 +22,7 @@ export class NavbarComponent {
         this.items = [
             {
                 label: 'Manage',
+                icon: 'fa-university',
                 items: [
                     {
                         label: 'Projects',
@@ -35,9 +36,11 @@ export class NavbarComponent {
             },
             {
                 label: 'View',
+                icon: 'fa-search'
             },
             {
                 label: 'Logout',
+                icon: 'fa-sign-out',
                 command: () => this.logout()
             }
         ];
