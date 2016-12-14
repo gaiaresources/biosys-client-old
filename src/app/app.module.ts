@@ -12,6 +12,8 @@ import { PlaygroundModule } from './pages/playground/index';
 import { AuthGuard } from './shared/auth.guard';
 import { SharedModule } from './shared/shared.module';
 import { AgmCoreModule } from 'angular2-google-maps/core/';
+import { ProjectsModule } from "./pages/projects/projects.module";
+import { EditProjectModule } from "./pages/projects/edit-project/edit-project.module";
 
 @NgModule({
     imports: [
@@ -24,7 +26,9 @@ import { AgmCoreModule } from 'angular2-google-maps/core/';
         SharedModule,
         LoginModule,
         HomeModule,
-        PlaygroundModule
+        PlaygroundModule,
+        ProjectsModule,
+        EditProjectModule
     ],
     declarations: [AppComponent],
     providers: [
