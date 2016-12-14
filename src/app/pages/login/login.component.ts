@@ -17,7 +17,6 @@ export class LoginComponent {
     private authService: AuthService;
     private router: Router;
 
-
     constructor(fb: FormBuilder, authService: AuthService, router: Router) {
         this.authService = authService;
         this.router = router;

@@ -280,6 +280,17 @@ export class ProjectConfig {
      */
     ENABLE_SCSS = argv['scss'] || false;
 
+    FONTS_DEST = `${this.APP_DEST}/font-awesome/fonts`;
+
+    FONTS_SRC = ['node_modules/font-awesome/fonts/**'];
+
+    PRIME_NG_THEME = 'bootstrap';
+
+    CSS_IMAGE_DEST = `${this.CSS_DEST}/images`;
+    CSS_IMAGE_SRC = [
+        'node_modules/primeng/resources/themes/' + this.PRIME_NG_THEME + '/images/**'
+    ];
+
     /**
      * The list of NPM dependencies to be injected in the `index.html`.
      * @type {InjectableDependency[]}
@@ -291,7 +302,9 @@ export class ProjectConfig {
         {src: 'rxjs/bundles/Rx.min.js', inject: 'libs', env: ENVIRONMENTS.DEVELOPMENT},
         {src: 'ng2-bootstrap/ng2-bootstrap', inject: 'lib'},
         {src: 'bootstrap/dist/css/bootstrap.css', inject: true},
-        {src: 'font-awesome/css/font-awesome.min.css', inject: true}
+        {src: 'font-awesome/css/font-awesome.min.css', inject: true},
+        {src: 'primeng/resources/primeng.min.css', inject: true},
+        {src: 'primeng/resources/themes/' + this.PRIME_NG_THEME + '/theme.css', inject: true}
     ];
 
     /**
@@ -349,6 +362,8 @@ export class ProjectConfig {
             '@angular/platform-browser/testing': 'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
             '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
             '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
+            'primeng': 'node_modules/primeng',
+            'angular2-google-maps/core': 'node_modules/angular2-google-maps/core/core.umd.js',
             //'leaflet/*': 'node_modules/leaflet/*',
             'rxjs/*': 'node_modules/rxjs/*',
             'app/*': '/app/*',
@@ -357,7 +372,8 @@ export class ProjectConfig {
             '*': 'node_modules/*'
         },
         packages: {
-            rxjs: {defaultExtension: 'js'}
+            rxjs: {defaultExtension: 'js'},
+            'angular2-google-maps/core': { defaultExtension: 'js', main: 'core.umd.js' }
         }
     };
 
@@ -424,6 +440,10 @@ export class ProjectConfig {
             'rxjs': {
                 main: 'Rx.js',
                 defaultExtension: 'js'
+            },
+            'angular2-google-maps': {
+                main: 'index.js',
+                defaultExtention: 'js'
             }
         }
     };

@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/index';
 import { NavbarComponent } from './navbar/index';
 import { APIService } from './services/api/index';
+import { MenubarModule } from 'primeng/primeng';
 
 
 /**
@@ -12,7 +13,7 @@ import { APIService } from './services/api/index';
  */
 
 @NgModule({
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MenubarModule],
   declarations: [HeaderComponent, NavbarComponent],
   exports: [CommonModule, FormsModule, RouterModule, HeaderComponent, NavbarComponent]
 })

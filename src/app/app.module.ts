@@ -11,12 +11,16 @@ import { HomeModule } from './pages/home/home.module';
 import { PlaygroundModule } from './pages/playground/index';
 import { AuthGuard } from './shared/auth.guard';
 import { SharedModule } from './shared/shared.module';
+import { AgmCoreModule } from 'angular2-google-maps/core/';
 
 @NgModule({
     imports: [
         BrowserModule,
         HttpModule,
         RouterModule.forRoot(routes),
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyAYayRKr-lwM6nsfuTeZFT8iApt_XhoclQ'
+        }),
         SharedModule,
         LoginModule,
         HomeModule,

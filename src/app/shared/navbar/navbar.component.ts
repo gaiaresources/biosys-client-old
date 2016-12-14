@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/index';
+import { MenubarModule, MenuItem } from 'primeng/primeng';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -12,7 +13,34 @@ import { AuthService } from '../services/index';
     styleUrls: ['navbar.component.css']
 })
 export class NavbarComponent {
-    constructor(private auth: AuthService, private router: Router) {
+    private items: MenuItem[];
+
+    constructor(public auth: AuthService, private router: Router) {
+    }
+
+    ngOnInit() {
+        this.items = [
+            {
+                label: 'Manage',
+                items: [
+                    {
+                        label: 'Projects',
+                        routerLink: ['/projects']
+                    },
+                    {
+                        label: 'Data',
+                        routerLink: ['/data']
+                    }
+                ]
+            },
+            {
+                label: 'View',
+            },
+            {
+                label: 'Logout',
+                command: () => this.logout()
+            }
+        ];
     }
 
     logout() {

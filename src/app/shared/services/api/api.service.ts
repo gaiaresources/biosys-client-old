@@ -3,7 +3,7 @@ import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, Resp
 import { Observable } from 'rxjs';
 import { AuthService } from '../index';
 import appConfig from '../../config/app.config';
-import { FetchOptions, APIError, Project } from './api.interfaces';
+import { FetchOptions, APIError, Project, Observation } from './api.interfaces';
 
 
 /**
@@ -77,6 +77,28 @@ export class APIService {
         return this.fetch('projects/' + id, {
             method: 'Patch',
             data: project
+        });
+    }
+
+    public getAllObservations(): Observable<Observation[]> {
+        return this.fetch('observations', {});
+    }
+
+    public getObservationById(id: number): Observable<Observation> {
+        return this.fetch('observations' + id, {});
+    }
+
+    public createObservation(observation: Observation): Observable<Observation> {
+        return this.fetch('observations', {
+            method: 'Post',
+            data: observation
+        });
+    }
+
+    public updateObservation(id: number, observation: Observation): Observable<Observation> {
+        return this.fetch('observations/' + id, {
+            method: 'Patch',
+            data: observation
         });
     }
 
