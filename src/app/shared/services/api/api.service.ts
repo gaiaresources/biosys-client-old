@@ -74,7 +74,7 @@ export class APIService {
     }
 
     public updateProject(id: number, project: Project): Observable<Project> {
-        return this.fetch('observations/' + id, {
+        return this.fetch('projects/' + id, {
             method: 'Patch',
             data: project
         });
@@ -88,17 +88,17 @@ export class APIService {
         return this.fetch('observations' + id, {});
     }
 
-    public createObservation(project: Observation): Observable<Observation> {
+    public createObservation(observation: Observation): Observable<Observation> {
         return this.fetch('observations', {
             method: 'Post',
-            data: project
+            data: observation
         });
     }
 
-    public updateObservation(id: number, project: Observation): Observable<Observation> {
-        return this.fetch('projects/' + id, {
+    public updateObservation(id: number, observation: Observation): Observable<Observation> {
+        return this.fetch('observations/' + id, {
             method: 'Patch',
-            data: project
+            data: observation
         });
     }
 
