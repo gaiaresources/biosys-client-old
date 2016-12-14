@@ -12,8 +12,7 @@ import { PlaygroundModule } from './pages/playground/index';
 import { AuthGuard } from './shared/auth.guard';
 import { SharedModule } from './shared/shared.module';
 import { AgmCoreModule } from 'angular2-google-maps/core/';
-import { ProjectsModule } from "./pages/projects/projects.module";
-import { EditProjectModule } from "./pages/projects/edit-project/edit-project.module";
+import { ProjectsModule, EditProjectModule, EditDatasetModule } from "./pages/projects/index";
 
 @NgModule({
     imports: [
@@ -28,7 +27,8 @@ import { EditProjectModule } from "./pages/projects/edit-project/edit-project.mo
         HomeModule,
         PlaygroundModule,
         ProjectsModule,
-        EditProjectModule
+        EditProjectModule,
+        EditDatasetModule
     ],
     declarations: [AppComponent],
     providers: [

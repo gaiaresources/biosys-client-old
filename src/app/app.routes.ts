@@ -9,6 +9,5 @@ export const routes: Routes = [
     ...LoginRoutes,
     ...HomeRoutes,
     ...PlaygroundRoutes,
-    ...ProjectsRoutes,
-    ...EditProjectRoutes
+    ...ProjectsRoutes
 ];
