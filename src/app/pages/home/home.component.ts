@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { APIService, APIError, Observation } from '../../shared/index';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -11,16 +12,19 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class HomeComponent implements OnInit {
+    lat: number = -26.67;
+    lng: number = 121.62;
+    zoom: number = 5;
+    observations: Observation[];
 
-    /**
-     */
-    constructor() {
-    }
+    constructor(public apiService: APIService) {}
 
-    /**
-     * Get the names OnInit
-     */
     ngOnInit() {
+        this.apiService.getAllObservations()
+            .subscribe(
+                (observations: Observation[]) => this.observations = observations,
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
     }
 
 }

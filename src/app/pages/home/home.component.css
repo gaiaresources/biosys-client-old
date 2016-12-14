@@ -11,3 +11,8 @@ ul {
   list-style-type: none;
   padding: 0 0 0 8px;
 }
+
+.sebm-google-map-container {
+    height: 500px;
+    width: 400px;
+}
