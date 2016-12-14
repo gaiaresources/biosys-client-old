@@ -3,7 +3,7 @@ import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, Resp
 import { Observable } from 'rxjs';
 import { AuthService } from '../index';
 import appConfig from '../../config/app.config';
-import { FetchOptions, APIError, Project, Observation } from './api.interfaces';
+import { FetchOptions, APIError, Project, Site, Observation } from './api.interfaces';
 
 
 /**
@@ -73,10 +73,36 @@ export class APIService {
         });
     }
 
-    public updateProject(id: number, project: Project): Observable<Project> {
-        return this.fetch('projects/' + id, {
+    public updateProject(project: Project): Observable<Project> {
+        return this.fetch('projects/' + project.id, {
             method: 'Patch',
             data: project
+        });
+    }
+
+    public getAllSites(): Observable<Site[]> {
+        return this.fetch('sites', {});
+    }
+
+    public getAllSitesForProjectID(id: Number): Observable<Site[]> {
+        return this.fetch('projects/' + id + '/sites', {});
+    }
+
+    public getSiteById(id: number): Observable<Site> {
+        return this.fetch('sites/' + id, {});
+    }
+
+    public createSite(site: Site, project: Project): Observable<Site> {
+        return this.fetch('projects/' + project.id + '/sites', {
+            method: 'Post',
+            data: site
+        });
+    }
+
+    public updateSite(site: Site): Observable<Site> {
+        return this.fetch('sites/' + site.id, {
+            method: 'Patch',
+            data: site
         });
     }
 

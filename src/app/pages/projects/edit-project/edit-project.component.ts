@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, APIError, Project } from '../../../shared/index';
+import { APIService, APIError, Project, Site, Dataset } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,7 +10,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class EditProjectComponent implements OnInit {
-    private project: Project;
+    private project: Project = <Project>{};
+    private sites: Site[];
+    private datasets: Dataset[];
 
     constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute) {
 
@@ -22,10 +24,26 @@ export class EditProjectComponent implements OnInit {
                 (project: Project) => this.project = project,
                 (error: APIError) => console.log('error.msg', error.msg)
             );
+
+            this.apiService.getAllSitesForProjectID(Number(this.route.snapshot.params['id'])).subscribe(
+                (sites: Site[]) => this.sites = sites,
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
         }
     }
 
-    editProject(project: Project) {
-        this.router.navigate(['/edit-project/edit-project/' + project.id]);
+    saveProject() {
+        if(this.project.id) {
+            this.apiService.updateProject(this.project).subscribe(
+                (project: Project) => this.router.navigate(['/projects']),
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
+        } else {
+            this.apiService.createProject(this.project).subscribe(
+                (project: Project) => this.router.navigate(['/projects']),
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
+        }
+        // this.router.navigate(['/edit-project/edit-project/' + project.id]);
     }
 }
