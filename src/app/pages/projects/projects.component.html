@@ -3,7 +3,7 @@
     <biosys-navbar></biosys-navbar>
     <div class="row mt-3">
         <div class="col-md">
-            <p-dataTable [value]="projects" selectionMode="single" [(selection)]="selectedProject" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="15" [responsive]="true">
+            <p-dataTable [value]="projects" [paginator]="true" rows="15" [responsive]="true">
                 <p-column field="title" header="Title" [sortable]="true"></p-column>
                 <p-column field="code" header="Code"></p-column>
                 <p-column styleClass="col-button" header="Edit">
@@ -13,7 +13,7 @@
                 </p-column>
                 <footer>
                     <div class="ui-helper-clearfix" style="width:100%">
-                        <button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button>
+                        <button type="button" pButton icon="fa-plus" style="float:left" (click)="createNewProject()" label="Add"></button>
                     </div>
                 </footer>
             </p-dataTable>

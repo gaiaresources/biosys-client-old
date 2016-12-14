@@ -26,4 +26,8 @@ export class ProjectsComponent implements OnInit {
     editProject(project: Project) {
         this.router.navigate(['/projects/edit-project/' + project.id]);
     }
+
+    createNewProject() {
+        this.router.navigate(['/projects/create-project']);
+    }
 }

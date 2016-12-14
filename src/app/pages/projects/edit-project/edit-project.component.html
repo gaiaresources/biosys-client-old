@@ -1,9 +1,46 @@
 <div class="container">
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
-    <div class="row mt-3">
+    <div class="row mt-1">
         <div class="col-md">
-
+            <h3 *ngIf="project.id">Edit Project</h3>
+            <h3 *ngIf="!project.id">Create Project</h3>
+            <form (ngSubmit)="saveProject()">
+                <div class="ui-grid-row mb-1">
+                    <div class="ui-grid-col-1"><label for="title">Title</label></div>
+                    <div class="ui-grid-col-3">
+                        <input id="title" type="text" pInputText [(ngModel)]="project.title" name="title"/>
+                    </div>
+                </div>
+                <div class="ui-grid-row mb-1">
+                    <div class="ui-grid-col-1"><label for="code">Code</label></div>
+                    <div class="ui-grid-col-3">
+                        <input id="code" type="text" pInputText [(ngModel)]="project.code" name="code"/>
+                    </div>
+                </div>
+                <div class="ui-grid-row mb-1">
+                    <div class="ui-grid-col-1"><label for="timezone">Timezone</label></div>
+                    <div class="ui-grid-col-3">
+                        <input id="timezone" type="text" pInputText [(ngModel)]="project.timezone" name="timezone"/>
+                    </div>
+                </div>
+                <div class="ui-grid-row mb-1">
+                    <div class="ui-grid-col-1"><label for="datam">Datum</label></div>
+                    <div class="ui-grid-col-3">
+                        <input id="datam" type="text" pInputText [(ngModel)]="project.datam" name="datam"/>
+                    </div>
+                </div>
+                <button pButton type="submit" label="Save"></button>
+            </form>
         </div>
     </div>
+    <hr>
+    <h4>Sites</h4>
+    <p-dataTable [value]="sites" [paginator]="true" rows="15" [responsive]="true">
+        <p-column field="name" header="Name"></p-column>
+        <p-column field="code" header="Code"></p-column>
+        <p-column field="comments" header="Comments"></p-column>
+    </p-dataTable>
+    <h4>Datasets</h4>
+    <p-dataTable [value]="datasets" [paginator]="true" rows="15" [responsive]="true"></p-dataTable>
 </div>
