@@ -11,10 +11,10 @@ import { JsonEditorComponent, JsonEditorOptions } from '../../../shared/index';
 })
 
 export class EditDatasetComponent implements OnInit {
-    private ds: Dataset = <Dataset>{};
-    public editorOptions: JsonEditorOptions;
     @Input('isValid')
     isValid: boolean = true;
+    private ds: Dataset = <Dataset>{};
+    private editorOptions: JsonEditorOptions;
     @ViewChild(JsonEditorComponent)
     private editor: JsonEditorComponent;
 
@@ -38,9 +38,9 @@ export class EditDatasetComponent implements OnInit {
                 (error: APIError) => console.log('error.msg', error.msg)
             );
         } else if ('projId' in params) {
-            this.ds.project = Number(params['projId'])
+            this.ds.project = Number(params['projId']);
         } else {
-            throw new Error("No project ID provided")
+            throw new Error('No project ID provided');
         }
     }
 
