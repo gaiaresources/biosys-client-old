@@ -62,6 +62,7 @@ export class EditDatasetComponent implements OnInit {
     private onEditorChanged() {
         try {
             this.ds.data_package = this.editor.get();
+            this.isValid = true;
         } catch (e) {
             this.isValid = false;
         }
