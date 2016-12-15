@@ -19,7 +19,6 @@ export class EditDatasetComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        console.log('fetch dataset id', this.route.snapshot);
         let params = this.route.snapshot.params;
         if ('id' in params) {
             this.apiService.getDatasetById(Number(params['id'])).subscribe(
@@ -35,15 +34,15 @@ export class EditDatasetComponent implements OnInit {
     }
 
     save() {
-        console.log('save', this.ds);
+        let successUrl = '/projects/edit-project/' + this.ds.project;
         if(this.ds.id) {
             this.apiService.updateDataset(this.ds).subscribe(
-                () => this.router.navigate(['/projects']),
+                () => this.router.navigate([successUrl]),
                 (error: APIError) => console.log('error.msg', error.msg)
             );
         } else {
             this.apiService.createDataset(this.ds).subscribe(
-                () => this.router.navigate(['/projects']),
+                () => this.router.navigate([successUrl]),
                 (error: APIError) => console.log('error.msg', error.msg)
             );
         }
