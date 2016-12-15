@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { APIService, APIError, Dataset } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
+import { JsonEditorComponent, JsonEditorOptions } from '../../../shared/index';
 
 @Component({
     moduleId: module.id,
@@ -11,22 +12,32 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 export class EditDatasetComponent implements OnInit {
     private ds: Dataset = <Dataset>{};
+    public editorOptions: JsonEditorOptions;
+    @Input('isValid')
+    isValid: boolean = true;
+    @ViewChild(JsonEditorComponent)
+    private editor: JsonEditorComponent;
 
-    constructor(
-        private apiService: APIService,
-        private router: Router,
-        private route: ActivatedRoute
-    ) { }
+    constructor(private apiService: APIService,
+                private router: Router,
+                private route: ActivatedRoute) {
+        this.editorOptions = new JsonEditorOptions();
+        this.editorOptions.mode = 'code';
+        this.editorOptions.modes = ['code', 'form', 'text', 'tree', 'view'];
+        this.editorOptions.onChange = this.onEditorChanged.bind(this);
+    }
 
     ngOnInit() {
         let params = this.route.snapshot.params;
         if ('id' in params) {
             this.apiService.getDatasetById(Number(params['id'])).subscribe(
-                (ds: Dataset) => this.ds = ds,
+                (ds: Dataset) => {
+                    this.ds = ds;
+                    this.editor.set(<JSON>this.ds.data_package);
+                },
                 (error: APIError) => console.log('error.msg', error.msg)
             );
         } else if ('projId' in params) {
-            console.log('Create Dataset');
             this.ds.project = Number(params['projId'])
         } else {
             throw new Error("No project ID provided")
@@ -35,7 +46,7 @@ export class EditDatasetComponent implements OnInit {
 
     save() {
         let successUrl = '/projects/edit-project/' + this.ds.project;
-        if(this.ds.id) {
+        if (this.ds.id) {
             this.apiService.updateDataset(this.ds).subscribe(
                 () => this.router.navigate([successUrl]),
                 (error: APIError) => console.log('error.msg', error.msg)
@@ -46,6 +57,13 @@ export class EditDatasetComponent implements OnInit {
                 (error: APIError) => console.log('error.msg', error.msg)
             );
         }
+    }
 
+    private onEditorChanged() {
+        try {
+            this.ds.data_package = this.editor.get();
+        } catch (e) {
+            this.isValid = false;
+        }
     }
 }

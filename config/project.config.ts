@@ -346,6 +346,7 @@ export class ProjectConfig {
         ],
         paths: {
             [this.BOOTSTRAP_MODULE]: `${this.APP_BASE}${this.BOOTSTRAP_MODULE}`,
+            css: 'node_modules/systemjs-plugin-css/css.js',
             '@angular/common': 'node_modules/@angular/common/bundles/common.umd.js',
             '@angular/compiler': 'node_modules/@angular/compiler/bundles/compiler.umd.js',
             '@angular/core': 'node_modules/@angular/core/bundles/core.umd.js',
@@ -363,17 +364,22 @@ export class ProjectConfig {
             '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
             '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
             'primeng': 'node_modules/primeng',
+            'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
             'angular2-google-maps/core': 'node_modules/angular2-google-maps/core/core.umd.js',
             //'leaflet/*': 'node_modules/leaflet/*',
             'rxjs/*': 'node_modules/rxjs/*',
             'app/*': '/app/*',
             // For test projectConfig
             'dist/dev/*': '/base/dist/dev/*',
-            '*': 'node_modules/*'
+            '*': 'node_modules/*',
+        },
+        meta: {
+            '*.css': {
+                loader: 'css'
+            }
         },
         packages: {
             rxjs: {defaultExtension: 'js'},
-            'angular2-google-maps/core': { defaultExtension: 'js', main: 'core.umd.js' }
         }
     };
 
