@@ -284,7 +284,7 @@ export class ProjectConfig {
 
     FONTS_SRC = ['node_modules/font-awesome/fonts/**'];
 
-    PRIME_NG_THEME = 'bootstrap';
+    PRIME_NG_THEME = 'afterdark';
 
     CSS_IMAGE_DEST = `${this.CSS_DEST}/images`;
     CSS_IMAGE_SRC = [
@@ -363,8 +363,7 @@ export class ProjectConfig {
             '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
             '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
             'primeng': 'node_modules/primeng',
-            'angular2-google-maps/core': 'node_modules/angular2-google-maps/core/core.umd.js',
-            //'leaflet/*': 'node_modules/leaflet/*',
+            'angular2-openlayers': 'node_modules/angular2-openlayers/dist/index.js',
             'rxjs/*': 'node_modules/rxjs/*',
             'app/*': '/app/*',
             // For test projectConfig
@@ -372,8 +371,7 @@ export class ProjectConfig {
             '*': 'node_modules/*'
         },
         packages: {
-            rxjs: {defaultExtension: 'js'},
-            'angular2-google-maps/core': { defaultExtension: 'js', main: 'core.umd.js' }
+            rxjs: {defaultExtension: 'js'}
         }
     };
 
@@ -440,10 +438,6 @@ export class ProjectConfig {
             'rxjs': {
                 main: 'Rx.js',
                 defaultExtension: 'js'
-            },
-            'angular2-google-maps': {
-                main: 'index.js',
-                defaultExtention: 'js'
             }
         }
     };

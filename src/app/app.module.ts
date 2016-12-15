@@ -11,24 +11,20 @@ import { HomeModule } from './pages/home/home.module';
 import { PlaygroundModule } from './pages/playground/index';
 import { AuthGuard } from './shared/auth.guard';
 import { SharedModule } from './shared/shared.module';
-import { AgmCoreModule } from 'angular2-google-maps/core/';
-import { ProjectsModule } from "./pages/projects/projects.module";
-import { EditProjectModule } from "./pages/projects/edit-project/edit-project.module";
+import { ProjectsModule } from './pages/projects/projects.module';
+import { EditProjectModule } from './pages/projects/edit-project/edit-project.module';
 
 @NgModule({
     imports: [
         BrowserModule,
         HttpModule,
         RouterModule.forRoot(routes),
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyAYayRKr-lwM6nsfuTeZFT8iApt_XhoclQ'
-        }),
         SharedModule,
         LoginModule,
         HomeModule,
         PlaygroundModule,
         ProjectsModule,
-        EditProjectModule
+        EditProjectModule,
     ],
     declarations: [AppComponent],
     providers: [

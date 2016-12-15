@@ -62,3 +62,9 @@ export interface SpeciesObservation extends Observation {
     species_name?: string;
     name_id?: number;
 }
+export interface Statistic {
+    projects: any;
+    datasets: any[];
+    records: any[];
+    // sites: number;
+}

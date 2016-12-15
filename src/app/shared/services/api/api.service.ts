@@ -3,7 +3,7 @@ import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, Resp
 import { Observable } from 'rxjs';
 import { AuthService } from '../index';
 import appConfig from '../../config/app.config';
-import { FetchOptions, APIError, Project, Dataset, Site, Observation } from './api.interfaces';
+import { FetchOptions, APIError, Project, Dataset, Site, Observation, Statistic } from './api.interfaces';
 
 
 /**
@@ -152,6 +152,10 @@ export class APIService {
             method: 'Patch',
             data: observation
         });
+    }
+
+    public  getStatistics(): Observable<Statistic> {
+        return this.fetch('statistics', {});
     }
 
     public fetch(path: string, options: FetchOptions): Observable<any> {
