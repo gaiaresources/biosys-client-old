@@ -14,14 +14,23 @@ export class EditProjectComponent implements OnInit {
     private sites: Site[];
     private datasets: Dataset[];
 
+    private isEditing: boolean;
+
     constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute) {
 
     }
 
     ngOnInit() {
-        if ('id' in this.route.snapshot.params) {
+        this.isEditing = !('id' in this.route.snapshot.params);
+
+        if (!this.isEditing) {
             this.apiService.getProjectById(Number(this.route.snapshot.params['id'])).subscribe(
                 (project: Project) => this.project = project,
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
+
+            this.apiService.getAllDatasetsForProjectID(Number(this.route.snapshot.params['id'])).subscribe(
+                (datasets: Dataset[]) => this.datasets = datasets,
                 (error: APIError) => console.log('error.msg', error.msg)
             );
 
@@ -35,15 +44,20 @@ export class EditProjectComponent implements OnInit {
     saveProject() {
         if(this.project.id) {
             this.apiService.updateProject(this.project).subscribe(
-                (project: Project) => this.router.navigate(['/projects']),
-                (error: APIError) => console.log('error.msg', error.msg)
+                (project: Project) => this.project = project,
+                (error: APIError) => console.log('error.msg', error.msg),
+                () => this.isEditing = false
             );
         } else {
             this.apiService.createProject(this.project).subscribe(
-                (project: Project) => this.router.navigate(['/projects']),
-                (error: APIError) => console.log('error.msg', error.msg)
+                (project: Project) => this.project = project,
+                (error: APIError) => console.log('error.msg', error.msg),
+                () => this.isEditing = false
             );
         }
-        // this.router.navigate(['/edit-project/edit-project/' + project.id]);
+    }
+
+    editProject() {
+        this.isEditing = true;
     }
 }

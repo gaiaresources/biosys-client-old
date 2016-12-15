@@ -8,12 +8,14 @@
                 <p-column field="code" header="Code"></p-column>
                 <p-column styleClass="col-button" header="Edit">
                     <template let-project="rowData" pTemplate type="body">
-                        <button type="button" pButton (click)="editProject(project)" icon="fa-pencil-square-o"></button>
+                        <button type="button" pButton icon="fa-pencil-square-o"
+                                [routerLink]="'/projects/edit-project/' + project.id"></button>
                     </template>
                 </p-column>
                 <footer>
                     <div class="ui-helper-clearfix" style="width:100%">
-                        <button type="button" pButton icon="fa-plus" style="float:left" (click)="createNewProject()" label="Add"></button>
+                        <button type="button" pButton icon="fa-plus" style="float:left" label="Add"
+                                routerLink="/projects/create-project"></button>
                     </div>
                 </footer>
             </p-dataTable>

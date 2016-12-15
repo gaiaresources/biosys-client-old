@@ -22,12 +22,4 @@ export class ProjectsComponent implements OnInit {
                 (error: APIError) => console.log('error.msg', error.msg)
             );
     }
-
-    editProject(project: Project) {
-        this.router.navigate(['/projects/edit-project/' + project.id]);
-    }
-
-    createNewProject() {
-        this.router.navigate(['/projects/create-project']);
-    }
 }

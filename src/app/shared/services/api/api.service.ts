@@ -106,22 +106,30 @@ export class APIService {
         });
     }
 
-    public getDatasetById(id: number): Observable<Dataset> {
-        return this.fetch('dataset/' + id, {});
+    public getAllDatasets(): Observable<Dataset[]> {
+        return this.fetch('datasets', {});
     }
 
-    public createDataset(ds: Dataset): Observable<Dataset> {
-        return this.fetch('dataset', {
+    public getAllDatasetsForProjectID(id: Number): Observable<Dataset[]> {
+        return this.fetch('datasets', {urlParams: {project: String(id)}});
+    }
+
+    public getDatasetById(id: Number): Observable<Dataset> {
+        return this.fetch('datasets/' + id, {});
+    }
+
+    public createDataset(dataset: Dataset): Observable<Dataset> {
+        return this.fetch('datasets', {
             method: 'Post',
-            data: ds
-        })
+            data: dataset
+        });
     }
 
-    public updateDataset(ds: Dataset): Observable<Dataset> {
-        return this.fetch('dataset/' + ds.id, {
+    public updateDataset(dataset: Dataset): Observable<Dataset> {
+        return this.fetch('datasets/' + dataset.id, {
             method: 'Patch',
-            data: ds
-        })
+            data: dataset
+        });
     }
 
     public getAllObservations(): Observable<Observation[]> {
