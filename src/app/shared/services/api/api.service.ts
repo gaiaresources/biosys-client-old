@@ -3,7 +3,7 @@ import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, Resp
 import { Observable } from 'rxjs';
 import { AuthService } from '../index';
 import appConfig from '../../config/app.config';
-import { FetchOptions, APIError, Project, Site, Observation } from './api.interfaces';
+import { FetchOptions, APIError, Project, Dataset, Site, Observation } from './api.interfaces';
 
 
 /**
@@ -103,6 +103,32 @@ export class APIService {
         return this.fetch('sites/' + site.id, {
             method: 'Patch',
             data: site
+        });
+    }
+
+    public getAllDatasets(): Observable<Dataset[]> {
+        return this.fetch('datasets', {});
+    }
+
+    public getAllDatasetsForProjectID(id: Number): Observable<Dataset[]> {
+        return this.fetch('datasets', {urlParams: {project: String(id)}});
+    }
+
+    public getDatasetById(id: Number): Observable<Dataset> {
+        return this.fetch('datasets/' + id, {});
+    }
+
+    public createDataset(dataset: Dataset): Observable<Dataset> {
+        return this.fetch('datasets', {
+            method: 'Post',
+            data: dataset
+        });
+    }
+
+    public updateDataset(dataset: Dataset): Observable<Dataset> {
+        return this.fetch('datasets/' + dataset.id, {
+            method: 'Patch',
+            data: dataset
         });
     }
 
