@@ -4,7 +4,7 @@ import { AuthGuard } from '../../../shared/index';
 
 export const EditDatasetRoutes: Route[] = [
     {
-        path: 'projects/create-dataset',
+        path: 'projects/:projId/create-dataset',
         component: EditDatasetComponent,
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard]
