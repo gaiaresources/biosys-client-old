@@ -1,6 +1,8 @@
 import { Route } from '@angular/router';
 import { ProjectsComponent } from './index';
 import { AuthGuard } from '../../shared/index';
+import { EditProjectRoutes } from './edit-project/index';
+import { EditDatasetRoutes } from './edit-dataset/index'
 
 export const ProjectsRoutes: Route[] = [
     {
@@ -8,5 +10,7 @@ export const ProjectsRoutes: Route[] = [
         component: ProjectsComponent,
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard]
-    }
+    },
+    ...EditProjectRoutes,
+    ...EditDatasetRoutes,
 ];

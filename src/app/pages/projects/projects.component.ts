@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService, APIError, Project } from '../../shared/index';
-import {Router} from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
     moduleId: module.id,
