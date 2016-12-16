@@ -284,7 +284,7 @@ export class ProjectConfig {
 
     FONTS_SRC = ['node_modules/font-awesome/fonts/**'];
 
-    PRIME_NG_THEME = 'bootstrap';
+    PRIME_NG_THEME = 'afterdark';
 
     CSS_IMAGE_DEST = `${this.CSS_DEST}/images`;
     CSS_IMAGE_SRC = [
@@ -364,9 +364,8 @@ export class ProjectConfig {
             '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
             '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
             'primeng': 'node_modules/primeng',
-            'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
-            'angular2-google-maps/core': 'node_modules/angular2-google-maps/core/core.umd.js',
-            //'leaflet/*': 'node_modules/leaflet/*',
+			'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
+            'angular2-openlayers': 'node_modules/angular2-openlayers/dist/index.js',
             'rxjs/*': 'node_modules/rxjs/*',
             'app/*': '/app/*',
             // For test projectConfig

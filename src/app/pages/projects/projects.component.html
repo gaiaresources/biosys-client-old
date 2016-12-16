@@ -1,8 +1,9 @@
 <div class="container">
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
-    <div class="row mt-3">
+    <div class="row mt-1">
         <div class="col-md">
+            <h3>Projects</h3>
             <p-dataTable [value]="projects" [paginator]="true" rows="15" [responsive]="true">
                 <p-column field="title" header="Title" [sortable]="true"></p-column>
                 <p-column field="code" header="Code"></p-column>

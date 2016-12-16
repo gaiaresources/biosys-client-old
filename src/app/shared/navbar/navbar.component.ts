@@ -21,6 +21,11 @@ export class NavbarComponent {
     ngOnInit() {
         this.items = [
             {
+                label: 'Home',
+                icon: 'fa-home',
+                routerLink: ['/']
+            },
+            {
                 label: 'Manage',
                 icon: 'fa-university',
                 items: [
