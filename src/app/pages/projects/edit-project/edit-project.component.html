@@ -8,54 +8,68 @@
                 <h3 *ngIf="!project.id">Create Project</h3>
             </div>
             <div [hidden]="isEditing">
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label>Title</label></div>
-                    <div class="ui-grid-col-3">
-                        <label>{{project.title}}</label>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row mb-1">
+                            <div class="col-md-4"><label>Title</label></div>
+                            <div class="col-md-8">
+                                <label>{{project.title}}</label>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-md-4"><label>Code</label></div>
+                            <div class="col-md-8">
+                                <label>{{project.code}}</label>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-md-4"><label>Timezone</label></div>
+                            <div class="col-md-8">
+                                <label>{{project.timezone}}</label>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-md-4"><label>Datum</label></div>
+                            <div class="col-md-8">
+                                <label>{{project.datam}}</label>
+                            </div>
+                        </div>
+                        <button pButton icon="fa-pencil-square-o" label="Edit" (click)="editProject()"></button>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="row mb-1">
+                            <div class="col-md-1 offset-md-2"><label>Extent</label></div>
+                            <div class="col-md-9">
+                                <biosys-featuremap></biosys-featuremap>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label>Code</label></div>
-                    <div class="ui-grid-col-3">
-                        <label>{{project.code}}</label>
-                    </div>
-                </div>
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label>Timezone</label></div>
-                    <div class="ui-grid-col-3">
-                        <label>{{project.timezone}}</label>
-                    </div>
-                </div>
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label>Datum</label></div>
-                    <div class="ui-grid-col-3">
-                        <label>{{project.datam}}</label>
-                    </div>
-                </div>
-                <button pButton icon="fa-pencil-square-o" label="Edit" (click)="editProject()"></button>
             </div>
             <div [hidden]="!isEditing">
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label for="title">Title</label></div>
-                    <div class="ui-grid-col-3">
+                <div class="row mb-1">
+                    <div class="col-md-1"><label for="title">Title</label></div>
+                    <div class="col-md-3">
                         <input id="title" type="text" pInputText [(ngModel)]="project.title" name="title"/>
                     </div>
                 </div>
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label for="code">Code</label></div>
-                    <div class="ui-grid-col-3">
+                <div class="row mb-1">
+                    <div class="col-md-1"><label for="code">Code</label></div>
+                    <div class="col-md-3">
                         <input id="code" type="text" pInputText [(ngModel)]="project.code" name="code"/>
                     </div>
                 </div>
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label for="timezone">Timezone</label></div>
-                    <div class="ui-grid-col-3">
+                <div class="row mb-1">
+                    <div class="col-md-1"><label for="timezone">Timezone</label></div>
+                    <div class="col-md-3">
                         <input id="timezone" type="text" pInputText [(ngModel)]="project.timezone" name="timezone"/>
                     </div>
                 </div>
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label for="datam">Datum</label></div>
-                    <div class="ui-grid-col-3">
+                <div class="row mb-1">
+                    <div class="col-md-1"><label for="datam">Datum</label></div>
+                    <div class="col-md-3">
                         <input id="datam" type="text" pInputText [(ngModel)]="project.datam" name="datam"/>
                     </div>
                 </div>

@@ -92,8 +92,8 @@ export class APIService {
         return this.fetch('sites/' + id, {});
     }
 
-    public createSite(site: Site, project: Project): Observable<Site> {
-        return this.fetch('projects/' + project.id + '/sites', {
+    public createSite(site: Site, projectID: Number): Observable<Site> {
+        return this.fetch('projects/' + projectID + '/sites', {
             method: 'Post',
             data: site
         });

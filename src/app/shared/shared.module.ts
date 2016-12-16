@@ -4,18 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/index';
 import { NavbarComponent } from './navbar/index';
+import { FeatureMapComponent } from './featuremap/index';
 import { APIService } from './services/api/index';
 import { MenubarModule } from 'primeng/primeng';
-
+import { AngularOpenlayersModule } from 'angular2-openlayers';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
-  imports: [CommonModule, RouterModule, MenubarModule],
-  declarations: [HeaderComponent, NavbarComponent],
-  exports: [CommonModule, FormsModule, RouterModule, HeaderComponent, NavbarComponent]
+  imports: [CommonModule, RouterModule, MenubarModule, AngularOpenlayersModule],
+  declarations: [HeaderComponent, NavbarComponent, FeatureMapComponent],
+  exports: [CommonModule, FormsModule, RouterModule, HeaderComponent, NavbarComponent, FeatureMapComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
