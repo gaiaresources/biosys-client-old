@@ -120,6 +120,7 @@
         "stylelint": "^7.0.2",
         "stylelint-config-standard": "^11.0.0",
         "systemjs-builder": "0.15.31",
+        "systemjs-plugin-css": "^0.1.32",
         "tildify": "^1.2.0",
         "traceur": "^0.0.111",
         "ts-node": "^1.0.0",
