@@ -68,3 +68,7 @@ export interface Statistic {
     records: any[];
     // sites: number;
 }
+export interface ModelChoice {
+    display_name: string;
+    value: string | number;
+}

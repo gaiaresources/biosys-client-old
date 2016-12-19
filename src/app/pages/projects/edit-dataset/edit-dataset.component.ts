@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { APIService, APIError, Dataset } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { JsonEditorComponent, JsonEditorOptions } from '../../../shared/index';
+import { SelectItem } from 'primeng/primeng';
+import { ModelChoice } from '../../../shared/services/api/api.interfaces';
 
 @Component({
     moduleId: module.id,
@@ -13,6 +15,20 @@ import { JsonEditorComponent, JsonEditorOptions } from '../../../shared/index';
 export class EditDatasetComponent implements OnInit {
     @Input('isValid')
     isValid: boolean = true;
+    typeChoices: SelectItem[] = [
+        {
+            label: 'Generic',
+            value: 'generic'
+        },
+        {
+            label: 'Observation',
+            value: 'observation'
+        },
+        {
+            label: 'Species Observation',
+            value: 'species_observation'
+        },
+    ];
     private ds: Dataset = <Dataset>{};
     private editorOptions: JsonEditorOptions;
     @ViewChild(JsonEditorComponent)
@@ -42,6 +58,21 @@ export class EditDatasetComponent implements OnInit {
         } else {
             throw new Error('No project ID provided');
         }
+        this.apiService.getModelChoices('dataset', 'type')
+            .map(
+                (choices: ModelChoice[]): SelectItem[] => {
+                    return choices.map((choice: ModelChoice): SelectItem => {
+                        return {
+                            label: choice.display_name,
+                            value: choice.value
+                        };
+                    });
+                }
+            )
+            .subscribe(
+                (choices: SelectItem[]) => this.typeChoices = choices,
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
     }
 
     save() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ElementRef, Input } from '@angular/core';
 
 import { JsonEditorOptions } from './jsoneditor.options';
 
@@ -25,11 +25,11 @@ export class JsonEditorComponent implements OnInit {
 
     ngOnInit() {
 
-        if (null == this.options) {
-            throw new Error("'options' is required");
+        if (null === this.options) {
+            throw new Error('"options" is required');
         }
 
-        if (null == this.data) {
+        if (null === this.data) {
             this.data = {};
         }
         this.editor = new JSONEditor(this.rootElement.nativeElement, this.options, this.data);

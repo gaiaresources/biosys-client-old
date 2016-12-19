@@ -11,7 +11,7 @@ import { HomeModule } from './pages/home/home.module';
 import { PlaygroundModule } from './pages/playground/index';
 import { AuthGuard } from './shared/auth.guard';
 import { SharedModule } from './shared/shared.module';
-import { ProjectsModule, EditProjectModule, EditDatasetModule } from "./pages/projects/index";
+import { ProjectsModule, EditProjectModule, EditDatasetModule } from './pages/projects/index';
 
 @NgModule({
     imports: [

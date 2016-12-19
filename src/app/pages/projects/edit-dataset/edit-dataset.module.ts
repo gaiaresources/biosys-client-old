@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { EditDatasetComponent } from './edit-dataset.component';
 import { APIService } from '../../../shared/services/api/index';
-import { DialogModule, ButtonModule } from 'primeng/primeng';
+import { DialogModule, ButtonModule, DropdownModule } from 'primeng/primeng';
 import { JSONEditorModule } from '../../../shared/index';
 
 @NgModule({
@@ -12,6 +12,7 @@ import { JSONEditorModule } from '../../../shared/index';
         SharedModule,
         DialogModule,
         ButtonModule,
+        DropdownModule,
         JSONEditorModule,
     ],
     declarations: [EditDatasetComponent],

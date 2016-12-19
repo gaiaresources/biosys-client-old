@@ -3,7 +3,7 @@ import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, Resp
 import { Observable } from 'rxjs';
 import { AuthService } from '../index';
 import appConfig from '../../config/app.config';
-import { FetchOptions, APIError, Project, Dataset, Site, Observation, Statistic } from './api.interfaces';
+import { FetchOptions, APIError, Project, Dataset, Site, Observation, Statistic, ModelChoice } from './api.interfaces';
 
 
 /**
@@ -156,6 +156,18 @@ export class APIService {
 
     public  getStatistics(): Observable<Statistic> {
         return this.fetch('statistics', {});
+    }
+
+    public getModelChoices(modelName: string, fieldName: string): Observable<ModelChoice[]> {
+        return this.getModelMetadata(modelName)
+            .map(
+                (metaData) => metaData.actions['POST'][fieldName]['choices']
+            );
+    }
+    public getModelMetadata(modelName: string): Observable<any> {
+        return this.fetch(modelName, {
+            'method': 'Options'
+        });
     }
 
     public fetch(path: string, options: FetchOptions): Observable<any> {

@@ -401,9 +401,16 @@ export class ProjectConfig {
             join('node_modules', '@angular', '*', 'package.json')
         ],
         paths: {
+            css: 'node_modules/systemjs-plugin-css/css.js',
+            jsoneditor: 'node_modules/jsoneditor/dist/jsoneditor.js',
             [join(this.TMP_DIR, 'app', '*')]: `${this.TMP_DIR}/app/*`,
             'node_modules/*': 'node_modules/*',
             '*': 'node_modules/*'
+        },
+        meta: {
+            '*.css': {
+                loader: 'css'
+            }
         },
         packages: {
             '@angular/common': {
