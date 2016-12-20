@@ -2,6 +2,9 @@
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
     <div class="row mt-1">
+        <div class="row mt-2">
+            <p-messages [value]="messages"></p-messages>
+        </div>
         <div class="col-md">
             <h3 *ngIf="ds.id">Edit Dataset</h3>
             <h3 *ngIf="!ds.id">Create Dataset</h3>

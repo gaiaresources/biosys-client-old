@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { APIService, APIError, Dataset } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { JsonEditorComponent, JsonEditorOptions } from '../../../shared/index';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem , Message } from 'primeng/primeng';
 import { ModelChoice } from '../../../shared/services/api/api.interfaces';
 
 @Component({
@@ -29,6 +29,7 @@ export class EditDatasetComponent implements OnInit {
             value: 'species_observation'
         },
     ];
+    messages: Message[] = [];
     private ds: Dataset = <Dataset>{};
     private editorOptions: JsonEditorOptions;
     @ViewChild(JsonEditorComponent)
@@ -85,7 +86,7 @@ export class EditDatasetComponent implements OnInit {
         } else {
             this.apiService.createDataset(this.ds).subscribe(
                 () => this.router.navigate([successUrl]),
-                (error: APIError) => console.log('error.msg', error.msg)
+                (error: APIError) =>  this.showError(error)
             );
         }
     }
@@ -96,6 +97,31 @@ export class EditDatasetComponent implements OnInit {
             this.isValid = true;
         } catch (e) {
             this.isValid = false;
+        }
+    }
+
+    private showError(error: APIError) {
+        this.messages = [];
+        let addErrorMessage = (detail) => {
+            this.messages.push({
+                severity: 'error',
+                summary: 'Error',
+                detail: detail.toString()
+            });
+        };
+        if (typeof error.msg === 'object') {
+            // API message format:
+            /**
+             * {
+             *   'field_name': [error1, error2, ...],
+             *   ....
+             * }
+             */
+            for (let field in error.msg) {
+                addErrorMessage(field + ': ' + error.msg[field].join(';'));
+            }
+        } else {
+            addErrorMessage(error.msg)
         }
     }
 }
