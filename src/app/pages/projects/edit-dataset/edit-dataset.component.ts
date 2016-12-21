@@ -102,7 +102,7 @@ export class EditDatasetComponent implements OnInit {
 
     private showError(error: APIError) {
         this.messages = [];
-        let addErrorMessage = (detail) => {
+        let addErrorMessage = (detail: any) => {
             this.messages.push({
                 severity: 'error',
                 summary: 'Error',

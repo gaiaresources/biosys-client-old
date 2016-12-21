@@ -12,7 +12,7 @@ import { FetchOptions, APIError, Project, Dataset, Site, Observation, Statistic,
 @Injectable()
 export class APIService {
     baseUrl: string;
-    private authToken: string;
+    authToken: string;
 
     /**
      * Handle HTTP error
@@ -154,7 +154,7 @@ export class APIService {
         });
     }
 
-    public  getStatistics(): Observable<Statistic> {
+    public getStatistics(): Observable<Statistic> {
         return this.fetch('statistics', {});
     }
 
@@ -168,6 +168,10 @@ export class APIService {
         return this.fetch(modelName, {
             'method': 'Options'
         });
+    }
+
+    public getProjectSiteUploadURL(projectId: number): string {
+        return this.baseUrl + 'projects/' + projectId + '/upload-sites/'
     }
 
     public fetch(path: string, options: FetchOptions): Observable<any> {
