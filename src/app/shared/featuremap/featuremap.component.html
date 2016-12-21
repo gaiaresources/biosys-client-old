@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-md-12">
+        <aol-map class="w-100">
+            <aol-view zoom="4" projection="EPSG: 4326">
+                <aol-coordinate [x]="121" [y]="-27" [srid]="'EPSG:4326'"></aol-coordinate>
+            </aol-view>
+            <aol-layer-tile>
+                <aol-source-osm></aol-source-osm>
+            </aol-layer-tile>
+            <aol-control-zoomslider></aol-control-zoomslider>
+            <aol-control-zoom></aol-control-zoom>
+            <aol-control-rotate></aol-control-rotate>
+            <aol-control-attribution></aol-control-attribution>
+            <aol-layer-vector>
+            </aol-layer-vector>
+        </aol-map>
+    </div>
+</div>

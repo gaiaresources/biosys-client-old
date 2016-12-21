@@ -7,73 +7,51 @@
                 <h3 *ngIf="project.id">Project Details</h3>
                 <h3 *ngIf="!project.id">Create Project</h3>
             </div>
-            <div [hidden]="isEditing">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="row mb-1">
-                            <div class="col-md-4"><label>Title</label></div>
-                            <div class="col-md-8">
-                                <label>{{project.title}}</label>
-                            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row mb-1">
+                        <div class="col-md-4"><label>Title</label></div>
+                        <div class="col-md-8">
+                            <label [hidden]="isEditing">{{project.title}}</label>
+                            <input [hidden]="!isEditing" id="title" type="text" pInputText
+                                   [(ngModel)]="project.title" name="title"/>
                         </div>
-                        <div class="row mb-1">
-                            <div class="col-md-4"><label>Code</label></div>
-                            <div class="col-md-8">
-                                <label>{{project.code}}</label>
-                            </div>
-                        </div>
-                        <div class="row mb-1">
-                            <div class="col-md-4"><label>Timezone</label></div>
-                            <div class="col-md-8">
-                                <label>{{project.timezone}}</label>
-                            </div>
-                        </div>
-                        <div class="row mb-1">
-                            <div class="col-md-4"><label>Datum</label></div>
-                            <div class="col-md-8">
-                                <label>{{project.datam}}</label>
-                            </div>
-                        </div>
-                        <button pButton icon="fa-pencil-square-o" label="Edit" (click)="editProject()"></button>
                     </div>
-
-                    <div class="col-md-8">
-                        <div class="row mb-1">
-                            <div class="col-md-1 offset-md-2"><label>Extent</label></div>
-                            <div class="col-md-9">
-                                <biosys-featuremap></biosys-featuremap>
-                            </div>
+                    <div class="row mb-1">
+                        <div class="col-md-4"><label>Code</label></div>
+                        <div class="col-md-8">
+                            <label [hidden]="isEditing">{{project.code}}</label>
+                            <input [hidden]="!isEditing" id="code" type="text" pInputText [(ngModel)]="project.code" name="code"/>
                         </div>
-
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-md-4"><label>Timezone</label></div>
+                        <div class="col-md-8">
+                            <label [hidden]="isEditing">{{project.timezone}}</label>
+                            <input [hidden]="!isEditing" id="timezone" type="text" pInputText [(ngModel)]="project.timezone"
+                                   name="timezone"/>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-md-4"><label>Datum</label></div>
+                        <div class="col-md-8">
+                            <label [hidden]="isEditing">{{project.datam}}</label>
+                            <input [hidden]="!isEditing" id="datam" type="text" pInputText [(ngModel)]="project.datam" name="datam"/>
+                        </div>
+                    </div>
+                    <button [hidden]="isEditing" pButton icon="fa-pencil-square-o" label="Edit" (click)="editProject()"></button>
+                    <button [hidden]="!isEditing" pButton icon="fa-save" label="Save" (click)="saveProject()">
+                    </button>
+                </div>
+                <div class="col-md-8">
+                    <div class="row mb-1">
+                        <div class="col-md-1 offset-md-2"><label>Extent</label></div>
+                        <div class="col-md-9">
+                            <biosys-featuremap [isEditing]="isEditing"
+                                               [geometry]="project.geometry"></biosys-featuremap>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div [hidden]="!isEditing">
-                <div class="row mb-1">
-                    <div class="col-md-1"><label for="title">Title</label></div>
-                    <div class="col-md-3">
-                        <input id="title" type="text" pInputText [(ngModel)]="project.title" name="title"/>
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <div class="col-md-1"><label for="code">Code</label></div>
-                    <div class="col-md-3">
-                        <input id="code" type="text" pInputText [(ngModel)]="project.code" name="code"/>
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <div class="col-md-1"><label for="timezone">Timezone</label></div>
-                    <div class="col-md-3">
-                        <input id="timezone" type="text" pInputText [(ngModel)]="project.timezone" name="timezone"/>
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <div class="col-md-1"><label for="datam">Datum</label></div>
-                    <div class="col-md-3">
-                        <input id="datam" type="text" pInputText [(ngModel)]="project.datam" name="datam"/>
-                    </div>
-                </div>
-                <button pButton icon="fa-save" label="Save" (click)="saveProject()"></button>
             </div>
         </div>
     </div>
