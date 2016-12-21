@@ -284,7 +284,7 @@ export class ProjectConfig {
 
     FONTS_SRC = ['node_modules/font-awesome/fonts/**'];
 
-    PRIME_NG_THEME = 'bootstrap';
+    PRIME_NG_THEME = 'afterdark';
 
     CSS_IMAGE_DEST = `${this.CSS_DEST}/images`;
     CSS_IMAGE_SRC = [
@@ -304,7 +304,8 @@ export class ProjectConfig {
         {src: 'bootstrap/dist/css/bootstrap.css', inject: true},
         {src: 'font-awesome/css/font-awesome.min.css', inject: true},
         {src: 'primeng/resources/primeng.min.css', inject: true},
-        {src: 'primeng/resources/themes/' + this.PRIME_NG_THEME + '/theme.css', inject: true}
+        {src: 'primeng/resources/themes/' + this.PRIME_NG_THEME + '/theme.css', inject: true},
+        {src: 'openlayers/dist/ol.css', inject: true}
     ];
 
     /**
@@ -346,6 +347,7 @@ export class ProjectConfig {
         ],
         paths: {
             [this.BOOTSTRAP_MODULE]: `${this.APP_BASE}${this.BOOTSTRAP_MODULE}`,
+            css: 'node_modules/systemjs-plugin-css/css.js',
             '@angular/common': 'node_modules/@angular/common/bundles/common.umd.js',
             '@angular/compiler': 'node_modules/@angular/compiler/bundles/compiler.umd.js',
             '@angular/core': 'node_modules/@angular/core/bundles/core.umd.js',
@@ -363,17 +365,21 @@ export class ProjectConfig {
             '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
             '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
             'primeng': 'node_modules/primeng',
-            'angular2-google-maps/core': 'node_modules/angular2-google-maps/core/core.umd.js',
-            //'leaflet/*': 'node_modules/leaflet/*',
+			'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
+            'angular2-openlayers': 'node_modules/angular2-openlayers/dist/index.js',
             'rxjs/*': 'node_modules/rxjs/*',
             'app/*': '/app/*',
             // For test projectConfig
             'dist/dev/*': '/base/dist/dev/*',
-            '*': 'node_modules/*'
+            '*': 'node_modules/*',
+        },
+        meta: {
+            '*.css': {
+                loader: 'css'
+            }
         },
         packages: {
             rxjs: {defaultExtension: 'js'},
-            'angular2-google-maps/core': { defaultExtension: 'js', main: 'core.umd.js' }
         }
     };
 
@@ -396,9 +402,16 @@ export class ProjectConfig {
             join('node_modules', '@angular', '*', 'package.json')
         ],
         paths: {
+            css: 'node_modules/systemjs-plugin-css/css.js',
+            jsoneditor: 'node_modules/jsoneditor/dist/jsoneditor.js',
             [join(this.TMP_DIR, 'app', '*')]: `${this.TMP_DIR}/app/*`,
             'node_modules/*': 'node_modules/*',
             '*': 'node_modules/*'
+        },
+        meta: {
+            '*.css': {
+                loader: 'css'
+            }
         },
         packages: {
             '@angular/common': {

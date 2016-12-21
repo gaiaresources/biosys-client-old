@@ -21,7 +21,13 @@ export class NavbarComponent {
     ngOnInit() {
         this.items = [
             {
+                label: 'Home',
+                icon: 'fa-home',
+                routerLink: ['/']
+            },
+            {
                 label: 'Manage',
+                icon: 'fa-university',
                 items: [
                     {
                         label: 'Projects',
@@ -35,9 +41,11 @@ export class NavbarComponent {
             },
             {
                 label: 'View',
+                icon: 'fa-search'
             },
             {
                 label: 'Logout',
+                icon: 'fa-sign-out',
                 command: () => this.logout()
             }
         ];

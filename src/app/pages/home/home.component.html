@@ -1,16 +1,59 @@
 <div class="container">
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
+    <div class="row mt-1">
+        <div class="col-md">
+            <h2>Welcome to Biosys</h2>
+        </div>
+    </div>
 	<div class="row mt-1">
 	    <div class="col-md-9">
-	        <div class="row">
-                <sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
-                    <sebm-google-map-marker *ngFor="let obs of observations" [latitude]="obs.geometry.coordinates[1]" [longitude]="obs.geometry.coordinates[0]"></sebm-google-map-marker>
-                </sebm-google-map>
-            </div>
+            <aol-map class="w-100">
+                <aol-view zoom="4">
+                    <aol-coordinate [x]="121" [y]="-27" [srid]="'EPSG:4326'"></aol-coordinate>
+                </aol-view>
+                <aol-layer-tile>
+                    <aol-source-osm></aol-source-osm>
+                </aol-layer-tile>
+                <aol-layer-vector>
+                    <aol-source-vector>
+                        <aol-feature *ngFor="let ob of observations">
+                            <aol-geometry-point>
+                                <aol-coordinate [x]="ob.geometry.coordinates[0]" [y]="ob.geometry.coordinates[1]" [srid]="'EPSG:4326'"></aol-coordinate>
+                            </aol-geometry-point>
+                            <aol-style>
+                                <aol-style-icon
+                                    [src]="'assets/img/map-marker.png'"
+                                    [anchor]="[0.5, 0.0]"
+                                    [anchorXUnits]="'fraction'" [anchorYUnits]="'fraction'"
+                                    [anchorOrigin]="'top-left'"></aol-style-icon>
+                            </aol-style>
+                        </aol-feature>
+                    </aol-source-vector>
+                </aol-layer-vector>
+                <aol-control-zoomslider></aol-control-zoomslider>
+                <aol-control-zoom></aol-control-zoom>
+                <aol-control-attribution></aol-control-attribution>
+            </aol-map>
 	    </div>
 	    <div class="col-md-3">
-
+            <div class="card">
+                <div class="card-header">
+                    Statistics
+                </div>
+                <div *ngIf="statistic" class="card-block">
+                    <h5>Projects</h5>
+                    <p>Total number of projects: {{ statistic.projects.total }}</p>
+                    <hr>
+                    <h5>Sites</h5>
+                    <hr>
+                    <h5>Records</h5>
+                    <p>Total number of records: {{ statistic.records.total }}</p>
+                    <p class="small">Number of generic records: {{ statistic.records.generic.total }}</p>
+                    <p class="small">Number of observation records: {{ statistic.records.observation.total }}</p>
+                    <p class="small">Number of species records: {{ statistic.records.speciesObservation.total }}</p>
+                </div>
+            </div>
 	    </div>
 	</div>
 </div>

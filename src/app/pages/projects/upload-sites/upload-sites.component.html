@@ -1,0 +1,17 @@
+<div class="container">
+    <biosys-header></biosys-header>
+    <biosys-navbar></biosys-navbar>
+    <div class="row mt-1">
+        <h3>Upload Sites</h3>
+        <div class="row mt-2">
+            <p-messages [value]="messages"></p-messages>
+        </div>
+    </div>
+    <p-fileUpload name="file" [url]="url"
+                  accept="text/csv"
+                  (onUpload)="onUpload($event)"
+                  (onBeforeUpload)="onBeforeUpload($event)"
+                  (onError)="onError($event)"
+    >
+    </p-fileUpload>
+</div>

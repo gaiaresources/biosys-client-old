@@ -2,7 +2,7 @@ export interface APIError {
     status: number;
     statusText: string;
     text: string;
-    msg: string;
+    msg: string | {};
 }
 export interface FetchOptions {
     method?: string;
@@ -61,4 +61,14 @@ export interface Observation extends GenericRecord {
 export interface SpeciesObservation extends Observation {
     species_name?: string;
     name_id?: number;
+}
+export interface Statistic {
+    projects: any;
+    datasets: any[];
+    records: any[];
+    // sites: number;
+}
+export interface ModelChoice {
+    display_name: string;
+    value: string | number;
 }

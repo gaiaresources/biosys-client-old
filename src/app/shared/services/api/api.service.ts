@@ -3,7 +3,7 @@ import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, Resp
 import { Observable } from 'rxjs';
 import { AuthService } from '../index';
 import appConfig from '../../config/app.config';
-import { FetchOptions, APIError, Project, Observation } from './api.interfaces';
+import { FetchOptions, APIError, Project, Dataset, Site, Observation, Statistic, ModelChoice } from './api.interfaces';
 
 
 /**
@@ -12,7 +12,7 @@ import { FetchOptions, APIError, Project, Observation } from './api.interfaces';
 @Injectable()
 export class APIService {
     baseUrl: string;
-    private authToken: string;
+    authToken: string;
 
     /**
      * Handle HTTP error
@@ -63,7 +63,7 @@ export class APIService {
     }
 
     public getProjectById(id: number): Observable<Project> {
-        return this.fetch('projects' + id, {});
+        return this.fetch('projects/' + id, {});
     }
 
     public createProject(project: Project): Observable<Project> {
@@ -73,10 +73,62 @@ export class APIService {
         });
     }
 
-    public updateProject(id: number, project: Project): Observable<Project> {
-        return this.fetch('projects/' + id, {
+    public updateProject(project: Project): Observable<Project> {
+        return this.fetch('projects/' + project.id, {
             method: 'Patch',
             data: project
+        });
+    }
+
+    public getAllSites(): Observable<Site[]> {
+        return this.fetch('sites', {});
+    }
+
+    public getAllSitesForProjectID(id: Number): Observable<Site[]> {
+        return this.fetch('projects/' + id + '/sites', {});
+    }
+
+    public getSiteById(id: number): Observable<Site> {
+        return this.fetch('sites/' + id, {});
+    }
+
+    public createSite(site: Site, projectID: Number): Observable<Site> {
+        return this.fetch('projects/' + projectID + '/sites', {
+            method: 'Post',
+            data: site
+        });
+    }
+
+    public updateSite(site: Site): Observable<Site> {
+        return this.fetch('sites/' + site.id, {
+            method: 'Patch',
+            data: site
+        });
+    }
+
+    public getAllDatasets(): Observable<Dataset[]> {
+        return this.fetch('datasets', {});
+    }
+
+    public getAllDatasetsForProjectID(id: Number): Observable<Dataset[]> {
+        return this.fetch('datasets', {urlParams: {project: String(id)}});
+    }
+
+    public getDatasetById(id: Number): Observable<Dataset> {
+        return this.fetch('datasets/' + id, {});
+    }
+
+    public createDataset(dataset: Dataset): Observable<Dataset> {
+        return this.fetch('datasets', {
+            method: 'Post',
+            data: dataset
+        });
+    }
+
+    public updateDataset(dataset: Dataset): Observable<Dataset> {
+        return this.fetch('datasets/' + dataset.id, {
+            method: 'Patch',
+            data: dataset
         });
     }
 
@@ -100,6 +152,26 @@ export class APIService {
             method: 'Patch',
             data: observation
         });
+    }
+
+    public getStatistics(): Observable<Statistic> {
+        return this.fetch('statistics', {});
+    }
+
+    public getModelChoices(modelName: string, fieldName: string): Observable<ModelChoice[]> {
+        return this.getModelMetadata(modelName)
+            .map(
+                (metaData) => metaData.actions['POST'][fieldName]['choices']
+            );
+    }
+    public getModelMetadata(modelName: string): Observable<any> {
+        return this.fetch(modelName, {
+            'method': 'Options'
+        });
+    }
+
+    public getProjectSiteUploadURL(projectId: number): string {
+        return this.baseUrl + 'projects/' + projectId + '/upload-sites/'
     }
 
     public fetch(path: string, options: FetchOptions): Observable<any> {
