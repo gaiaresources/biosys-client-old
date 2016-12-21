@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { APIService, APIError, Dataset } from '../../../shared/index';
-import { SelectItem , Message } from 'primeng/primeng';
+import { Component, OnInit } from '@angular/core';
+import { APIService } from '../../../shared/index';
+import { Message } from 'primeng/primeng';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -12,37 +12,54 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 export class UploadSitesComponent implements OnInit {
     messages: Message[] = [];
-    url:string = null;
+    url: string = null;
+    projectId: number;
 
-    constructor(
-        private apiService: APIService,
-        private router: Router,
-        private route: ActivatedRoute
-
-    ) { }
+    constructor(private apiService: APIService,
+                private router: Router,
+                private route: ActivatedRoute) {
+    }
 
     ngOnInit(): void {
         let params = this.route.snapshot.params;
-        let projectId = params['projectId'];
-        this.url = this.apiService.getProjectSiteUploadURL(projectId);
-        console.log('this.url', this.url);
+        this.projectId = params['projectId'];
+        this.url = this.apiService.getProjectSiteUploadURL(this.projectId);
     }
 
     onBeforeUpload(event: any) {
-        console.log('Before', event);
-        let formData = event.formData;
         let xhr = event.xhr;
         if (this.apiService.authToken) {
             xhr.setRequestHeader('Authorization', 'Token ' + this.apiService.authToken);
         }
-
     }
 
-    onUpload(event: any) {
-        console.log('After', event);
+    onUpload() {
+        let successUrl = '/projects/edit-project/' + this.projectId;
+        return this.router.navigate([successUrl])
     }
 
-    onError(event:any) {
-        console.log('Error', event);
+    onError(event: any) {
+        const addErrorMessage = (summary: any, detail: any) => {
+            this.messages.push({
+                severity: 'error',
+                summary: summary.toString(),
+                detail: detail.toString()
+            });
+        };
+        this.messages = [];
+        let statusCode = event.xhr.status;
+        let resp = JSON.parse(event.xhr.response);
+        if (statusCode === 400) {
+            // find errors
+            for (let rowNumber of Object.getOwnPropertyNames(resp)) {
+                let error = resp[rowNumber]['error'];
+                if (error) {
+                    addErrorMessage('Row #' + rowNumber, error)
+                }
+            }
+        }
+        else {
+            addErrorMessage('Error', resp)
+        }
     }
 }
