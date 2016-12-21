@@ -304,7 +304,8 @@ export class ProjectConfig {
         {src: 'bootstrap/dist/css/bootstrap.css', inject: true},
         {src: 'font-awesome/css/font-awesome.min.css', inject: true},
         {src: 'primeng/resources/primeng.min.css', inject: true},
-        {src: 'primeng/resources/themes/' + this.PRIME_NG_THEME + '/theme.css', inject: true}
+        {src: 'primeng/resources/themes/' + this.PRIME_NG_THEME + '/theme.css', inject: true},
+        {src: 'openlayers/dist/ol.css', inject: true}
     ];
 
     /**

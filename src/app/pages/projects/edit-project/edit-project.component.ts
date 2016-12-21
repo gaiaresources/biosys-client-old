@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { APIService, APIError, Project, Site, Dataset } from '../../../shared/index';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { APIService, APIError, Project, Site, Dataset, FeatureMapComponent } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,6 +10,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class EditProjectComponent implements OnInit {
+    @ViewChild(FeatureMapComponent)
+    private featureMapComponent: FeatureMapComponent;
+
     private project: Project = <Project>{};
     private sites: Site[];
     private datasets: Dataset[];
@@ -42,6 +45,8 @@ export class EditProjectComponent implements OnInit {
     }
 
     saveProject() {
+        this.project.geometry = this.featureMapComponent.getFeatureGeometry();
+
         if(this.project.id) {
             this.apiService.updateProject(this.project).subscribe(
                 (project: Project) => this.project = project,

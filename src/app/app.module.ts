@@ -26,6 +26,7 @@ import * as projects from './pages/projects/index';
         projects.EditProjectModule,
         projects.EditDatasetModule,
         projects.UploadSitesModule,
+		projects.EditSiteModule,
     ],
     declarations: [AppComponent],
     providers: [
