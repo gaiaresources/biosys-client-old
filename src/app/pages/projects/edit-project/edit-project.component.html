@@ -10,36 +10,49 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="row mb-1">
-                        <div class="col-md-4"><label>Title</label></div>
-                        <div class="col-md-8">
+                        <div class="col-md-5"><label>Title</label></div>
+                        <div class="col-md-7">
                             <label [hidden]="isEditing">{{project.title}}</label>
                             <input [hidden]="!isEditing" id="title" type="text" pInputText
                                    [(ngModel)]="project.title" name="title"/>
                         </div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-md-4"><label>Code</label></div>
-                        <div class="col-md-8">
+                        <div class="col-md-5"><label>Code</label></div>
+                        <div class="col-md-7">
                             <label [hidden]="isEditing">{{project.code}}</label>
-                            <input [hidden]="!isEditing" id="code" type="text" pInputText [(ngModel)]="project.code" name="code"/>
+                            <input [hidden]="!isEditing" id="code" type="text" pInputText [(ngModel)]="project.code"
+                                   name="code"/>
                         </div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-md-4"><label>Timezone</label></div>
-                        <div class="col-md-8">
+                        <div class="col-md-5"><label>Default Datum</label></div>
+                        <div class="col-md-7">
+                            <label [hidden]="isEditing" *ngIf="project.datum">{{getDatumLabel(project.datum)}}</label>
+                            <p-dropdown [hidden]="!isEditing" [options]="datamTypeChoices"
+                                        [(ngModel)]="project.datum" [ngModelOptions]="{standalone: true}"
+                                        autoWidth="false" styleClass="w-100">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-md-5"><label>Timezone</label></div>
+                        <div class="col-md-7">
                             <label [hidden]="isEditing">{{project.timezone}}</label>
-                            <input [hidden]="!isEditing" id="timezone" type="text" pInputText [(ngModel)]="project.timezone"
+                            <input [hidden]="!isEditing" id="timezone" type="text" pInputText
+                                   [(ngModel)]="project.timezone"
                                    name="timezone"/>
                         </div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-md-4"><label>Datum</label></div>
-                        <div class="col-md-8">
-                            <label [hidden]="isEditing">{{project.datam}}</label>
-                            <input [hidden]="!isEditing" id="datam" type="text" pInputText [(ngModel)]="project.datam" name="datam"/>
+                        <div class="col-md-5"><label>Custodians</label></div>
+                        <div class="col-md-7">
+                            <label [hidden]="isEditing">{{getSelectedCustodiansLabel(project.custodians)}}</label>
+                            <p-multiSelect [hidden]="!isEditing" *ngIf="custodianChoices" [options]="custodianChoices" [(ngModel)]="project.custodians"></p-multiSelect>
                         </div>
                     </div>
-                    <button [hidden]="isEditing" pButton icon="fa-pencil-square-o" label="Edit" (click)="editProject()"></button>
+                    <button [hidden]="isEditing" pButton icon="fa-pencil-square-o" label="Edit"
+                            (click)="editProject()"></button>
                     <button [hidden]="!isEditing" pButton icon="fa-save" label="Save" (click)="saveProject()">
                     </button>
                 </div>
@@ -49,6 +62,14 @@
                         <div class="col-md-9">
                             <biosys-featuremap [isEditing]="isEditing"
                                                [geometry]="project.geometry"></biosys-featuremap>
+                            <p [hidden]="!isEditing"
+                               *ngIf="featureMapComponent.features && featureMapComponent.features.getLength()"
+                               class="small">
+                                To modify the extent, select the feature and drag the vertices to the desired location.
+                            </p>
+                            <p [hidden]="!isEditing" *ngIf="!featureMapComponent.features" class="small">
+                                To draw the extent, click to place vertices and double-click to complete the feature.
+                            </p>
                         </div>
                     </div>
                 </div>

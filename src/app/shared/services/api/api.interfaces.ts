@@ -11,7 +11,20 @@ export interface FetchOptions {
     data?: any;
     map?: (resp: any) => any;
 }
-
+export interface User {
+    id?: number;
+    last_login?: string;
+    is_superuser?: boolean;
+    username?: string;
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+    is_staff?: boolean;
+    is_active?: boolean;
+    date_joined?: string;
+    groups?: any[] | null;
+    user_permissions?: any[] | null;
+}
 // Biosys remote models
 export interface Geometry {
     type: string;
@@ -26,7 +39,7 @@ export interface Project {
     attributes?: {[key: string]: string} | null;
     geometry?: Geometry | null;
     site_data_package?: {} | null;
-    custodians?: any[] | null;
+    custodians?: number[];
 }
 export interface Site {
     id?: number;

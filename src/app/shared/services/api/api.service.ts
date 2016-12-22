@@ -58,6 +58,10 @@ export class APIService {
         });
     }
 
+    public getUsers(): Observable<User[]> {
+        return this.fetch('users', {});
+    }
+
     public getAllProjects(): Observable<Project[]> {
         return this.fetch('projects', {});
     }
@@ -164,6 +168,7 @@ export class APIService {
                 (metaData) => metaData.actions['POST'][fieldName]['choices']
             );
     }
+
     public getModelMetadata(modelName: string): Observable<any> {
         return this.fetch(modelName, {
             'method': 'Options'

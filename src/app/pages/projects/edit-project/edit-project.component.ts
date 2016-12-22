@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { APIService, APIError, Project, Site, Dataset, FeatureMapComponent } from '../../../shared/index';
+import { APIService, APIError, User, Project, Site, Dataset, ModelChoice, FeatureMapComponent } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SelectItem } from 'primeng/primeng';
 
 @Component({
     moduleId: module.id,
@@ -11,13 +12,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 export class EditProjectComponent implements OnInit {
     @ViewChild(FeatureMapComponent)
-    private featureMapComponent: FeatureMapComponent;
+    public featureMapComponent: FeatureMapComponent;
 
-    private project: Project = <Project>{};
-    private sites: Site[];
-    private datasets: Dataset[];
+    public project: Project = <Project>{};
+    public sites: Site[];
+    public datasets: Dataset[];
 
-    private isEditing: boolean;
+    public isEditing: boolean;
+
+    public datamTypeChoices: SelectItem[];
+    public custodianChoices: SelectItem[];
 
     constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute) {
 
@@ -42,9 +46,57 @@ export class EditProjectComponent implements OnInit {
                 (error: APIError) => console.log('error.msg', error.msg)
             );
         }
+
+        this.apiService.getModelChoices('project', 'datum')
+            .map(
+                (choices: ModelChoice[]): SelectItem[] => {
+                    return choices.map((choice: ModelChoice): SelectItem => {
+                        return {
+                            label: choice.display_name,
+                            value: choice.value
+                        };
+                    });
+                }
+            )
+            .subscribe(
+                (choices: SelectItem[]) => this.datamTypeChoices = choices,
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
+
+        this.apiService.getUsers()
+            .map(
+                (users: User[]): SelectItem[] => {
+                    return users.map((user: User): SelectItem => {
+                        return {
+                            label: user.first_name + ' ' + user.last_name,
+                            value: user.id
+                        };
+                    });
+                }
+            )
+            .subscribe(
+                (users: SelectItem[]) => this.custodianChoices = users,
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
     }
 
-    saveProject() {
+    public getDatumLabel(value: string): string {
+        if(!this.datamTypeChoices) {
+            return '';
+        }
+
+        return this.datamTypeChoices.filter(d => d.value === value).pop().label;
+    }
+
+    public getSelectedCustodiansLabel(custodians: number[]): string {
+        if(!this.custodianChoices || !custodians) {
+            return '';
+        }
+
+        return this.custodianChoices.filter(c => custodians.indexOf(c.value) > -1).map(c => c.label).reduce((a, b) => a + '; ' + b);
+    }
+
+    public saveProject() {
         this.project.geometry = this.featureMapComponent.getFeatureGeometry();
 
         if(this.project.id) {
@@ -62,7 +114,7 @@ export class EditProjectComponent implements OnInit {
         }
     }
 
-    editProject() {
+    public editProject() {
         this.isEditing = true;
     }
 }

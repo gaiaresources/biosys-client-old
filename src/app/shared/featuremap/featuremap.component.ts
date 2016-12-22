@@ -69,6 +69,10 @@ export class FeatureMapComponent {
     public getFeatureGeometry(): Geometry {
         this.endDrawingModification();
 
+        if (!this.features || !this.features.getLength()) {
+            return null;
+        }
+
         let feature:Feature = this.features.item(0);
 
         let newCoords: Array<Coordinate> = [];

@@ -15,20 +15,7 @@ import { ModelChoice } from '../../../shared/services/api/api.interfaces';
 export class EditDatasetComponent implements OnInit {
     @Input('isValid')
     isValid: boolean = true;
-    typeChoices: SelectItem[] = [
-        {
-            label: 'Generic',
-            value: 'generic'
-        },
-        {
-            label: 'Observation',
-            value: 'observation'
-        },
-        {
-            label: 'Species Observation',
-            value: 'species_observation'
-        },
-    ];
+    typeChoices: SelectItem[];
     messages: Message[] = [];
     private ds: Dataset = <Dataset>{};
     private editorOptions: JsonEditorOptions;
