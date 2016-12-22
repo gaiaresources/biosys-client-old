@@ -284,7 +284,7 @@ export class ProjectConfig {
 
     FONTS_SRC = ['node_modules/font-awesome/fonts/**'];
 
-    PRIME_NG_THEME = 'afterdark';
+    PRIME_NG_THEME = 'aristo';
 
     CSS_IMAGE_DEST = `${this.CSS_DEST}/images`;
     CSS_IMAGE_SRC = [
