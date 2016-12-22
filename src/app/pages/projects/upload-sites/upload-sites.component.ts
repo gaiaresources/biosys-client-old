@@ -15,9 +15,9 @@ export class UploadSitesComponent implements OnInit {
         'text/csv',
         'text/comma-separated-values',
         'application/csv',
-        // 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        // 'application/vnd.ms-excel',
-        // 'application/vnd.msexcel'
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.ms-excel',
+        'application/vnd.msexcel'
     ];
 
     messages: Message[] = [];
@@ -52,17 +52,18 @@ export class UploadSitesComponent implements OnInit {
         };
         this.messages = [];
         let statusCode = event.xhr.status;
-        let resp = JSON.parse(event.xhr.response);
+        let resp = event.xhr.response;
         if (statusCode === 400) {
+            resp = JSON.parse(resp);
             // find errors
             for (let rowNumber of Object.getOwnPropertyNames(resp)) {
                 let error = resp[rowNumber]['error'];
                 if (error) {
-                    addErrorMessage('Row #' + rowNumber, error)
+                    addErrorMessage('Row #' + rowNumber, error);
                 }
             }
         } else {
-            addErrorMessage('Error', statusCode + ':' + JSON.stringify(resp));
+            addErrorMessage('Error', statusCode + ':' + resp);
         }
     }
 
@@ -79,10 +80,11 @@ export class UploadSitesComponent implements OnInit {
         let files: File[] = this.uploader.files;
         let file: File = files.pop();
         if (this.accepted_types.indexOf(file.type) === -1) {
+            this.messages = [];
             this.messages.push({
                 severity: 'info',
                 summary: 'Wrong file type',
-                detail: 'It must be a csv file.'
+                detail: 'It must be an Excel (.xlsx) or a csv file.'
             });
         } else {
             // put back the file in the list
