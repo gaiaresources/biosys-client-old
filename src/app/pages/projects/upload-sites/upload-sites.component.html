@@ -2,16 +2,18 @@
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
     <div class="row mt-1">
-        <h3>Upload Sites</h3>
+        <h3>Upload Sites (xlsx/csv files)</h3>
         <div class="row mt-2">
             <p-messages [value]="messages"></p-messages>
         </div>
     </div>
     <p-fileUpload name="file" [url]="url"
-                  accept="text/csv"
+                  auto="auto"
+                  accept=".csv,.xlsx"
                   (onUpload)="onUpload($event)"
-                  (onBeforeUpload)="onBeforeUpload($event)"
                   (onError)="onError($event)"
+                  (onSelect)="onSelect($event)"
+                  (onBeforeSend)="onBeforeSend($event)"
     >
     </p-fileUpload>
 </div>
