@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { APIService, APIError, Site } from '../../../shared/index';
+import { APIService, APIError, Site, FeatureMapComponent } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,7 +10,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class EditSiteComponent implements OnInit {
-    private site: Site = <Site>{};
+    @ViewChild(FeatureMapComponent)
+    public featureMapComponent: FeatureMapComponent;
+
+    public site: Site = <Site>{};
 
     constructor(private apiService: APIService,
                 private router: Router,
@@ -22,7 +25,7 @@ export class EditSiteComponent implements OnInit {
         if ('id' in params) {
             this.apiService.getSiteById(Number(params['id'])).subscribe(
                 (site: Site) => this.site = site,
-                (error: APIError) => console.log('error.msg', error.msg)
+                (error: APIError) => console.log('error.msg', error.msg),
             );
         } else if ('projId' in params) {
             this.site.project = Number(params['projId']);
@@ -32,6 +35,8 @@ export class EditSiteComponent implements OnInit {
     }
 
     save() {
+        this.site.geometry = this.featureMapComponent.getFeatureGeometry();
+
         let successUrl = '/projects/edit-project/' + this.site.project;
         if (this.site.id) {
             this.apiService.updateSite(this.site).subscribe(
@@ -39,7 +44,7 @@ export class EditSiteComponent implements OnInit {
                 (error: APIError) => console.log('error.msg', error.msg)
             );
         } else {
-            this.apiService.createSite(this.site, this.site.project).subscribe(
+            this.apiService.createSite(this.site).subscribe(
                 () => this.router.navigate([successUrl]),
                 (error: APIError) => console.log('error.msg', error.msg)
             );

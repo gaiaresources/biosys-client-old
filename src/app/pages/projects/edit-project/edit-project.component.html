@@ -14,7 +14,7 @@
                         <div class="col-md-7">
                             <label [hidden]="isEditing">{{project.title}}</label>
                             <input [hidden]="!isEditing" id="title" type="text" pInputText
-                                   [(ngModel)]="project.title" name="title"/>
+                                   [(ngModel)]="project.title" name="title" styleClass="w-100"/>
                         </div>
                     </div>
                     <div class="row mb-1">
@@ -22,7 +22,7 @@
                         <div class="col-md-7">
                             <label [hidden]="isEditing">{{project.code}}</label>
                             <input [hidden]="!isEditing" id="code" type="text" pInputText [(ngModel)]="project.code"
-                                   name="code"/>
+                                   name="code" styleClass="w-100"/>
                         </div>
                     </div>
                     <div class="row mb-1">
@@ -41,14 +41,15 @@
                             <label [hidden]="isEditing">{{project.timezone}}</label>
                             <input [hidden]="!isEditing" id="timezone" type="text" pInputText
                                    [(ngModel)]="project.timezone"
-                                   name="timezone"/>
+                                   name="timezone" styleClass="w-100"/>
                         </div>
                     </div>
                     <div class="row mb-1">
                         <div class="col-md-5"><label>Custodians</label></div>
                         <div class="col-md-7">
                             <label [hidden]="isEditing">{{getSelectedCustodiansLabel(project.custodians)}}</label>
-                            <p-multiSelect [hidden]="!isEditing" *ngIf="custodianChoices" [options]="custodianChoices" [(ngModel)]="project.custodians"></p-multiSelect>
+                            <p-multiSelect [hidden]="!isEditing" *ngIf="custodianChoices" [options]="custodianChoices"
+                                           [(ngModel)]="project.custodians" styleClass="w-100"></p-multiSelect>
                         </div>
                     </div>
                     <button [hidden]="isEditing" pButton icon="fa-pencil-square-o" label="Edit"
@@ -62,14 +63,6 @@
                         <div class="col-md-9">
                             <biosys-featuremap [isEditing]="isEditing"
                                                [geometry]="project.geometry"></biosys-featuremap>
-                            <p [hidden]="!isEditing"
-                               *ngIf="featureMapComponent.features && featureMapComponent.features.getLength()"
-                               class="small">
-                                To modify the extent, select the feature and drag the vertices to the desired location.
-                            </p>
-                            <p [hidden]="!isEditing" *ngIf="!featureMapComponent.features" class="small">
-                                To draw the extent, click to place vertices and double-click to complete the feature.
-                            </p>
                         </div>
                     </div>
                 </div>

@@ -89,7 +89,7 @@ export class EditProjectComponent implements OnInit {
     }
 
     public getSelectedCustodiansLabel(custodians: number[]): string {
-        if(!this.custodianChoices || !custodians) {
+        if(!this.custodianChoices || !custodians || !custodians.length) {
             return '';
         }
 

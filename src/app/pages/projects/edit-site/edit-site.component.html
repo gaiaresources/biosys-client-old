@@ -2,30 +2,45 @@
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
     <div class="row mt-1">
-        <div class="col-md">
+        <div class="col-md-4">
             <h3 *ngIf="site.id">Edit Site</h3>
             <h3 *ngIf="!site.id">Create Site</h3>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-md-4">
             <form (ngSubmit)="save()">
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label for="name">Name</label></div>
-                    <div class="ui-grid-col-3">
-                        <input id="name" type="text" pInputText [(ngModel)]="site.name" name="name"/>
+                <div class="row mb-1">
+                    <div class="col-md-5"><label for="name">Name</label></div>
+                    <div class="col-md-7">
+                        <input id="name" type="text" pInputText [(ngModel)]="site.name" name="name"
+                               styleClass="w-100"/>
                     </div>
                 </div>
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label for="code">Code</label></div>
-                    <div class="ui-grid-col-3">
-                        <input id="code" type="text" pInputText [(ngModel)]="site.code" name="code"/>
+                <div class="row mb-1">
+                    <div class="col-md-5"><label for="code">Code</label></div>
+                    <div class="col-md-7">
+                        <input id="code" type="text" pInputText [(ngModel)]="site.code" name="code"
+                               styleClass="w-100"/>
                     </div>
                 </div>
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label for="comments">Comments</label></div>
-                    <div class="ui-grid-col-3">
-                        <input id="comments" type="text" pInputText [(ngModel)]="site.comments" name="comments"/>
+                <div class="row mb-1">
+                    <div class="col-md-5"><label>Comments</label></div>
+                    <div class="col-md-7">
+                        <textarea pInputText [(ngModel)]="site.comments" [ngModelOptions]="{standalone: true}"
+                                  styleClass="w-100"></textarea>
                     </div>
                 </div>
                 <button pButton type="submit" label="Save"></button>
             </form>
+        </div>
+        <div class="col-md-8">
+            <div class="row mb-1">
+                <div class="col-md-1 offset-md-2"><label>Location</label></div>
+                <div class="col-md-9">
+                    <biosys-featuremap [isEditing]="true" [geometry]="site.geometry"></biosys-featuremap>
+                </div>
+            </div>
         </div>
     </div>
 </div>

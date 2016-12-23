@@ -10,7 +10,7 @@ import { Collection, Feature, Coordinate, source, interaction, proj, geom } from
     styleUrls: ['featuremap.component.css'],
 })
 export class FeatureMapComponent {
-    @Input() isEditing: boolean;
+    @Input() public  isEditing: boolean;
     @Input() geometry: Geometry;
 
     @ViewChild(MapComponent)
@@ -27,41 +27,64 @@ export class FeatureMapComponent {
     private modify:interaction.Modify;
     private draw:interaction.Draw;
 
+    private initialised: boolean;
+
+    constructor() {
+        this.initialised = false;
+    }
+
     ngOnInit() {
         this.sourceVector = new source.Vector({useSpatialIndex: false});
         this.layerVectorComponent.setSource(this.sourceVector);
+
+        if (this.isEditing) {
+            if (this.features) {
+                this.startModification();
+            } else {
+                this.startDrawing();
+            }
+        }
+
+        this.initialised = true;
     }
 
     ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
         if (changes['geometry']) {
-            if (!this.geometry) {
-                return;
-            }
-
-            let olGeom: geom.Geometry = null;
-            if (this.geometry.type === 'LineString') {
-                let newCoords: Array<Coordinate> = [];
-                this.geometry.coordinates.forEach(function (coord: Coordinate) {
-                    newCoords.push(proj.fromLonLat(coord));
-                });
-                olGeom = new geom.LineString(newCoords);
-            }
-
-            if (!this.features) {
-                this.features = this.sourceVector.getFeaturesCollection();
-            }
-
-            this.features.clear();
-            this.features.insertAt(0, new Feature({geometry: olGeom}));
-        } else if (changes['isEditing']) {
-            if (this.isEditing) {
-                if (this.features) {
-                    this.startModification();
-                } else {
-                    this.startDrawing();
+            if (this.geometry) {
+                let olGeom: geom.Geometry = null;
+                if (this.geometry.type === 'LineString') {
+                    let newCoords: Array<Coordinate> = [];
+                    this.geometry.coordinates.forEach(function (coord: Coordinate) {
+                        newCoords.push(proj.fromLonLat(coord));
+                    });
+                    olGeom = new geom.LineString(newCoords);
                 }
-            } else {
-                this.endDrawingModification();
+
+                if (!this.features) {
+                    this.features = this.sourceVector.getFeaturesCollection();
+                }
+
+                this.features.clear();
+                this.features.insertAt(0, new Feature({geometry: olGeom}));
+
+                if(this.initialised && this.isEditing) {
+                    this.endDrawingModification();
+                    this.startModification();
+                }
+            }
+        }
+
+        if (changes['isEditing']) {
+            if (this.initialised) {
+                if (this.isEditing) {
+                    if (this.features) {
+                        this.startModification();
+                    } else {
+                        this.startDrawing();
+                    }
+                } else {
+                    this.endDrawingModification();
+                }
             }
         }
     }
@@ -85,17 +108,7 @@ export class FeatureMapComponent {
         return geometry;
     }
 
-    private drawEnded(drawEvent: interaction.DrawEvent) {
-        this.mapComponent.removeInteraction(this.draw);
-
-        if (!this.features) {
-            this.features = this.sourceVector.getFeaturesCollection();
-        }
-
-        this.startModification();
-    }
-
-    private startDrawing() {
+    public startDrawing() {
         this.draw = new interaction.Draw({
             type: 'LineString',
             source: this.sourceVector
@@ -105,12 +118,22 @@ export class FeatureMapComponent {
         this.mapComponent.addInteraction(this.draw);
     }
 
-    private startModification() {
+    public startModification() {
         this.select = new interaction.Select({wrapX: false});
         this.modify = new interaction.Modify({features: this.select.getFeatures()});
 
         this.mapComponent.addInteraction(this.select);
         this.mapComponent.addInteraction(this.modify);
+    }
+
+    private drawEnded(drawEvent: interaction.DrawEvent) {
+        this.mapComponent.removeInteraction(this.draw);
+
+        if (!this.features) {
+            this.features = this.sourceVector.getFeaturesCollection();
+        }
+
+        this.startModification();
     }
 
     private endDrawingModification() {
