@@ -2,7 +2,7 @@ export interface APIError {
     status: number;
     statusText: string;
     text: string;
-    msg: string | {};
+    msg: any;
 }
 export interface FetchOptions {
     method?: string;
