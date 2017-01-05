@@ -5,7 +5,7 @@ import { AuthService } from '../../shared/index';
 
 @Component({
     moduleId: module.id,
-    selector: 'login',
+    selector: 'biosys-login',
     templateUrl: 'login.component.html'
 })
 export class LoginComponent {

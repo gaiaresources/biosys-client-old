@@ -9,8 +9,8 @@ import { Collection, Feature, Coordinate, source, interaction, proj, geom } from
     templateUrl: 'featuremap.component.html',
     styleUrls: ['featuremap.component.css'],
 })
-export class FeatureMapComponent {
-    @Input() public  isEditing: boolean;
+export class FeatureMapComponent implements OnInit, OnChanges {
+    @Input() public isEditing: boolean;
     @Input() geometry: Geometry;
 
     @ViewChild(MapComponent)
@@ -23,9 +23,9 @@ export class FeatureMapComponent {
 
     private features: Collection<Feature>;
 
-    private select:interaction.Select;
-    private modify:interaction.Modify;
-    private draw:interaction.Draw;
+    private select: interaction.Select;
+    private modify: interaction.Modify;
+    private draw: interaction.Draw;
 
     private initialised: boolean;
 
@@ -67,7 +67,7 @@ export class FeatureMapComponent {
                 this.features.clear();
                 this.features.insertAt(0, new Feature({geometry: olGeom}));
 
-                if(this.initialised && this.isEditing) {
+                if (this.initialised && this.isEditing) {
                     this.endDrawingModification();
                     this.startModification();
                 }
@@ -96,16 +96,17 @@ export class FeatureMapComponent {
             return null;
         }
 
-        let feature:Feature = this.features.item(0);
+        let feature: Feature = this.features.item(0);
 
         let newCoords: Array<Coordinate> = [];
-        feature.getGeometry().getCoordinates().forEach(function (coord: Coordinate) {
+        // The next line is just to keep the tslint quiet because the class geom.Geometry doesn't have a getCoordinate()
+        // method while all its subclasses (Point, Polygon, ...) have!
+        let geom = <any>feature.getGeometry();
+        geom.getCoordinates().forEach(function (coord: Coordinate) {
             newCoords.push(proj.toLonLat(coord));
         });
-
-        let geometry:Geometry = {type: feature.getGeometry().getType(), coordinates: newCoords};
-
-        return geometry;
+        console.log('type', feature.getGeometry().getType());
+        return {type: feature.getGeometry().getType(), coordinates: newCoords};
     }
 
     public startDrawing() {

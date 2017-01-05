@@ -5,7 +5,7 @@ import { SelectItem } from 'primeng/primeng';
 
 @Component({
     moduleId: module.id,
-    selector: 'bios-edit-roject',
+    selector: 'biosys-edit-roject',
     templateUrl: 'edit-project.component.html',
     styleUrls: ['edit-project.component.css'],
 })

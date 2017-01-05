@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     moduleId: module.id,
-    selector: 'bios-edit-site',
+    selector: 'biosys-edit-site',
     templateUrl: 'edit-site.component.html',
     styleUrls: [],
 })

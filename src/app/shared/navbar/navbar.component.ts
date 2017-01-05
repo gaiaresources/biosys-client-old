@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/index';
 import { MenubarModule, MenuItem } from 'primeng/primeng';
@@ -12,7 +12,7 @@ import { MenubarModule, MenuItem } from 'primeng/primeng';
     templateUrl: 'navbar.component.html',
     styleUrls: ['navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
     private items: MenuItem[];
 
     constructor(public auth: AuthService, private router: Router) {

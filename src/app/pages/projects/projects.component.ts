@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 @Component({
     moduleId: module.id,
-    selector: 'bios-projects',
+    selector: 'biosys-projects',
     templateUrl: 'projects.component.html',
     styleUrls: ['projects.component.css'],
 })

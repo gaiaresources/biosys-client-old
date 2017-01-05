@@ -7,7 +7,7 @@ import { ModelChoice } from '../../../shared/services/api/api.interfaces';
 
 @Component({
     moduleId: module.id,
-    selector: 'bios-edit-dataset',
+    selector: 'biosys-edit-dataset',
     templateUrl: 'edit-dataset.component.html',
     styleUrls: [],
 })

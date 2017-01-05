@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { routes } from './app.routes';
 import { LoginModule } from './pages/login/login.module';
 import { HomeModule } from './pages/home/home.module';
-import { PlaygroundModule } from './pages/playground/index';
 import { AuthGuard } from './shared/auth.guard';
 import { SharedModule } from './shared/shared.module';
 import * as projects from './pages/projects/index';
@@ -21,7 +20,6 @@ import * as projects from './pages/projects/index';
         SharedModule,
         LoginModule,
         HomeModule,
-        PlaygroundModule,
         projects.ProjectsModule,
         projects.EditProjectModule,
         projects.EditDatasetModule,
