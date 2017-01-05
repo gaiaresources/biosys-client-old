@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
     moduleId: module.id,
     selector: 'biosys-projects',
     templateUrl: 'projects.component.html',
-    styleUrls: ['projects.component.css'],
+    styleUrls: [],
 })
 
 export class ProjectsComponent implements OnInit {

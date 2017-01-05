@@ -10,7 +10,7 @@ import { MenubarModule, MenuItem } from 'primeng/primeng';
     moduleId: module.id,
     selector: 'biosys-navbar',
     templateUrl: 'navbar.component.html',
-    styleUrls: ['navbar.component.css']
+    styleUrls: []
 })
 export class NavbarComponent implements OnInit {
     private items: MenuItem[];

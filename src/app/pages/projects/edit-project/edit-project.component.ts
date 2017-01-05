@@ -7,7 +7,7 @@ import { SelectItem } from 'primeng/primeng';
     moduleId: module.id,
     selector: 'biosys-edit-roject',
     templateUrl: 'edit-project.component.html',
-    styleUrls: ['edit-project.component.css'],
+    styleUrls: [],
 })
 
 export class EditProjectComponent implements OnInit {

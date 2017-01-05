@@ -7,7 +7,7 @@ import { Collection, Feature, Coordinate, source, interaction, proj, geom } from
     moduleId: module.id,
     selector: 'biosys-featuremap',
     templateUrl: 'featuremap.component.html',
-    styleUrls: ['featuremap.component.css'],
+    styleUrls: [],
 })
 export class FeatureMapComponent implements OnInit, OnChanges {
     @Input() public isEditing: boolean;
