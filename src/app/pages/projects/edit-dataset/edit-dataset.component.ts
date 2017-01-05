@@ -48,14 +48,13 @@ export class EditDatasetComponent implements OnInit {
         }
         this.apiService.getModelChoices('dataset', 'type')
             .map(
-                (choices: ModelChoice[]): SelectItem[] => {
-                    return choices.map((choice: ModelChoice): SelectItem => {
+                (choices: ModelChoice[]): SelectItem[] =>
+                    choices.map((choice: ModelChoice): SelectItem => {
                         return {
                             label: choice.display_name,
                             value: choice.value
                         };
-                    });
-                }
+                    })
             )
             .subscribe(
                 (choices: SelectItem[]) => this.typeChoices = choices,

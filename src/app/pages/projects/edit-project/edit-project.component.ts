@@ -1,5 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { APIService, APIError, User, Project, Site, Dataset, ModelChoice, FeatureMapComponent } from '../../../shared/index';
+import {
+    APIService,
+    APIError,
+    User,
+    Project,
+    Site,
+    Dataset,
+    ModelChoice,
+    FeatureMapComponent
+} from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SelectItem } from 'primeng/primeng';
 
@@ -7,7 +16,7 @@ import { SelectItem } from 'primeng/primeng';
     moduleId: module.id,
     selector: 'biosys-edit-roject',
     templateUrl: 'edit-project.component.html',
-    styleUrls: [],
+    styleUrls: ['edit-project.component.css'],
 })
 
 export class EditProjectComponent implements OnInit {
@@ -49,14 +58,13 @@ export class EditProjectComponent implements OnInit {
 
         this.apiService.getModelChoices('project', 'datum')
             .map(
-                (choices: ModelChoice[]): SelectItem[] => {
-                    return choices.map((choice: ModelChoice): SelectItem => {
+                (choices: ModelChoice[]): SelectItem[] =>
+                    choices.map((choice: ModelChoice): SelectItem => {
                         return {
                             label: choice.display_name,
                             value: choice.value
                         };
-                    });
-                }
+                    })
             )
             .subscribe(
                 (choices: SelectItem[]) => this.datamTypeChoices = choices,
@@ -65,14 +73,13 @@ export class EditProjectComponent implements OnInit {
 
         this.apiService.getUsers()
             .map(
-                (users: User[]): SelectItem[] => {
-                    return users.map((user: User): SelectItem => {
+                (users: User[]): SelectItem[] =>
+                    users.map((user: User): SelectItem => {
                         return {
                             label: user.first_name + ' ' + user.last_name,
                             value: user.id
                         };
-                    });
-                }
+                    })
             )
             .subscribe(
                 (users: SelectItem[]) => this.custodianChoices = users,
@@ -81,7 +88,7 @@ export class EditProjectComponent implements OnInit {
     }
 
     public getDatumLabel(value: string): string {
-        if(!this.datamTypeChoices) {
+        if (!this.datamTypeChoices) {
             return '';
         }
 
@@ -89,7 +96,7 @@ export class EditProjectComponent implements OnInit {
     }
 
     public getSelectedCustodiansLabel(custodians: number[]): string {
-        if(!this.custodianChoices || !custodians || !custodians.length) {
+        if (!this.custodianChoices || !custodians || !custodians.length) {
             return '';
         }
 
@@ -99,7 +106,7 @@ export class EditProjectComponent implements OnInit {
     public saveProject() {
         this.project.geometry = this.featureMapComponent.getFeatureGeometry();
 
-        if(this.project.id) {
+        if (this.project.id) {
             this.apiService.updateProject(this.project).subscribe(
                 (project: Project) => this.project = project,
                 (error: APIError) => console.log('error.msg', error.msg),
