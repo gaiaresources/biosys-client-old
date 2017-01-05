@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/index';
 import { MenubarModule, MenuItem } from 'primeng/primeng';
@@ -10,9 +10,9 @@ import { MenubarModule, MenuItem } from 'primeng/primeng';
     moduleId: module.id,
     selector: 'biosys-navbar',
     templateUrl: 'navbar.component.html',
-    styleUrls: ['navbar.component.css']
+    styleUrls: []
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
     private items: MenuItem[];
 
     constructor(public auth: AuthService, private router: Router) {

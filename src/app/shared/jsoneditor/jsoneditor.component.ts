@@ -8,7 +8,7 @@ let JSONEditor = require('jsoneditor');
 import 'jsoneditor/dist/jsoneditor.min.css';
 
 @Component({
-    selector: 'json-editor',
+    selector: 'biosys-json-editor',
     template: `<div></div>`,
 })
 export class JsonEditorComponent implements OnInit {

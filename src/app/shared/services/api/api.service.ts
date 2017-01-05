@@ -3,7 +3,7 @@ import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, Resp
 import { Observable } from 'rxjs';
 import { AuthService } from '../index';
 import appConfig from '../../config/app.config';
-import { FetchOptions, APIError, Project, Dataset, Site, Observation, Statistic, ModelChoice } from './api.interfaces';
+import { FetchOptions, APIError, User, Project, Dataset, Site, Observation, Statistic, ModelChoice } from './api.interfaces';
 
 
 /**
@@ -56,6 +56,10 @@ export class APIService {
         });
     }
 
+    public getUsers(): Observable<User[]> {
+        return this.fetch('users', {});
+    }
+
     public getAllProjects(): Observable<Project[]> {
         return this.fetch('projects', {});
     }
@@ -90,8 +94,8 @@ export class APIService {
         return this.fetch('sites/' + id, {});
     }
 
-    public createSite(site: Site, projectID: Number): Observable<Site> {
-        return this.fetch('projects/' + projectID + '/sites', {
+    public createSite(site: Site): Observable<Site> {
+        return this.fetch('sites/', {
             method: 'Post',
             data: site
         });
@@ -170,7 +174,7 @@ export class APIService {
     }
 
     public getProjectSiteUploadURL(projectId: number): string {
-        return this.baseUrl + 'projects/' + projectId + '/upload-sites/'
+        return this.baseUrl + 'projects/' + projectId + '/upload-sites/';
     }
 
     /**

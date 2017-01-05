@@ -17,10 +17,12 @@
                 </div>
                 <div class="ui-grid-row mb-1">
                     <div class="ui-grid-col-1"><label for="type">Type</label></div>
-                    <div class="ui-grid-col-5">
+                    <div class="ui-grid-col-3">
                         <p-dropdown
                             id="type"
                             [options]="typeChoices" [(ngModel)]="ds.type" [ngModelOptions]="{standalone: true}"
+                            autoWidth="false"
+                            styleClass="w-100"
                         >
                         </p-dropdown>
                     </div>
@@ -28,8 +30,8 @@
                 <div class="ui-grid-row mb-1">
                     <div class="ui-grid-col-1"><label>Data Package</label></div>
                     <div class="ui-grid-col-8" style="height:500px">
-                        <json-editor id="dataPackage" [options]="editorOptions"
-                                     [(data)]="ds.data_package"></json-editor>
+                        <biosys-json-editor id="dataPackage" [options]="editorOptions"
+                                     [(data)]="ds.data_package"></biosys-json-editor>
                     </div>
                 </div>
                 <button pButton [disabled]="!isValid" type="submit" label="Save"></button>

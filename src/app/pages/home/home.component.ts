@@ -6,7 +6,7 @@ import { APIService, APIError, Observation, Statistic } from '../../shared/index
  */
 @Component({
     moduleId: module.id,
-    selector: 'home',
+    selector: 'biosys-home',
     templateUrl: 'home.component.html',
     styleUrls: ['home.component.css'],
 })

@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     moduleId: module.id,
-    selector: 'bios-upload-site',
+    selector: 'biosys-upload-site',
     templateUrl: 'upload-sites.component.html',
     styleUrls: [],
 })

@@ -1,6 +1,6 @@
 import * as util from 'gulp-util';
-import {argv} from 'yargs';
-import {join} from 'path';
+import { argv } from 'yargs';
+import { join } from 'path';
 
 import Config from '../../../config/config';
 

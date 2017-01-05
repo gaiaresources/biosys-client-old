@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -7,11 +7,9 @@ import {Component} from '@angular/core';
     moduleId: module.id,
     selector: 'biosys-header',
     templateUrl: 'header.component.html',
-    styleUrls: ['header.component.css'],
+    styleUrls: [],
 })
 export class HeaderComponent {
-
-    HEADER_TEXT: string = 'Biosys';
 
     constructor() {
     }

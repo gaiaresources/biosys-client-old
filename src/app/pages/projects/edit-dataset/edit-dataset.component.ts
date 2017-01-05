@@ -7,7 +7,7 @@ import { ModelChoice } from '../../../shared/services/api/api.interfaces';
 
 @Component({
     moduleId: module.id,
-    selector: 'bios-edit-dataset',
+    selector: 'biosys-edit-dataset',
     templateUrl: 'edit-dataset.component.html',
     styleUrls: [],
 })
@@ -15,20 +15,7 @@ import { ModelChoice } from '../../../shared/services/api/api.interfaces';
 export class EditDatasetComponent implements OnInit {
     @Input('isValid')
     isValid: boolean = true;
-    typeChoices: SelectItem[] = [
-        {
-            label: 'Generic',
-            value: 'generic'
-        },
-        {
-            label: 'Observation',
-            value: 'observation'
-        },
-        {
-            label: 'Species Observation',
-            value: 'species_observation'
-        },
-    ];
+    typeChoices: SelectItem[];
     messages: Message[] = [];
     private ds: Dataset = <Dataset>{};
     private editorOptions: JsonEditorOptions;
@@ -61,14 +48,13 @@ export class EditDatasetComponent implements OnInit {
         }
         this.apiService.getModelChoices('dataset', 'type')
             .map(
-                (choices: ModelChoice[]): SelectItem[] => {
-                    return choices.map((choice: ModelChoice): SelectItem => {
+                (choices: ModelChoice[]): SelectItem[] =>
+                    choices.map((choice: ModelChoice): SelectItem => {
                         return {
                             label: choice.display_name,
                             value: choice.value
                         };
-                    });
-                }
+                    })
             )
             .subscribe(
                 (choices: SelectItem[]) => this.typeChoices = choices,
