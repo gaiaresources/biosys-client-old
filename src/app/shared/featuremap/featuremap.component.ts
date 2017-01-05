@@ -102,11 +102,14 @@ export class FeatureMapComponent implements OnInit, OnChanges {
         // The next line is just to keep the tslint quiet because the class geom.Geometry doesn't have a getCoordinate()
         // method while all its subclasses (Point, Polygon, ...) have!
         let geom = <any>feature.getGeometry();
-        geom.getCoordinates().forEach(function (coord: Coordinate) {
-            newCoords.push(proj.toLonLat(coord));
-        });
-        console.log('type', feature.getGeometry().getType());
-        return {type: feature.getGeometry().getType(), coordinates: newCoords};
+        if (geom) {
+            geom.getCoordinates().forEach(function (coord: Coordinate) {
+                newCoords.push(proj.toLonLat(coord));
+            });
+            return {type: geom.getType(), coordinates: newCoords};
+        } else {
+            return null;
+        }
     }
 
     public startDrawing() {
