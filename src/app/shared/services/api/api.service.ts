@@ -12,7 +12,6 @@ import { FetchOptions, APIError, User, Project, Dataset, Site, Observation, Stat
 @Injectable()
 export class APIService {
     baseUrl: string;
-    authToken: string;
 
     /**
      * Handle HTTP error
@@ -43,7 +42,6 @@ export class APIService {
      */
     constructor(private http: Http) {
         this.baseUrl = appConfig.API;
-        this.authToken = AuthService.getAuthToken();
         if (!this.baseUrl.endsWith('/')) this.baseUrl += '/';
     }
 
@@ -179,6 +177,19 @@ export class APIService {
         return this.baseUrl + 'projects/' + projectId + '/upload-sites/';
     }
 
+    /**
+     * Returns an array of [header, value] of headers necessary for authentication
+     * @returns {[string,string][]}
+     */
+    public getAuthHeaders(): [string, string][] {
+        let headers: [string, string][] = [];
+        let authToken = AuthService.getAuthToken();
+        if (authToken) {
+            headers.push(['Authorization', 'Token ' + authToken]);
+        }
+        return headers;
+    }
+
     public fetch(path: string, options: FetchOptions): Observable<any> {
         if (path && !path.endsWith('/')) {
             // enforce '/' at the end
@@ -186,8 +197,8 @@ export class APIService {
         }
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        if (this.authToken) {
-            headers.append('Authorization', 'Token ' + this.authToken);
+        for (let header of this.getAuthHeaders()) {
+            headers.append(header[0], header[1]);
         }
         if (options.headers) {
             for (let key in options.headers) {

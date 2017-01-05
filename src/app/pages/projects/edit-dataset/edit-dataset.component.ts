@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { APIService, APIError, Dataset } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { JsonEditorComponent, JsonEditorOptions } from '../../../shared/index';
-import { SelectItem , Message } from 'primeng/primeng';
+import { SelectItem, Message } from 'primeng/primeng';
 import { ModelChoice } from '../../../shared/services/api/api.interfaces';
 
 @Component({
@@ -73,7 +73,7 @@ export class EditDatasetComponent implements OnInit {
         } else {
             this.apiService.createDataset(this.ds).subscribe(
                 () => this.router.navigate([successUrl]),
-                (error: APIError) =>  this.showError(error)
+                (error: APIError) => this.showError(error)
             );
         }
     }
@@ -105,10 +105,12 @@ export class EditDatasetComponent implements OnInit {
              * }
              */
             for (let field in error.msg) {
-                addErrorMessage(field + ': ' + error.msg[field].join(';'));
+                if (error.msg.hasOwnProperty(field)) {
+                    addErrorMessage(field + ': ' + error.msg[field].join(';'));
+                }
             }
         } else {
-            addErrorMessage(error.msg)
+            addErrorMessage(error.msg);
         }
     }
 }
