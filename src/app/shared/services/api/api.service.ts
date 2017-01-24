@@ -217,7 +217,7 @@ export class APIService {
             headers: headers,
             search: searchParams,
             body: JSON.stringify(options.data),
-            withCredentials: false,
+            withCredentials: true,
             responseType: ResponseContentType.Json
         });
         let request = new Request(reqOptions);
