@@ -9,6 +9,8 @@
         "build.dev": "gulp build.dev --color --config-env dev",
         "build.dev.watch": "gulp build.dev.watch --color",
         "build.e2e": "gulp build.e2e --color",
+        "build.uat": "gulp build.prod --color --config-env uat",
+        "build.uat.exp": "gulp build.prod.exp --color --config-env uat",
         "build.prod": "gulp build.prod --color --config-env prod",
         "build.prod.exp": "gulp build.prod.exp --color --config-env prod",
         "build.test": "gulp build.test --color",
