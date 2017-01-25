@@ -38,7 +38,7 @@ export class UploadSitesComponent implements OnInit {
     }
 
     onUpload() {
-        let successUrl = '/projects/edit-project/' + this.projectId;
+        let successUrl = '/management/projects/edit-project/' + this.projectId;
         return this.router.navigate([successUrl]);
     }
 

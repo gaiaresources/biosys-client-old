@@ -4,19 +4,19 @@
     <div class="row mt-1">
         <div class="col-md">
             <h3>Projects</h3>
-            <p-dataTable [value]="projects" [paginator]="true" rows="15" [responsive]="true">
+            <p-dataTable [value]="projects" [paginator]="true" [rows]="15" [responsive]="true">
                 <p-column field="title" header="Title" [sortable]="true"></p-column>
                 <p-column field="code" header="Code"></p-column>
                 <p-column styleClass="col-button" header="Edit">
                     <template let-project="rowData" pTemplate type="body">
                         <button type="button" pButton icon="fa-pencil-square-o"
-                                [routerLink]="'/projects/edit-project/' + project.id"></button>
+                                [routerLink]="'/management/projects/edit-project/' + project.id"></button>
                     </template>
                 </p-column>
                 <footer>
                     <div class="ui-helper-clearfix" style="width:100%">
                         <button type="button" pButton icon="fa-plus" style="float:left" label="Add"
-                                routerLink="/projects/create-project"></button>
+                                routerLink="/management/projects/create-project"></button>
                     </div>
                 </footer>
             </p-dataTable>

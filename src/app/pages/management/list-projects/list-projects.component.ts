@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, APIError, Project } from '../../shared/index';
+import { APIService, APIError, Project } from '../../../shared/index';
 import { Router } from '@angular/router';
 
 @Component({
     moduleId: module.id,
-    selector: 'biosys-projects',
-    templateUrl: 'projects.component.html',
+    selector: 'biosys-management-project-list',
+    templateUrl: 'list-projects.component.html',
     styleUrls: [],
 })
 
-export class ProjectsComponent implements OnInit {
+export class ManagementListProjectsComponent implements OnInit {
     projects: Project[] = [];
 
     constructor(private apiService: APIService, private router: Router) {

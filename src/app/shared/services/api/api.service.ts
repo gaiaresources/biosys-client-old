@@ -3,7 +3,7 @@ import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, Resp
 import { Observable } from 'rxjs';
 import { AuthService } from '../index';
 import appConfig from '../../config/app.config';
-import { FetchOptions, APIError, User, Project, Dataset, Site, Observation, Statistic, ModelChoice } from './api.interfaces';
+import { FetchOptions, APIError, User, Project, Dataset, Site, GenericRecord, Observation, SpeciesObservation, Statistic, ModelChoice } from './api.interfaces';
 
 
 /**
@@ -64,7 +64,7 @@ export class APIService {
         return this.fetch('projects', {});
     }
 
-    public getProjectById(id: number): Observable<Project> {
+    public getProjectById(id: Number): Observable<Project> {
         return this.fetch('projects/' + id, {});
     }
 
@@ -134,11 +134,44 @@ export class APIService {
         });
     }
 
+    public getDataByDatasetId(id: Number): Observable<any[]> {
+        return this.fetch('datasets/' + id + '/data/', {});
+    }
+
+    public createDataForDatasetId(id: Number, data: any[]) {
+        return this.fetch('datasets/' + id + '/data/', {
+            method: 'Post',
+            data: data
+        });
+    }
+
+    public getAllGenericRecords(): Observable<GenericRecord[]> {
+        return this.fetch('generic_records', {});
+    }
+
+    public getGenericRecordById(id: Number): Observable<GenericRecord> {
+        return this.fetch('generic_records' + id, {});
+    }
+
+    public createGenericRecord(genericRecord: GenericRecord): Observable<GenericRecord> {
+        return this.fetch('generic_records', {
+            method: 'Post',
+            data: genericRecord
+        });
+    }
+
+    public updateGenericRecord(id: Number, genericRecord: GenericRecord): Observable<GenericRecord> {
+        return this.fetch('generic_records/' + id, {
+            method: 'Patch',
+            data: genericRecord
+        });
+    }
+
     public getAllObservations(): Observable<Observation[]> {
         return this.fetch('observations', {});
     }
 
-    public getObservationById(id: number): Observable<Observation> {
+    public getObservationById(id: Number): Observable<Observation> {
         return this.fetch('observations' + id, {});
     }
 
@@ -149,10 +182,32 @@ export class APIService {
         });
     }
 
-    public updateObservation(id: number, observation: Observation): Observable<Observation> {
+    public updateObservation(id: Number, observation: Observation): Observable<Observation> {
         return this.fetch('observations/' + id, {
             method: 'Patch',
             data: observation
+        });
+    }
+
+    public getAllSpeciesObservations(): Observable<SpeciesObservation[]> {
+        return this.fetch('species_observations', {});
+    }
+
+    public getSpeciesObservationById(id: Number): Observable<SpeciesObservation> {
+        return this.fetch('species_observations' + id, {});
+    }
+
+    public createSpeciesObservation(speciesObservation: SpeciesObservation): Observable<SpeciesObservation> {
+        return this.fetch('species_observations', {
+            method: 'Post',
+            data: speciesObservation
+        });
+    }
+
+    public updateSpeciesObservation(id: Number, speciesObservation: SpeciesObservation): Observable<SpeciesObservation> {
+        return this.fetch('species_observations/' + id, {
+            method: 'Patch',
+            data: speciesObservation
         });
     }
 

@@ -10,7 +10,9 @@ import { LoginModule } from './pages/login/login.module';
 import { HomeModule } from './pages/home/home.module';
 import { AuthGuard } from './shared/auth.guard';
 import { SharedModule } from './shared/shared.module';
-import * as projects from './pages/projects/index';
+import * as management from './pages/management/index';
+import * as data from './pages/data/index';
+
 
 @NgModule({
     imports: [
@@ -20,11 +22,14 @@ import * as projects from './pages/projects/index';
         SharedModule,
         LoginModule,
         HomeModule,
-        projects.ProjectsModule,
-        projects.EditProjectModule,
-        projects.EditDatasetModule,
-        projects.UploadSitesModule,
-		projects.EditSiteModule,
+        management.ManagementListProjectsModule,
+        management.EditProjectModule,
+        management.EditDatasetModule,
+        management.UploadSitesModule,
+        management.EditSiteModule,
+        data.DataListProjectsModule,
+        data.ListDatasetsModule,
+        data.ManageDataModule
     ],
     declarations: [AppComponent],
     providers: [

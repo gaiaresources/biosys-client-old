@@ -1,0 +1,20 @@
+<div class="container">
+    <biosys-header></biosys-header>
+    <biosys-navbar></biosys-navbar>
+    <div class="row mt-1">
+        <div class="col-md">
+            <h3>Data for {{dataset?.name}}</h3>
+            <div style="width: 3000px">
+                <p-dataTable [value]="data" selectionMode="single" (onRowSelect)="onRowSelect($event)"
+                             [paginator]="true" [rows]="10" [responsive]="true">
+                    <p-column *ngFor="let f of dataset?.data_package?.resources[0]?.schema?.fields"
+                              [field]="f.name" [header]="f.name">
+                        <template let-datum="rowData" let-col pTemplate="body">
+                            <p>{{datum.data[col.field] | slice:0:30 }}</p>
+                        </template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>

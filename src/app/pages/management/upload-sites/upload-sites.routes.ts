@@ -4,7 +4,7 @@ import { AuthGuard } from '../../../shared/index';
 
 export const UploadSitesRoutes: Route[] = [
     {
-        path: 'projects/edit-project/:projectId/upload-sites',
+        path: 'management/projects/edit-project/:projectId/upload-sites',
         component: UploadSitesComponent,
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard]

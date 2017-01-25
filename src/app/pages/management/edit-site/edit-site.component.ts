@@ -37,7 +37,7 @@ export class EditSiteComponent implements OnInit {
     save() {
         this.site.geometry = this.featureMapComponent.getFeatureGeometry();
 
-        let successUrl = '/projects/edit-project/' + this.site.project;
+        let successUrl = 'management/projects/edit-project/' + this.site.project;
         if (this.site.id) {
             this.apiService.updateSite(this.site).subscribe(
                 () => this.router.navigate([successUrl]),

@@ -63,7 +63,7 @@ export class EditDatasetComponent implements OnInit {
     }
 
     save() {
-        let successUrl = '/projects/edit-project/' + this.ds.project;
+        let successUrl = '/management/projects/edit-project/' + this.ds.project;
         if (this.ds.id) {
             this.apiService.updateDataset(this.ds).subscribe(
                 () => this.router.navigate([successUrl]),

@@ -28,16 +28,12 @@ export class NavbarComponent implements OnInit {
             {
                 label: 'Manage',
                 icon: 'fa-university',
-                items: [
-                    {
-                        label: 'Projects',
-                        routerLink: ['/projects']
-                    },
-                    {
-                        label: 'Data',
-                        routerLink: ['/data']
-                    }
-                ]
+                routerLink: ['management/projects']
+            },
+            {
+                label: 'Data',
+                icon: 'fa-database',
+                routerLink: ['data/projects']
             },
             {
                 label: 'View',
