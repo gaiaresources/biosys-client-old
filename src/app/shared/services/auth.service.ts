@@ -5,14 +5,14 @@ import { Observable, Observer } from 'rxjs';
 @Injectable()
 export class AuthService {
     private api: APIService;
-    private loggedIn = false;
+    private hasAuthToken = false;
 
     static getAuthToken() {
         return localStorage.getItem('auth_token');
     }
 
     constructor(api: APIService) {
-        this.loggedIn = !!localStorage.getItem('auth_token');
+        this.hasAuthToken = !!localStorage.getItem('auth_token');
         this.api = api;
     }
 
@@ -21,21 +21,21 @@ export class AuthService {
             .map(token => {
                 // set the token
                 localStorage.setItem('auth_token', token);
-                this.loggedIn = true;
+                this.hasAuthToken = true;
             });
     }
 
     logout() {
         return Observable.create((observer: Observer<boolean>) => {
             localStorage.removeItem('auth_token');
-            this.loggedIn = false;
+            this.hasAuthToken = false;
             observer.next(true);
             observer.complete();
         });
     }
 
     isLoggedIn() {
-        return this.loggedIn;
+        return true;
     }
 
 }
