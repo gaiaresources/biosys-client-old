@@ -3,7 +3,7 @@ import * as util from 'gulp-util';
 import * as runSequence from 'run-sequence';
 
 import config from './config/config';
-import {loadTasks} from './tools/utils';
+import { loadTasks } from './tools/utils';
 
 
 loadTasks(config.BIOSYS_TASKS_DIR);
@@ -37,6 +37,24 @@ gulp.task('build.e2e', (done: any) =>
         'build.assets.dev',
         'build.js.e2e',
         'build.index.dev',
+        done));
+
+// --------------
+// Build uat.
+gulp.task('build.uat', (done: any) =>
+    runSequence('clean.uat',
+        'tslint',
+        'css-lint',
+        'build.assets.uat',
+        'build.fonts',
+        'build.html_css',
+        'copy.uat',
+        'build.css_images',
+        'build.js.uat',
+        'build.bundles',
+        'build.bundles.app',
+        'minify.bundles',
+        'build.index.uat',
         done));
 
 // --------------
@@ -125,6 +143,12 @@ gulp.task('serve.e2e', (done: any) =>
         'watch.e2e',
         done));
 
+// --------------
+// Serve uat
+gulp.task('serve.uat', (done: any) =>
+    runSequence('build.uat',
+        'server.uat',
+        done));
 
 // --------------
 // Serve prod
