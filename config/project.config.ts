@@ -287,7 +287,7 @@ export class ProjectConfig {
      */
     ENABLE_SCSS = argv['scss'] || false;
 
-    FONTS_DEST = `${this.APP_DEST}/font-awesome/fonts`;
+    FONTS_DEST = `${this.APP_DEST}/fonts`;
 
     FONTS_SRC = ['node_modules/font-awesome/fonts/**'];
 
