@@ -10,6 +10,7 @@ import { Environments, InjectableDependency } from './project.config.interfaces'
  */
 export const ENVIRONMENTS: Environments = {
     DEVELOPMENT: 'dev',
+    UAT: 'uat',
     PRODUCTION: 'prod'
 };
 
@@ -207,6 +208,12 @@ export class ProjectConfig {
      * The folder for the built files in the `prod` environment.
      * @type {string}
      */
+    UAT_DEST = `${this.DIST_DIR}/uat`;
+
+    /**
+     * The folder for the built files in the `prod` environment.
+     * @type {string}
+     */
     PROD_DEST = `${this.DIST_DIR}/prod`;
 
     /**
@@ -219,7 +226,7 @@ export class ProjectConfig {
      * The folder for the built files, corresponding to the current environment.
      * @type {string}
      */
-    APP_DEST = this.ENV === ENVIRONMENTS.DEVELOPMENT ? this.DEV_DEST : this.PROD_DEST;
+    APP_DEST = this.ENV === ENVIRONMENTS.PRODUCTION ? this.PROD_DEST : this.ENV === ENVIRONMENTS.UAT ? this.UAT_DEST : this.DEV_DEST;
 
     /**
      * The folder for the built CSS files.
@@ -354,15 +361,17 @@ export class ProjectConfig {
             '@angular/forms': 'node_modules/@angular/forms/bundles/forms.umd.js',
             '@angular/http': 'node_modules/@angular/http/bundles/http.umd.js',
             '@angular/platform-browser': 'node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
-            '@angular/platform-browser-dynamic': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+            '@angular/platform-browser-dynamic':
+                'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
             '@angular/router': 'node_modules/@angular/router/bundles/router.umd.js',
-
             '@angular/common/testing': 'node_modules/@angular/common/bundles/common-testing.umd.js',
             '@angular/compiler/testing': 'node_modules/@angular/compiler/bundles/compiler-testing.umd.js',
             '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
             '@angular/http/testing': 'node_modules/@angular/http/bundles/http-testing.umd.js',
-            '@angular/platform-browser/testing': 'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
-            '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
+            '@angular/platform-browser/testing':
+                'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
+            '@angular/platform-browser-dynamic/testing':
+                'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
             '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
             'primeng': 'node_modules/primeng',
 			'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
@@ -561,7 +570,7 @@ export class ProjectConfig {
     }
 
     getInjectableStyleExtension() {
-        return this.ENV === ENVIRONMENTS.PRODUCTION && this.ENABLE_SCSS ? 'scss' : 'css';
+        return (this.ENV === ENVIRONMENTS.PRODUCTION || this.ENV === ENVIRONMENTS.UAT) && this.ENABLE_SCSS ? 'scss' : 'css';
     }
 }
 
@@ -615,9 +624,12 @@ function customRules(): string[] {
  */
 function getEnvironment() {
     let base: string[] = argv['_'];
+    let uatKeyword = !!base.filter(o => o.indexOf(ENVIRONMENTS.UAT) >= 0).pop();
     let prodKeyword = !!base.filter(o => o.indexOf(ENVIRONMENTS.PRODUCTION) >= 0).pop();
     let env = (argv['env'] || '').toLowerCase();
-    if ((base && prodKeyword) || env === ENVIRONMENTS.PRODUCTION) {
+    if ((base && uatKeyword) || env === ENVIRONMENTS.UAT) {
+        return ENVIRONMENTS.UAT;
+    } else if ((base && prodKeyword) || env === ENVIRONMENTS.PRODUCTION) {
         return ENVIRONMENTS.PRODUCTION;
     } else {
         return ENVIRONMENTS.DEVELOPMENT;

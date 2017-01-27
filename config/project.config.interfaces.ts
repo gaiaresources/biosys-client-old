@@ -7,6 +7,7 @@ export interface InjectableDependency {
 
 export interface Environments {
     DEVELOPMENT: string;
+    UAT: string;
     PRODUCTION: string;
     [key: string]: string;
 }

@@ -20,9 +20,9 @@ const processors = [
 
 const reportPostCssError = (e: any) => util.log(util.colors.red(e.message));
 
-const isProd = Config.ENV === 'prod';
+const isUATorProd = Config.ENV === 'prod' || Config.ENV === 'uat';
 
-if (isProd) {
+if (isUATorProd) {
     processors.push(
         cssnano({
             discardComments: {removeAll: true},
@@ -53,14 +53,14 @@ function processComponentStylesheets() {
  */
 function processComponentScss() {
     return gulp.src(join(Config.APP_SRC, '**', '*.scss'))
-        .pipe(isProd ? plugins.cached('process-component-scss') : plugins.util.noop())
-        .pipe(isProd ? plugins.progeny() : plugins.util.noop())
+        .pipe(isUATorProd ? plugins.cached('process-component-scss') : plugins.util.noop())
+        .pipe(isUATorProd ? plugins.progeny() : plugins.util.noop())
         .pipe(plugins.sourcemaps.init())
         .pipe(plugins.sass(Config.getPluginConfig('gulp-sass')).on('error', plugins.sass.logError))
         .pipe(plugins.postcss(processors))
         .on('error', reportPostCssError)
-        .pipe(plugins.sourcemaps.write(isProd ? '.' : ''))
-        .pipe(gulp.dest(isProd ? Config.TMP_DIR : Config.APP_DEST));
+        .pipe(plugins.sourcemaps.write(isUATorProd ? '.' : ''))
+        .pipe(gulp.dest(isUATorProd ? Config.TMP_DIR : Config.APP_DEST));
 }
 
 /**
@@ -72,10 +72,10 @@ function processComponentCss() {
         join(Config.APP_SRC, '**', '*.css'),
         '!' + join(Config.APP_SRC, 'assets', '**', '*.css')
     ])
-        .pipe(isProd ? plugins.cached('process-component-css') : plugins.util.noop())
+        .pipe(isUATorProd ? plugins.cached('process-component-css') : plugins.util.noop())
         .pipe(plugins.postcss(processors))
         .on('error', reportPostCssError)
-        .pipe(gulp.dest(isProd ? Config.TMP_DIR : Config.APP_DEST));
+        .pipe(gulp.dest(isUATorProd ? Config.TMP_DIR : Config.APP_DEST));
 }
 
 /**
@@ -91,10 +91,10 @@ function processExternalStylesheets() {
  */
 function processAllExternalStylesheets() {
     return merge(getExternalCssStream(), getExternalScssStream())
-        .pipe(isProd ? plugins.concatCss(gulpConcatCssConfig.targetFile, gulpConcatCssConfig.options) : plugins.util.noop())
+        .pipe(isUATorProd ? plugins.concatCss(gulpConcatCssConfig.targetFile, gulpConcatCssConfig.options) : plugins.util.noop())
         .pipe(plugins.postcss(processors))
         .on('error', reportPostCssError)
-        .pipe(isProd ? cleanCss() : plugins.util.noop())
+        .pipe(isUATorProd ? cleanCss() : plugins.util.noop())
         .pipe(gulp.dest(Config.CSS_DEST));
 }
 
@@ -103,7 +103,7 @@ function processAllExternalStylesheets() {
  */
 function getExternalCssStream() {
     return gulp.src(getExternalCss())
-        .pipe(isProd ? plugins.cached('process-external-css') : plugins.util.noop());
+        .pipe(isUATorProd ? plugins.cached('process-external-css') : plugins.util.noop());
 }
 
 /**
@@ -118,8 +118,8 @@ function getExternalCss() {
  */
 function getExternalScssStream() {
     return gulp.src(getExternalScss())
-        .pipe(isProd ? plugins.cached('process-external-scss') : plugins.util.noop())
-        .pipe(isProd ? plugins.progeny() : plugins.util.noop())
+        .pipe(isUATorProd ? plugins.cached('process-external-scss') : plugins.util.noop())
+        .pipe(isUATorProd ? plugins.progeny() : plugins.util.noop())
         .pipe(plugins.sass(Config.getPluginConfig('gulp-sass')).on('error', plugins.sass.logError));
 }
 
@@ -138,9 +138,9 @@ function getExternalScss() {
 function processExternalCss() {
     return getExternalCssStream()
         .pipe(plugins.postcss(processors))
-        .pipe(isProd ? plugins.concatCss(gulpConcatCssConfig.targetFile, gulpConcatCssConfig.options) : plugins.util.noop())
+        .pipe(isUATorProd ? plugins.concatCss(gulpConcatCssConfig.targetFile, gulpConcatCssConfig.options) : plugins.util.noop())
         .on('error', reportPostCssError)
-        .pipe(isProd ? cleanCss() : plugins.util.noop())
+        .pipe(isUATorProd ? cleanCss() : plugins.util.noop())
         .pipe(gulp.dest(Config.CSS_DEST));
 }
 
