@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/index';
 import { NavbarComponent } from './navbar/index';
 import { FeatureMapComponent } from './featuremap/index';
+import { TruncatePipe } from './pipes/index';
 import { APIService } from './services/api/index';
 import { MenubarModule } from 'primeng/primeng';
 import { AngularOpenlayersModule } from 'angular2-openlayers';
@@ -15,8 +16,8 @@ import { AngularOpenlayersModule } from 'angular2-openlayers';
 
 @NgModule({
   imports: [CommonModule, RouterModule, MenubarModule, AngularOpenlayersModule],
-  declarations: [HeaderComponent, NavbarComponent, FeatureMapComponent],
-  exports: [CommonModule, FormsModule, RouterModule, HeaderComponent, NavbarComponent, FeatureMapComponent]
+  declarations: [HeaderComponent, NavbarComponent, FeatureMapComponent, TruncatePipe],
+  exports: [CommonModule, FormsModule, RouterModule, HeaderComponent, NavbarComponent, FeatureMapComponent, TruncatePipe]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
