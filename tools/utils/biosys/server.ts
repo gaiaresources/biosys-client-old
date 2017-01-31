@@ -58,6 +58,24 @@ export function serveCoverage() {
 }
 
 /**
+ * Starts a new `express` server, serving the built files from `dist/uat`.
+ */
+export function serveUAT() {
+    let root = resolve(process.cwd(), Config.UAT_DEST);
+    let server = express();
+    let compression = require('compression');
+    server.use(compression());
+
+    server.use(Config.APP_BASE, express.static(root));
+
+    server.use(fallback('index.html', { root }));
+
+    server.listen(Config.PORT, () =>
+        openResource('http://localhost:' + Config.PORT + Config.APP_BASE)
+    );
+};
+
+/**
  * Starts a new `express` server, serving the built files from `dist/prod`.
  */
 export function serveProd() {
