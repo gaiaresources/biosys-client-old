@@ -1,14 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-    APIService,
-    APIError,
-    User,
-    Project,
-    Site,
-    Dataset,
-    ModelChoice,
-    FeatureMapComponent
-} from '../../../shared/index';
+import { APIService, APIError, User, Project, Site, Dataset, ModelChoice, FeatureMapComponent } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SelectItem } from 'primeng/primeng';
 
@@ -20,6 +11,8 @@ import { SelectItem } from 'primeng/primeng';
 })
 
 export class EditProjectComponent implements OnInit {
+    public breadcrumbItems: any = [];
+
     @ViewChild(FeatureMapComponent)
     public featureMapComponent: FeatureMapComponent;
 
@@ -37,20 +30,25 @@ export class EditProjectComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.isEditing = !('id' in this.route.snapshot.params);
+        let params = this.route.snapshot.params;
+
+        this.isEditing = !('id' in params);
 
         if (!this.isEditing) {
-            this.apiService.getProjectById(Number(this.route.snapshot.params['id'])).subscribe(
-                (project: Project) => this.project = project,
+            this.apiService.getProjectById(Number(params['id'])).subscribe(
+                (project: Project) => {
+                    this.project = project;
+                    this.breadcrumbItems.push({label: 'Edit ' + this.project.title});
+                },
                 (error: APIError) => console.log('error.msg', error.msg)
             );
 
-            this.apiService.getAllDatasetsForProjectID(Number(this.route.snapshot.params['id'])).subscribe(
+            this.apiService.getAllDatasetsForProjectID(Number(params['id'])).subscribe(
                 (datasets: Dataset[]) => this.datasets = datasets,
                 (error: APIError) => console.log('error.msg', error.msg)
             );
 
-            this.apiService.getAllSitesForProjectID(Number(this.route.snapshot.params['id'])).subscribe(
+            this.apiService.getAllSitesForProjectID(Number(params['id'])).subscribe(
                 (sites: Site[]) => this.sites = sites,
                 (error: APIError) => console.log('error.msg', error.msg)
             );
@@ -85,6 +83,14 @@ export class EditProjectComponent implements OnInit {
                 (users: SelectItem[]) => this.custodianChoices = users,
                 (error: APIError) => console.log('error.msg', error.msg)
             );
+
+        this.breadcrumbItems = [
+            {label:'Management - Project List', routerLink: ['management/projects']},
+        ];
+
+        if (this.isEditing) {
+            this.breadcrumbItems.push({label: 'Create Project'});
+        }
     }
 
     public getDatumLabel(value: string): string {
@@ -114,7 +120,11 @@ export class EditProjectComponent implements OnInit {
             );
         } else {
             this.apiService.createProject(this.project).subscribe(
-                (project: Project) => this.project = project,
+                (project: Project) => {
+                    this.project = project;
+                    this.breadcrumbItems.pop();
+                    this.breadcrumbItems.push({label: 'Edit ' + this.project.title});
+                },
                 (error: APIError) => console.log('error.msg', error.msg),
                 () => this.isEditing = false
             );

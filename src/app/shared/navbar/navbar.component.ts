@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/index';
-import { MenubarModule, MenuItem } from 'primeng/primeng';
+import { MenuItem } from 'primeng/primeng';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -13,7 +13,7 @@ import { MenubarModule, MenuItem } from 'primeng/primeng';
     styleUrls: []
 })
 export class NavbarComponent implements OnInit {
-    private items: MenuItem[];
+    public items: MenuItem[];
 
     constructor(public auth: AuthService, private router: Router) {
     }

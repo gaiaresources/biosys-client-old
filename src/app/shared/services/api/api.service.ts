@@ -3,8 +3,8 @@ import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, Resp
 import { Observable } from 'rxjs';
 import { AuthService } from '../index';
 import appConfig from '../../config/app.config';
-import { FetchOptions, APIError, User, Project, Dataset, Site, GenericRecord, Observation, SpeciesObservation, Statistic, ModelChoice } from './api.interfaces';
-
+import { FetchOptions, APIError, User, Project, Dataset, Site, GenericRecord, Observation, SpeciesObservation,
+    Statistic, ModelChoice } from './api.interfaces';
 
 /**
  * This class provides the Biosys API service.
@@ -20,7 +20,7 @@ export class APIService {
         let error: APIError = {
             status: res.status,
             statusText: res.statusText,
-            text: res.text(),
+            text: res.json(),
             msg: ''
         };
         // The error message is usually in the body as 'detail' or 'non_field_errors'
@@ -162,8 +162,14 @@ export class APIService {
 
     public updateGenericRecord(id: Number, genericRecord: GenericRecord): Observable<GenericRecord> {
         return this.fetch('generic_records/' + id, {
-            method: 'Patch',
+            method: 'Put',
             data: genericRecord
+        });
+    }
+
+    public deleteGenericRecord(id: number): Observable<Observation> {
+        return this.fetch('generic_records/' + id, {
+            method: 'Delete',
         });
     }
 
@@ -184,8 +190,14 @@ export class APIService {
 
     public updateObservation(id: Number, observation: Observation): Observable<Observation> {
         return this.fetch('observations/' + id, {
-            method: 'Patch',
+            method: 'Put',
             data: observation
+        });
+    }
+
+    public deleteObservation(id: number): Observable<Observation> {
+        return this.fetch('observations/' + id, {
+            method: 'Delete',
         });
     }
 
@@ -206,8 +218,14 @@ export class APIService {
 
     public updateSpeciesObservation(id: Number, speciesObservation: SpeciesObservation): Observable<SpeciesObservation> {
         return this.fetch('species_observations/' + id, {
-            method: 'Patch',
+            method: 'Put',
             data: speciesObservation
+        });
+    }
+
+    public deleteSpeciesObservation(id: number): Observable<Observation> {
+        return this.fetch('species_observations/' + id, {
+            method: 'Delete',
         });
     }
 

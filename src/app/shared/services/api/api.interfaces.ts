@@ -56,7 +56,9 @@ export interface Dataset {
     name?: string;
     type?: string;
     project?: number;
-    data_package?: {};
+    data_package?: {
+        'resources'?: any[]
+    };
 }
 export interface RecordData {
     data: {[key: string]: string} | null;

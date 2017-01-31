@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 
 export class DataListProjectsComponent implements OnInit {
+    public breadcrumbItems: any = [];
     projects: Project[] = [];
 
     constructor(private apiService: APIService, private router: Router) {
@@ -21,6 +22,10 @@ export class DataListProjectsComponent implements OnInit {
                 (projects: Project[]) => this.projects = projects,
                 (error: APIError) => console.log('error.msg', error.msg)
             );
+
+        this.breadcrumbItems = [
+            {label:'Enter Data - Project List'},
+        ];
     }
 
     onRowSelect(event:any) {

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { APIService, APIError, Dataset } from '../../../shared/index';
+import { APIService, APIError, Project, Dataset } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { JsonEditorComponent, JsonEditorOptions } from '../../../shared/index';
 import { SelectItem, Message } from 'primeng/primeng';
@@ -13,14 +13,17 @@ import { ModelChoice } from '../../../shared/services/api/api.interfaces';
 })
 
 export class EditDatasetComponent implements OnInit {
-    @Input('isValid')
-    isValid: boolean = true;
-    typeChoices: SelectItem[];
-    messages: Message[] = [];
-    private ds: Dataset = <Dataset>{};
-    private editorOptions: JsonEditorOptions;
+    public breadcrumbItems: any = [];
+    public typeChoices: SelectItem[];
+    public messages: Message[] = [];
+    public ds: Dataset = <Dataset>{};
+    public editorOptions: JsonEditorOptions;
+
+    @Input()
+    public isValid: boolean;
+
     @ViewChild(JsonEditorComponent)
-    private editor: JsonEditorComponent;
+    public editor: JsonEditorComponent;
 
     constructor(private apiService: APIService,
                 private router: Router,
@@ -33,19 +36,33 @@ export class EditDatasetComponent implements OnInit {
 
     ngOnInit() {
         let params = this.route.snapshot.params;
+
+        let projId: Number = Number(params['projId']);
+
+        this.apiService.getProjectById(projId)
+            .subscribe(
+                (project: Project) => this.breadcrumbItems.splice(1, 0, {
+                    label: 'Edit ' + project.title,
+                    routerLink: ['/management/projects/edit-project/' + projId]
+                }),
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
+
         if ('id' in params) {
-            this.apiService.getDatasetById(Number(params['id'])).subscribe(
+            let datasetId: Number = Number(params['id']);
+
+            this.apiService.getDatasetById(datasetId).subscribe(
                 (ds: Dataset) => {
                     this.ds = ds;
                     this.editor.set(<JSON>this.ds.data_package);
+                    this.breadcrumbItems.push({label: 'Edit ' + this.ds.name});
                 },
                 (error: APIError) => console.log('error.msg', error.msg)
             );
-        } else if ('projId' in params) {
-            this.ds.project = Number(params['projId']);
         } else {
-            throw new Error('No project ID provided');
+            this.ds.project = Number(params['projId']);
         }
+
         this.apiService.getModelChoices('dataset', 'type')
             .map(
                 (choices: ModelChoice[]): SelectItem[] =>
@@ -60,6 +77,14 @@ export class EditDatasetComponent implements OnInit {
                 (choices: SelectItem[]) => this.typeChoices = choices,
                 (error: APIError) => console.log('error.msg', error.msg)
             );
+
+        this.breadcrumbItems = [
+            {label: 'Management - Project List', routerLink: ['/management/projects']},
+        ];
+
+        if (!('id' in params)) {
+            this.breadcrumbItems.push({label: 'Create Dataset '});
+        }
     }
 
     save() {

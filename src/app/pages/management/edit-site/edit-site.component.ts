@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { APIService, APIError, Site, FeatureMapComponent } from '../../../shared/index';
+import { APIService, APIError, Project, Site, FeatureMapComponent } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,6 +10,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class EditSiteComponent implements OnInit {
+    public breadcrumbItems: any = [];
+
     @ViewChild(FeatureMapComponent)
     public featureMapComponent: FeatureMapComponent;
 
@@ -22,15 +24,36 @@ export class EditSiteComponent implements OnInit {
 
     ngOnInit() {
         let params = this.route.snapshot.params;
+
+        let projId: Number = Number(params['projId']);
+
+        this.apiService.getProjectById(projId)
+            .subscribe(
+                (project: Project) => this.breadcrumbItems.splice(1, 0, {
+                    label: 'Edit ' + project.title,
+                    routerLink: ['/management/projects/edit-project/' + projId]
+                }),
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
+
         if ('id' in params) {
             this.apiService.getSiteById(Number(params['id'])).subscribe(
-                (site: Site) => this.site = site,
+                (site: Site) => {
+                    this.site = site;
+                    this.breadcrumbItems.push({label: 'Edit ' + this.site.name});
+                },
                 (error: APIError) => console.log('error.msg', error.msg),
             );
-        } else if ('projId' in params) {
-            this.site.project = Number(params['projId']);
         } else {
-            throw new Error('No project ID provided');
+            this.site.project = Number(params['projId']);
+        }
+
+        this.breadcrumbItems = [
+            {label: 'Management - Project List', routerLink: ['/management/projects']},
+        ];
+
+        if (!('id' in params)) {
+            this.breadcrumbItems.push({label: 'Create Site '});
         }
     }
 

@@ -5,3 +5,8 @@ body {
 .col-button {
     text-align: center;
 }
+
+.ui-breadcrumb {
+    border: none;
+    background: none;
+}

@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class ListDatasetsComponent implements OnInit {
+    public breadcrumbItems: any = [];
     public project: Project;
     public datasets: Dataset[] = [];
 
@@ -23,7 +24,10 @@ export class ListDatasetsComponent implements OnInit {
 
             this.apiService.getProjectById(projId)
                 .subscribe(
-                    (project: Project) => this.project = project,
+                    (project: Project) => {
+                        this.project = project;
+                        this.breadcrumbItems.push({label: 'Datasets for ' + this.project.title});
+                    },
                     (error: APIError) => console.log('error.msg', error.msg)
                 );
 
@@ -33,6 +37,10 @@ export class ListDatasetsComponent implements OnInit {
                     (error: APIError) => console.log('error.msg', error.msg)
                 );
         }
+
+        this.breadcrumbItems = [
+            {label:'Enter Data - Project List', routerLink: ['data/projects']},
+        ];
     }
 
     onRowSelect(event:any) {

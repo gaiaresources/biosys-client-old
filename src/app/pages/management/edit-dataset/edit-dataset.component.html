@@ -1,23 +1,26 @@
 <div class="container">
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
+    <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
+    <div class="row mt-2">
+        <p-messages [value]="messages"></p-messages>
+    </div>
     <div class="row mt-1">
-        <div class="row mt-2">
-            <p-messages [value]="messages"></p-messages>
-        </div>
         <div class="col-md">
             <h3 *ngIf="ds.id">Edit Dataset</h3>
             <h3 *ngIf="!ds.id">Create Dataset</h3>
+            <p *ngIf="ds.id">Edit the dataset by changing the details below.</p>
+            <p *ngIf="!ds.id">Create the dataset by entering the details below.</p>
             <form (ngSubmit)="save()">
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label for="name">Name</label></div>
-                    <div class="ui-grid-col-3">
+                <div class="row mb-1">
+                    <div class="col-md-1"><label for="name">Name</label></div>
+                    <div class="col-md-3">
                         <input id="name" type="text" pInputText [(ngModel)]="ds.name" name="name"/>
                     </div>
                 </div>
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label for="type">Type</label></div>
-                    <div class="ui-grid-col-3">
+                <div class="row mb-1">
+                    <div class="col-md-1"><label for="type">Type</label></div>
+                    <div class="col-md-3">
                         <p-dropdown
                             id="type"
                             [options]="typeChoices" [(ngModel)]="ds.type" [ngModelOptions]="{standalone: true}"
@@ -27,9 +30,9 @@
                         </p-dropdown>
                     </div>
                 </div>
-                <div class="ui-grid-row mb-1">
-                    <div class="ui-grid-col-1"><label>Data Package</label></div>
-                    <div class="ui-grid-col-8" style="height:500px">
+                <div class="row mb-1">
+                    <div class="col-md-1"><label>Data Package</label></div>
+                    <div class="col-md-8" style="height:500px">
                         <biosys-json-editor id="dataPackage" [options]="editorOptions"
                                      [(data)]="ds.data_package"></biosys-json-editor>
                     </div>

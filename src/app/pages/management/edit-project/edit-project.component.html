@@ -1,11 +1,20 @@
 <div class="container">
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
+    <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
     <div class="row mt-1">
         <div class="col-md">
             <div class="mb-1">
                 <h3 *ngIf="project.id">Project Details</h3>
                 <h3 *ngIf="!project.id">Create Project</h3>
+                <p *ngIf="project.id">
+                    Edit details of the project by clicking the edit button below. You can also create/edit datasets
+                    and sites for the project through the tables below.
+                </p>
+                <p *ngIf="!project.id">
+                    Create a new project by entering the details below project and click the save butten when complete.
+                    You will then be able to create/import datasets and sites for the project.
+                </p>
             </div>
             <div class="row">
                 <div class="col-md-4">
@@ -69,8 +78,8 @@
             </div>
         </div>
     </div>
-    <hr>
-    <div class="row mt-1">
+    <hr *ngIf="project.id" />
+    <div *ngIf="project.id" class="row mt-1">
         <div class="col-md">
             <h4>Datasets</h4>
             <p-dataTable [value]="datasets" [paginator]="true" [rows]="10" [responsive]="true">
@@ -92,7 +101,7 @@
             </p-dataTable>
         </div>
     </div>
-    <div class="row mt-1">
+    <div *ngIf="project.id" class="row mt-1">
         <div class="col-md">
             <h4>Sites</h4>
             <p-dataTable [value]="sites" [paginator]="true" [rows]="10" [responsive]="true">

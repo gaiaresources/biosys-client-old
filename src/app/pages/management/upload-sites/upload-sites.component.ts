@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { APIService } from '../../../shared/index';
+import { APIService, APIError, Project } from '../../../shared/index';
 import { Message, FileUpload } from 'primeng/primeng';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -20,6 +20,8 @@ export class UploadSitesComponent implements OnInit {
         'application/vnd.msexcel'
     ];
 
+    public breadcrumbItems: any = [];
+
     messages: Message[] = [];
     url: string = null;
     projectId: number;
@@ -34,7 +36,22 @@ export class UploadSitesComponent implements OnInit {
     ngOnInit(): void {
         let params = this.route.snapshot.params;
         this.projectId = params['projectId'];
+
+        this.apiService.getProjectById(this.projectId)
+            .subscribe(
+                (project: Project) => this.breadcrumbItems.splice(1, 0, {
+                    label: 'Edit ' + project.title,
+                    routerLink: ['/management/projects/edit-project/' + this.projectId]
+                }),
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
+
         this.url = this.apiService.getProjectSiteUploadURL(this.projectId);
+
+        this.breadcrumbItems = [
+            {label: 'Management - Project List', routerLink: ['/management/projects']},
+            {label: 'Upload sites', routerLink: ['/management/projects/edit-project' + this.projectId + '/upload-sites']},
+        ];
     }
 
     onUpload() {

@@ -1,10 +1,13 @@
 <div class="container">
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
+    <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
     <div class="row mt-1">
         <div class="col-md-4">
             <h3 *ngIf="site.id">Edit Site</h3>
             <h3 *ngIf="!site.id">Create Site</h3>
+            <p *ngIf="site.id">Edit the site by changing the details below.</p>
+            <p *ngIf="!site.id">Create the site by entering the details below.</p>
         </div>
     </div>
     <div class="row mt-1">
