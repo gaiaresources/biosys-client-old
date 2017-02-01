@@ -1,0 +1,15 @@
+<div class="container">
+    <biosys-header></biosys-header>
+    <biosys-navbar></biosys-navbar>
+    <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
+    <div class="row mt-1">
+        <div class="col-md">
+            <h3>Projects</h3>
+            <p>Select a project for which to enter data</p>
+            <p-dataTable [value]="projects" selectionMode="single" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15" [responsive]="true">
+                <p-column field="title" header="Title" [sortable]="true" [filter]="true"></p-column>
+                <p-column field="code" header="Code" [sortable]="true" [filter]="true"></p-column>
+            </p-dataTable>
+        </div>
+    </div>
+</div>

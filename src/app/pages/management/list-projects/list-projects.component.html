@@ -1,0 +1,27 @@
+<div class="container">
+    <biosys-header></biosys-header>
+    <biosys-navbar></biosys-navbar>
+    <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
+    <div class="row mt-1">
+        <div class="col-md">
+            <h3>Projects</h3>
+            <p>Select a project to edit or click add to create a new project</p>
+            <p-dataTable [value]="projects" [paginator]="true" [rows]="15" [responsive]="true">
+                <p-column field="title" header="Title" [sortable]="true"></p-column>
+                <p-column field="code" header="Code"></p-column>
+                <p-column styleClass="col-button" header="Edit">
+                    <template let-project="rowData" pTemplate type="body">
+                        <button type="button" pButton icon="fa-pencil-square-o"
+                                [routerLink]="'/management/projects/edit-project/' + project.id"></button>
+                    </template>
+                </p-column>
+                <footer>
+                    <div class="ui-helper-clearfix" style="width:100%">
+                        <button type="button" pButton icon="fa-plus" style="float:left" label="Add"
+                                routerLink="/management/projects/create-project"></button>
+                    </div>
+                </footer>
+            </p-dataTable>
+        </div>
+    </div>
+</div>

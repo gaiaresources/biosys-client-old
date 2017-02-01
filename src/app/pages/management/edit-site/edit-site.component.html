@@ -1,0 +1,49 @@
+<div class="container">
+    <biosys-header></biosys-header>
+    <biosys-navbar></biosys-navbar>
+    <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
+    <div class="row mt-1">
+        <div class="col-md-4">
+            <h3 *ngIf="site.id">Edit Site</h3>
+            <h3 *ngIf="!site.id">Create Site</h3>
+            <p *ngIf="site.id">Edit the site by changing the details below.</p>
+            <p *ngIf="!site.id">Create the site by entering the details below.</p>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-md-4">
+            <form (ngSubmit)="save()">
+                <div class="row mb-1">
+                    <div class="col-md-5"><label for="name">Name</label></div>
+                    <div class="col-md-7">
+                        <input id="name" type="text" pInputText [(ngModel)]="site.name" name="name"
+                               styleClass="w-100"/>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <div class="col-md-5"><label for="code">Code</label></div>
+                    <div class="col-md-7">
+                        <input id="code" type="text" pInputText [(ngModel)]="site.code" name="code"
+                               styleClass="w-100"/>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <div class="col-md-5"><label>Comments</label></div>
+                    <div class="col-md-7">
+                        <textarea pInputText [(ngModel)]="site.comments" [ngModelOptions]="{standalone: true}"
+                                  styleClass="w-100"></textarea>
+                    </div>
+                </div>
+                <button pButton type="submit" label="Save"></button>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <div class="row mb-1">
+                <div class="col-md-1 offset-md-2"><label>Location</label></div>
+                <div class="col-md-9">
+                    <biosys-featuremap [isEditing]="true" [geometry]="site.geometry"></biosys-featuremap>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

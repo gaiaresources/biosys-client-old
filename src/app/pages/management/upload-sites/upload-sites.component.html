@@ -1,0 +1,23 @@
+<div class="container">
+    <biosys-header></biosys-header>
+    <biosys-navbar></biosys-navbar>
+    <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
+    <div class="row mt-2">
+        <p-messages [value]="messages"></p-messages>
+    </div>
+    <div class="row mt-1">
+        <div class="col-md">
+            <h3>Upload Sites (xlsx/csv files)</h3>
+            <p>Click the Choose button to select an Excel or CSV file containing sites to upload.</p>
+            <p-fileUpload name="file" [url]="url"
+                          auto="auto"
+                          accept=".csv,.xlsx"
+                          (onUpload)="onUpload($event)"
+                          (onError)="onError($event)"
+                          (onSelect)="onSelect($event)"
+                          (onBeforeSend)="onBeforeSend($event)"
+            >
+            </p-fileUpload>
+        </div>
+    </div>
+</div>

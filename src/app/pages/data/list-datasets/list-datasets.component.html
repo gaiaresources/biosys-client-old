@@ -1,0 +1,15 @@
+<div class="container">
+    <biosys-header></biosys-header>
+    <biosys-navbar></biosys-navbar>
+    <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
+    <div class="row mt-1">
+        <div class="col-md">
+            <h3>Datasets for {{project?.title}}</h3>
+            <p>Select the dataset the data will belong to</p>
+            <p-dataTable [value]="datasets" selectionMode="double" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15" [responsive]="true">
+                <p-column field="name" header="Name" [sortable]="true" [filter]="true"></p-column>
+                <p-column field="type" header="Type" [sortable]="true" [filter]="true"></p-column>
+            </p-dataTable>
+        </div>
+    </div>
+</div>
