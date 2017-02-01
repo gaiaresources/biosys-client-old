@@ -7,10 +7,9 @@ import { Component } from '@angular/core';
     moduleId: module.id,
     selector: 'biosys-header',
     templateUrl: 'header.component.html',
-    styleUrls: [],
+    styleUrls: ['header.component.css'],
 })
 export class HeaderComponent {
-
     constructor() {
     }
 }
