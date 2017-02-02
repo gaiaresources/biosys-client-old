@@ -4,6 +4,7 @@
     <div class="row mt-1">
         <div class="col-md">
             <h2>Welcome to Biosys</h2>
+            <span *ngIf="user" class="float-right mt-2">Logged in as {{user.first_name}} {{user.last_name}}</span>
         </div>
     </div>
 	<div class="row mt-1">

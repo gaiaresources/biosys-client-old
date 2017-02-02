@@ -6,3 +6,7 @@
     border: none;
     background: none;
 }
+
+.ui-dropdown-label {
+    font-weight: bold !important;
+}

@@ -19,31 +19,26 @@ export class ListDatasetsComponent implements OnInit {
 
     ngOnInit() {
         let params = this.route.snapshot.params;
-        if ('projId' in params) {
-            let projId:Number = Number(params['projId']);
 
-            this.apiService.getProjectById(projId)
-                .subscribe(
-                    (project: Project) => {
-                        this.project = project;
-                        this.breadcrumbItems.push({label: 'Datasets for ' + this.project.title});
-                    },
-                    (error: APIError) => console.log('error.msg', error.msg)
-                );
+        let projId: number = Number(params['projId']);
 
-            this.apiService.getAllDatasetsForProjectID(projId)
-                .subscribe(
-                    (datasets: Dataset[]) => this.datasets = datasets,
-                    (error: APIError) => console.log('error.msg', error.msg)
-                );
-        }
+        this.apiService.getProjectById(projId)
+            .subscribe(
+                (project: Project) => {
+                    this.project = project;
+                    this.breadcrumbItems.push({label: 'Datasets for ' + this.project.title});
+                },
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
+
+        this.apiService.getAllDatasetsForProjectID(projId)
+            .subscribe(
+                (datasets: Dataset[]) => this.datasets = datasets,
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
 
         this.breadcrumbItems = [
-            {label:'Enter Data - Project List', routerLink: ['data/projects']},
+            {label: 'Enter Data - Project List', routerLink: ['data/projects']},
         ];
-    }
-
-    onRowSelect(event:any) {
-        this.router.navigate(['/data/projects/' + this.project.id + '/datasets/' + event.data.id]);
     }
 }

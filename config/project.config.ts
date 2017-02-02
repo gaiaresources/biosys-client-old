@@ -376,6 +376,7 @@ export class ProjectConfig {
             'primeng': 'node_modules/primeng',
 			'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
             'angular2-openlayers': 'node_modules/angular2-openlayers/dist/index.js',
+            'moment': 'node_modules/moment/moment.js',
             'rxjs/*': 'node_modules/rxjs/*',
             'app/*': '/app/*',
             // For test projectConfig

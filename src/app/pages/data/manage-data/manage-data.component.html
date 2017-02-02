@@ -5,11 +5,11 @@
     <p-growl [value]="msgs"></p-growl>
     <div class="row mt-1">
         <div class="col-md">
-            <h3>Data for {{dataset?.name}}</h3>
+            <h3>Records for {{dataset?.name}}</h3>
             <p>Select a particular record to edit or click Add to add a new record</p>
             <div class="data-table-container">
                 <p-dataTable [tableStyle]="getDataTableWidth()" [value]="records" selectionMode="single"
-                             (onRowSelect)="onRowSelect($event)" emptyMessage="Loading data" [paginator]="true"
+                             (onRowSelect)="onRowSelect($event)" [emptyMessage]="tablePlaceholder" [paginator]="true"
                              [rows]="15" [responsive]="true">
                     <p-column *ngFor="let field of dataset?.data_package?.resources[0]?.schema?.fields"
                               [field]="field.name" [header]="field.name">
@@ -28,20 +28,27 @@
     </div>
 </div>
 
-<p-dialog header="Edit Data" [(visible)]="showEditDialog" [responsive]="true"
+<p-dialog header="Edit Data" [(visible)]="showEditDialog" [responsive]="true" dismissableMask="true"
           showEffect="fade" [modal]="true">
     <div *ngIf="selectedRecord">
     <div class="row mt-1" *ngFor="let field of dataset?.data_package?.resources[0]?.schema?.fields">
         <div class="col-md-4">
             <label [for]="field.name">{{field.name}}</label>
         </div>
-        <div class="col-md-4">
-            <input pInputText [id]="field.name" [(ngModel)]="selectedRecord.data[field.name]" />
-        </div>
-        <div class="col-md-4">
-            <div [hidden]="recordErrors[field.name]?.length"
-                 class="form-control-feedback has-danger">
-                {{recordErrors[field.name]}}
+        <div [ngSwitch]="field.type" class="col-md-8">
+            <div *ngSwitchCase="'date'">
+                <p-calendar *ngIf="field.type === 'date'" dateFormat="dd/mm/yy"
+                            [id]="field.name" [(ngModel)]="selectedRecord.data[field.name]">
+                </p-calendar>
+            </div>
+            <div *ngSwitchDefault>
+                <p-dropdown *ngIf="field.constraints?.enum"
+                            [options]="getDropdownOptions(field.name, field.constraints.enum)"
+                            [(ngModel)]="selectedRecord.data[field.name]"
+                            [style]="{'width': '92%', 'font-weight': 'bold'}">
+                </p-dropdown>
+                <input *ngIf="!field.constraints?.enum" pInputText [id]="field.name"
+                       [(ngModel)]="selectedRecord.data[field.name]" />
             </div>
         </div>
     </div>
@@ -53,12 +60,3 @@
 </p-dialog>
 
 <p-confirmDialog header="Confirm Delete" icon="fa fa-question-circle" width="425"></p-confirmDialog>
-
-<!--<p-dialog header="Confirm Delete" [(visible)]="showConfirmDeleteDialog" [responsive]="true"-->
-          <!--showEffect="fade" [modal]="true">-->
-        <!--<p>Are you sure you wish to delete this record?</p>-->
-        <!--<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">-->
-            <!--<button type="button" pButton icon="fa-close" (click)="delete()" label="Yes"></button>-->
-            <!--<button type="button" pButton icon="fa-check" (click)="showConfirmDeleteDialog = false" label="No"></button>-->
-        <!--</div>-->
-<!--</p-dialog>-->

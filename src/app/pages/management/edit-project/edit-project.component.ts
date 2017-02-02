@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { APIService, APIError, User, Project, Site, Dataset, ModelChoice, FeatureMapComponent } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SelectItem } from 'primeng/primeng';
+import { ConfirmationService, Message, SelectItem } from 'primeng/primeng';
 
 @Component({
     moduleId: module.id,
@@ -13,9 +13,6 @@ import { SelectItem } from 'primeng/primeng';
 export class EditProjectComponent implements OnInit {
     public breadcrumbItems: any = [];
 
-    @ViewChild(FeatureMapComponent)
-    public featureMapComponent: FeatureMapComponent;
-
     public project: Project = <Project>{};
     public sites: Site[];
     public datasets: Dataset[];
@@ -25,8 +22,13 @@ export class EditProjectComponent implements OnInit {
     public datamTypeChoices: SelectItem[];
     public custodianChoices: SelectItem[];
 
-    constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute) {
+    public msgs: Message[] = [];
 
+    @ViewChild(FeatureMapComponent)
+    public featureMapComponent: FeatureMapComponent;
+
+    constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute,
+        private confirmationService: ConfirmationService) {
     }
 
     ngOnInit() {
@@ -106,7 +108,8 @@ export class EditProjectComponent implements OnInit {
             return '';
         }
 
-        return this.custodianChoices.filter(c => custodians.indexOf(c.value) > -1).map(c => c.label).reduce((a, b) => a + '; ' + b);
+        return this.custodianChoices.filter(c =>
+            custodians.indexOf(c.value) > -1).map(c => c.label).reduce((a, b) => a + '; ' + b);
     }
 
     public saveProject() {
@@ -133,5 +136,77 @@ export class EditProjectComponent implements OnInit {
 
     public editProject() {
         this.isEditing = true;
+    }
+
+    public confirmDeleteDataset(dataset:Dataset) {
+        this.confirmationService.confirm({
+            message: 'Are you sure that you want to delete this dataset?',
+            accept: () => {
+                this.apiService.deleteDataset(dataset.id)
+                    .subscribe(
+                        () => this.onDeleteDatasetSuccess(dataset),
+                        (error: APIError) => this.onDeleteDatasetError(error)
+                    );
+            }
+        });
+    }
+
+    public confirmDeleteSite(site:Site) {
+        this.confirmationService.confirm({
+            message: 'Are you sure that you want to delete this site?',
+            accept: () => {
+                this.apiService.deleteSite(site.id)
+                    .subscribe(
+                        () => this.onDeleteSiteSuccess(site),
+                        (error: APIError) => this.onDeleteSiteError(error)
+                    );
+            }
+        });
+    }
+
+    private onDeleteDatasetSuccess(dataset: Dataset) {
+        for (let i = 0; i < this.datasets.length; i++) {
+            if (this.datasets[i].id === dataset.id) {
+                this.datasets.splice(i, 1);
+                break;
+            }
+        }
+
+        this.msgs.push({
+            severity: 'success',
+            summary: 'Dataset deleted',
+            detail: 'The dataset was deleted'
+        });
+    }
+
+    private onDeleteDatasetError(error: APIError) {
+        this.msgs.push({
+            severity: 'error',
+            summary: 'Dataset delete error',
+            detail: 'There were error(s) deleting the dataset: ' + error.msg
+        });
+    }
+
+    private onDeleteSiteSuccess(site: Site) {
+        for (let i = 0; i < this.sites.length; i++) {
+            if (this.sites[i].id === site.id) {
+                this.sites.splice(i, 1);
+                break;
+            }
+        }
+
+        this.msgs.push({
+            severity: 'success',
+            summary: 'Site deleted',
+            detail: 'The site was deleted'
+        });
+    }
+
+    private onDeleteSiteError(error: APIError) {
+        this.msgs.push({
+            severity: 'error',
+            summary: 'Site delete error',
+            detail: 'There were error(s) deleting the site: ' + error.msg
+        });
     }
 }

@@ -20,7 +20,7 @@ export class EditDatasetComponent implements OnInit {
     public editorOptions: JsonEditorOptions;
 
     @Input()
-    public isValid: boolean;
+    public isValid: boolean = true;
 
     @ViewChild(JsonEditorComponent)
     public editor: JsonEditorComponent;
@@ -37,7 +37,7 @@ export class EditDatasetComponent implements OnInit {
     ngOnInit() {
         let params = this.route.snapshot.params;
 
-        let projId: Number = Number(params['projId']);
+        let projId: number = Number(params['projId']);
 
         this.apiService.getProjectById(projId)
             .subscribe(
@@ -49,7 +49,7 @@ export class EditDatasetComponent implements OnInit {
             );
 
         if ('id' in params) {
-            let datasetId: Number = Number(params['id']);
+            let datasetId: number = Number(params['id']);
 
             this.apiService.getDatasetById(datasetId).subscribe(
                 (ds: Dataset) => {

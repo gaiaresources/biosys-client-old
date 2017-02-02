@@ -16,3 +16,7 @@ ul {
     height: 500px;
     width: 400px;
 }
+
+h2 {
+    display: inline-block;
+}

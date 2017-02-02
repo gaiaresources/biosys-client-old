@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, APIError, Observation, Statistic } from '../../shared/index';
+import { APIService, APIError, Observation, Statistic, User } from '../../shared/index';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -12,8 +12,9 @@ import { APIService, APIError, Observation, Statistic } from '../../shared/index
 })
 
 export class HomeComponent implements OnInit {
-    observations: Observation[];
-    statistic: Statistic;
+    public observations: Observation[];
+    public statistic: Statistic;
+    public user: User;
 
     constructor(public apiService: APIService) {}
 
@@ -27,6 +28,12 @@ export class HomeComponent implements OnInit {
         this.apiService.getStatistics()
             .subscribe(
                 (statistic: Statistic) => this.statistic = statistic,
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
+
+        this.apiService.whoAmI()
+            .subscribe(
+                (user: User) => this.user = user,
                 (error: APIError) => console.log('error.msg', error.msg)
             );
     }

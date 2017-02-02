@@ -5,10 +5,16 @@
     <div class="row mt-1">
         <div class="col-md">
             <h3>Datasets for {{project?.title}}</h3>
-            <p>Select the dataset the data will belong to</p>
-            <p-dataTable [value]="datasets" selectionMode="double" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15" [responsive]="true">
+            <p>Select the dataset the records belong to</p>
+            <p-dataTable [value]="datasets" emptyMessage="No datasets found"[paginator]="true" [rows]="15" [responsive]="true">
                 <p-column field="name" header="Name" [sortable]="true" [filter]="true"></p-column>
                 <p-column field="type" header="Type" [sortable]="true" [filter]="true"></p-column>
+                <p-column styleClass="col-button" header="Action">
+                    <template let-dataset="rowData" pTemplate type="body">
+                        <button type="button" pButton icon="fa-list-alt" title="View Records"
+                                [routerLink]="'/data/projects/' + project?.id + '/datasets/' + dataset.id"></button>
+                    </template>
+                </p-column>
             </p-dataTable>
         </div>
     </div>

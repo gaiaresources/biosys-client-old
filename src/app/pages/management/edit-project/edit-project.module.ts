@@ -3,13 +3,15 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { EditProjectComponent } from './edit-project.component';
 import { APIService } from '../../../shared/services/api/index';
-import { DataTableModule, DialogModule, ButtonModule, DropdownModule, MultiSelectModule } from 'primeng/primeng';
+import { ConfirmationService, DataTableModule, DialogModule, ButtonModule, DropdownModule, MultiSelectModule,
+    ConfirmDialogModule }from 'primeng/primeng';
 
 @NgModule({
-    imports: [CommonModule, SharedModule, DataTableModule, DialogModule, ButtonModule, DropdownModule, MultiSelectModule],
+    imports: [CommonModule, SharedModule, DataTableModule, DialogModule, ButtonModule, DropdownModule,
+        MultiSelectModule, ConfirmDialogModule],
     declarations: [EditProjectComponent],
     exports: [EditProjectComponent],
-    providers: [APIService]
+    providers: [APIService, ConfirmationService]
 })
 export class EditProjectModule {
 }

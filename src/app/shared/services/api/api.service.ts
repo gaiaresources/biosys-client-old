@@ -60,11 +60,20 @@ export class APIService {
         return this.fetch('users', {});
     }
 
-    public getAllProjects(): Observable<Project[]> {
-        return this.fetch('projects', {});
+    public whoAmI(): Observable<User> {
+        return this.fetch('whoami', {});
     }
 
-    public getProjectById(id: Number): Observable<Project> {
+    public getProjects(custodians?: number[]): Observable<Project[]> {
+        let params: FetchOptions = {};
+        if(custodians) {
+            params['urlParams'] = {custodians: custodians.toString()};
+        }
+
+        return this.fetch('projects', params);
+    }
+
+    public getProjectById(id: number): Observable<Project> {
         return this.fetch('projects/' + id, {});
     }
 
@@ -82,11 +91,17 @@ export class APIService {
         });
     }
 
+    public deleteProject(id: number): Observable<Observation> {
+        return this.fetch('projects/' + id, {
+            method: 'Delete',
+        });
+    }
+
     public getAllSites(): Observable<Site[]> {
         return this.fetch('sites', {});
     }
 
-    public getAllSitesForProjectID(id: Number): Observable<Site[]> {
+    public getAllSitesForProjectID(id: number): Observable<Site[]> {
         return this.fetch('projects/' + id + '/sites', {});
     }
 
@@ -108,15 +123,21 @@ export class APIService {
         });
     }
 
+    public deleteSite(id: number): Observable<Observation> {
+        return this.fetch('sites/' + id, {
+            method: 'Delete',
+        });
+    }
+
     public getAllDatasets(): Observable<Dataset[]> {
         return this.fetch('datasets', {});
     }
 
-    public getAllDatasetsForProjectID(id: Number): Observable<Dataset[]> {
+    public getAllDatasetsForProjectID(id: number): Observable<Dataset[]> {
         return this.fetch('datasets', {urlParams: {project: String(id)}});
     }
 
-    public getDatasetById(id: Number): Observable<Dataset> {
+    public getDatasetById(id: number): Observable<Dataset> {
         return this.fetch('datasets/' + id, {});
     }
 
@@ -134,11 +155,17 @@ export class APIService {
         });
     }
 
-    public getDataByDatasetId(id: Number): Observable<any[]> {
+    public deleteDataset(id: number): Observable<Observation> {
+        return this.fetch('dataset/' + id, {
+            method: 'Delete',
+        });
+    }
+
+    public getDataByDatasetId(id: number): Observable<any[]> {
         return this.fetch('datasets/' + id + '/data/', {});
     }
 
-    public createDataForDatasetId(id: Number, data: any[]) {
+    public createDataForDatasetId(id: number, data: any[]) {
         return this.fetch('datasets/' + id + '/data/', {
             method: 'Post',
             data: data
@@ -149,7 +176,7 @@ export class APIService {
         return this.fetch('generic_records', {});
     }
 
-    public getGenericRecordById(id: Number): Observable<GenericRecord> {
+    public getGenericRecordById(id: number): Observable<GenericRecord> {
         return this.fetch('generic_records' + id, {});
     }
 
@@ -160,7 +187,7 @@ export class APIService {
         });
     }
 
-    public updateGenericRecord(id: Number, genericRecord: GenericRecord): Observable<GenericRecord> {
+    public updateGenericRecord(id: number, genericRecord: GenericRecord): Observable<GenericRecord> {
         return this.fetch('generic_records/' + id, {
             method: 'Put',
             data: genericRecord
@@ -177,7 +204,7 @@ export class APIService {
         return this.fetch('observations', {});
     }
 
-    public getObservationById(id: Number): Observable<Observation> {
+    public getObservationById(id: number): Observable<Observation> {
         return this.fetch('observations' + id, {});
     }
 
@@ -188,7 +215,7 @@ export class APIService {
         });
     }
 
-    public updateObservation(id: Number, observation: Observation): Observable<Observation> {
+    public updateObservation(id: number, observation: Observation): Observable<Observation> {
         return this.fetch('observations/' + id, {
             method: 'Put',
             data: observation
@@ -205,7 +232,7 @@ export class APIService {
         return this.fetch('species_observations', {});
     }
 
-    public getSpeciesObservationById(id: Number): Observable<SpeciesObservation> {
+    public getSpeciesObservationById(id: number): Observable<SpeciesObservation> {
         return this.fetch('species_observations' + id, {});
     }
 
@@ -216,7 +243,7 @@ export class APIService {
         });
     }
 
-    public updateSpeciesObservation(id: Number, speciesObservation: SpeciesObservation): Observable<SpeciesObservation> {
+    public updateSpeciesObservation(id: number, speciesObservation: SpeciesObservation): Observable<SpeciesObservation> {
         return this.fetch('species_observations/' + id, {
             method: 'Put',
             data: speciesObservation
