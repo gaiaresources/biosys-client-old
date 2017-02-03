@@ -22,7 +22,7 @@ export class EditProjectComponent implements OnInit {
     public datamTypeChoices: SelectItem[];
     public custodianChoices: SelectItem[];
 
-    public msgs: Message[] = [];
+    public messages: Message[] = [];
 
     @ViewChild(FeatureMapComponent)
     public featureMapComponent: FeatureMapComponent;
@@ -172,7 +172,7 @@ export class EditProjectComponent implements OnInit {
             }
         }
 
-        this.msgs.push({
+        this.messages.push({
             severity: 'success',
             summary: 'Dataset deleted',
             detail: 'The dataset was deleted'
@@ -180,7 +180,7 @@ export class EditProjectComponent implements OnInit {
     }
 
     private onDeleteDatasetError(error: APIError) {
-        this.msgs.push({
+        this.messages.push({
             severity: 'error',
             summary: 'Dataset delete error',
             detail: 'There were error(s) deleting the dataset: ' + error.msg
@@ -195,7 +195,7 @@ export class EditProjectComponent implements OnInit {
             }
         }
 
-        this.msgs.push({
+        this.messages.push({
             severity: 'success',
             summary: 'Site deleted',
             detail: 'The site was deleted'
@@ -203,7 +203,7 @@ export class EditProjectComponent implements OnInit {
     }
 
     private onDeleteSiteError(error: APIError) {
-        this.msgs.push({
+        this.messages.push({
             severity: 'error',
             summary: 'Site delete error',
             detail: 'There were error(s) deleting the site: ' + error.msg

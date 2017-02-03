@@ -2,7 +2,7 @@
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
     <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
-    <p-growl [value]="msgs"></p-growl>
+    <p-growl [value]="messages"></p-growl>
     <div class="row mt-1">
         <div class="col-md">
             <h3>Records for {{dataset?.name}}</h3>
@@ -10,9 +10,9 @@
             <div class="data-table-container">
                 <p-dataTable [tableStyle]="getDataTableWidth()" [value]="records" selectionMode="single"
                              (onRowSelect)="onRowSelect($event)" [emptyMessage]="tablePlaceholder" [paginator]="true"
-                             [rows]="15" [responsive]="true">
+                             [rows]="10" [responsive]="true">
                     <p-column *ngFor="let field of dataset?.data_package?.resources[0]?.schema?.fields"
-                              [field]="field.name" [header]="field.name">
+                              [field]="field.name" [header]="field.name" [sortable]="true">
                         <template let-record="rowData" let-col pTemplate="body">
                             <span [innerHTML]="record.data[col.field] | truncate:30"></span>
                         </template>
@@ -24,6 +24,22 @@
                     </footer>
                 </p-dataTable>
             </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md">
+            <h4>Upload records</h4>
+            <p-messages [value]="uploadErrorMessages"></p-messages>
+            <p-messages [value]="uploadWarningMessages"></p-messages>
+            <p-fileUpload name="file" [url]="uploadURL" accept=".csv,.xlsx"
+                          (onUpload)="onUpload($event)" (onError)="onUploadError($event)"
+                          (onSelect)="onUploadSelect($event)" (onBeforeSend)="onUploadBeforeSend($event)"
+                          (onBeforeUpload)="onBeforeUpload($event)">
+                <template pTemplate="content">
+                    <p-checkbox styleClass="mr-3" label="Create Sites"[(ngModel)]="uploadCreateSites" binary="true"></p-checkbox>
+                    <p-checkbox label="Delete Existing Records"[(ngModel)]="uploadDeleteExistingRecords" binary="true"></p-checkbox>
+                </template>
+            </p-fileUpload>
         </div>
     </div>
 </div>
