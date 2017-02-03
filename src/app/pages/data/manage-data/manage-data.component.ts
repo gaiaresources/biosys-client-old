@@ -21,6 +21,7 @@ export class ManageDataComponent implements OnInit {
         'application/vnd.ms-excel',
         'application/vnd.msexcel'
     ];
+    private static AMBIGOUS_DATE_PATTERN: RegExp = /^(\d{1,2}).(\d{1,2}).(\d{4})$/;
 
     public breadcrumbItems: any = [];
     public dataset: Dataset = <Dataset>{};
@@ -107,11 +108,10 @@ export class ManageDataComponent implements OnInit {
             if(field.type === 'date') {
                 // If date in DD?MM?YYYY format (where ? is any single char), convert to American (as Chrome, Firefox
                 // and IE expect this when creating Date from a string
-                let pattern: RegExp = /^(\d{1,2}).(\d{1,2}).(\d{4})$/;
                 let dateString:string = this.selectedRecord.data[field.name];
-                if(pattern.test(dateString)) {
-                    dateString = dateString.substring(3, 5) + '/' + dateString.substring(0, 2) + '/' +
-                        dateString.substring(6, 10);
+                let regexGroup: string[] = dateString.match(ManageDataComponent.AMBIGOUS_DATE_PATTERN);
+                if(regexGroup) {
+                    dateString = regexGroup[2] + '/' + regexGroup[1] + '/' + regexGroup[3];
                 }
                 this.selectedRecord.data[field.name] = new Date(dateString);
             }
