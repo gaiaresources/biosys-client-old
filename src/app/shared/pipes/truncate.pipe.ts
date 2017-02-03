@@ -3,6 +3,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({name: 'truncate'})
 export class TruncatePipe implements PipeTransform {
     transform(value: string, length: string): string {
+        if (value === undefined) {
+            return '';
+        }
+
         let length_num = Number(length);
 
         if (value.length > length_num) {

@@ -13,7 +13,7 @@ import { ConfirmationService, Message } from 'primeng/primeng';
 export class ManagementListProjectsComponent implements OnInit {
     public breadcrumbItems: any = [];
     public projects: Project[] = [];
-    public msgs: Message[] = [];
+    public messages: Message[] = [];
 
     constructor(private apiService: APIService, private router: Router,
                 private confirmationService: ConfirmationService) {
@@ -52,7 +52,7 @@ export class ManagementListProjectsComponent implements OnInit {
             }
         }
 
-        this.msgs.push({
+        this.messages.push({
             severity: 'success',
             summary: 'Project deleted',
             detail: 'The project was deleted'
@@ -60,7 +60,7 @@ export class ManagementListProjectsComponent implements OnInit {
     }
 
     private onDeleteError(projectError: any) {
-        this.msgs.push({
+        this.messages.push({
             severity: 'error',
             summary: 'Project delete error',
             detail: 'There were error(s) deleting the project: ' + projectError.msg

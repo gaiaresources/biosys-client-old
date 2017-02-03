@@ -273,6 +273,10 @@ export class APIService {
         });
     }
 
+    public getRecordsUploadURL(datasetId: number): string {
+        return this.baseUrl + 'datasets/' + datasetId + '/upload-records/';
+    }
+
     public getProjectSiteUploadURL(projectId: number): string {
         return this.baseUrl + 'projects/' + projectId + '/upload-sites/';
     }
