@@ -37,7 +37,8 @@ export class NavbarComponent implements OnInit {
             },
             {
                 label: 'View',
-                icon: 'fa-search'
+                icon: 'fa-search',
+                routerLink: ['view']
             },
             {
                 label: 'Logout',

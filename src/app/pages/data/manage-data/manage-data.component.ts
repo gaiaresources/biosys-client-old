@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { APIService, APIError, Project, Dataset, GenericRecord, Observation, SpeciesObservation } from '../../../shared/index';
+import { APIService, APIError, Project, Dataset, Record } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationService, Message, SelectItem, FileUpload } from 'primeng/primeng';
 import * as moment from 'moment/moment';
@@ -25,8 +25,8 @@ export class ManageDataComponent implements OnInit {
 
     public breadcrumbItems: any = [];
     public dataset: Dataset = <Dataset>{};
-    public records: GenericRecord[] = [];
-    public selectedRecord: GenericRecord = null;
+    public records: Record[] = [];
+    public selectedRecord: Record = null;
     public recordErrors: any = {};
     public showEditDialog: boolean = false;
     public tablePlaceholder: string = 'Loading Records';
@@ -140,50 +140,18 @@ export class ManageDataComponent implements OnInit {
             }
         }
 
-        if (this.dataset.type === 'generic') {
-            if('id' in selectedRecordCopy) {
-                this.apiService.updateGenericRecord(selectedRecordCopy.id, selectedRecordCopy)
-                    .subscribe(
-                        (genericRecord: GenericRecord) => this.onSaveSuccess(genericRecord, false),
-                        (error: APIError) => this.onSaveError(error)
-                    );
-            } else {
-                this.apiService.createGenericRecord(selectedRecordCopy)
-                    .subscribe(
-                        (genericRecord: GenericRecord) => this.onSaveSuccess(genericRecord, true),
-                        (error: APIError) => this.onSaveError(error)
-                    );
-            }
-        } else if (this.dataset.type === 'observation') {
-            if('id' in selectedRecordCopy) {
-                this.apiService.updateObservation(selectedRecordCopy.id, selectedRecordCopy)
-                    .subscribe(
-                        (observation: Observation) => this.onSaveSuccess(observation, false),
-                        (error: APIError) => this.onSaveError(error)
-                    );
-            } else {
-                this.apiService.createObservation(selectedRecordCopy)
-                    .subscribe(
-                        (observation: Observation) => this.onSaveSuccess(observation, true),
-                        (error: APIError) => this.onSaveError(error)
-                    );
-            }
-        } else if (this.dataset.type === 'species_observation') {
-            if('id' in selectedRecordCopy) {
-                this.apiService.updateSpeciesObservation(selectedRecordCopy.id, selectedRecordCopy)
-                    .subscribe(
-                        (speciesObservation: SpeciesObservation) => this.onSaveSuccess(speciesObservation, false),
-                        (error: APIError) => this.onSaveError(error)
-                    );
-            } else {
-                this.apiService.createSpeciesObservation(selectedRecordCopy)
-                    .subscribe(
-                        (speciesObservation: SpeciesObservation) => this.onSaveSuccess(speciesObservation, true),
-                        (error: APIError) => this.onSaveError(error)
-                    );
-            }
+        if('id' in selectedRecordCopy) {
+            this.apiService.updateRecord(selectedRecordCopy.id, selectedRecordCopy)
+                .subscribe(
+                    (record: Record) => this.onSaveSuccess(record, false),
+                    (error: APIError) => this.onSaveError(error)
+                );
         } else {
-            console.error('dateset type not found');
+            this.apiService.createRecord(selectedRecordCopy)
+                .subscribe(
+                    (record: Record) => this.onSaveSuccess(record, true),
+                    (error: APIError) => this.onSaveError(error)
+                );
         }
     }
 
@@ -204,29 +172,9 @@ export class ManageDataComponent implements OnInit {
     public confirmDelete(event:any) {
         this.confirmationService.confirm({
             message: 'Are you sure that you want to delete this record?',
-            accept: () => {
-                if (this.dataset.type === 'generic') {
-                    this.apiService.deleteGenericRecord(this.selectedRecord.id)
-                        .subscribe(
-                            (genericRecord: GenericRecord) => this.onDeleteSuccess(this.selectedRecord),
-                            (error: APIError) => this.onDeleteError(error)
-                        );
-                } else if (this.dataset.type === 'observation') {
-                    this.apiService.deleteObservation(this.selectedRecord.id)
-                        .subscribe(
-                            (observation: Observation) => this.onDeleteSuccess(this.selectedRecord),
-                            (error: APIError) => this.onDeleteError(error)
-                        );
-                } else if (this.dataset.type === 'species_observation') {
-                    this.apiService.deleteSpeciesObservation(this.selectedRecord.id)
-                        .subscribe(
-                            (speciesObservation: SpeciesObservation) => this.onDeleteSuccess(this.selectedRecord),
-                            (error: APIError) => this.onDeleteError(error)
-                        );
-                } else {
-                    console.error('dateset type not found');
-                }
-            }
+            accept: () =>  this.apiService.deleteRecord(this.selectedRecord.id).subscribe(
+                            (record: Record) => this.onDeleteSuccess(this.selectedRecord),
+                            (error: APIError) => this.onDeleteError(error))
         });
     }
 
@@ -321,13 +269,13 @@ export class ManageDataComponent implements OnInit {
         }
     }
 
-    private onSaveSuccess(genericRecord: GenericRecord, isNew:boolean) {
+    private onSaveSuccess(record: Record, isNew:boolean) {
         if(isNew) {
-            this.records.push(genericRecord);
+            this.records.push(record);
         } else {
             for (let i = 0; i < this.records.length; i++) {
-                if (this.records[i].id === genericRecord.id) {
-                    this.records[i] = genericRecord;
+                if (this.records[i].id === record.id) {
+                    this.records[i] = record;
                     break;
                 }
             }
@@ -352,9 +300,9 @@ export class ManageDataComponent implements OnInit {
         });
     }
 
-    private onDeleteSuccess(genericRecord: GenericRecord) {
+    private onDeleteSuccess(record: Record) {
         for (let i = 0; i < this.records.length; i++) {
-            if (this.records[i].id === genericRecord.id) {
+            if (this.records[i].id === record.id) {
                 this.records.splice(i, 1);
             }
         }

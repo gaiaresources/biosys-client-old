@@ -12,7 +12,7 @@ import { AuthGuard } from './shared/auth.guard';
 import { SharedModule } from './shared/shared.module';
 import * as management from './pages/management/index';
 import * as data from './pages/data/index';
-
+import * as view from './pages/view/index';
 
 @NgModule({
     imports: [
@@ -29,7 +29,8 @@ import * as data from './pages/data/index';
         management.EditSiteModule,
         data.DataListProjectsModule,
         data.ListDatasetsModule,
-        data.ManageDataModule
+        data.ManageDataModule,
+        view.ViewRecordsModule
     ],
     declarations: [AppComponent],
     providers: [

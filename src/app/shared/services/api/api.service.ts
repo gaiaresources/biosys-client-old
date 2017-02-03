@@ -3,8 +3,7 @@ import { Http, Response, Headers, RequestOptions, Request, URLSearchParams, Resp
 import { Observable } from 'rxjs';
 import { AuthService } from '../index';
 import appConfig from '../../config/app.config';
-import { FetchOptions, APIError, User, Project, Dataset, Site, GenericRecord, Observation, SpeciesObservation,
-    Statistic, ModelChoice } from './api.interfaces';
+import { FetchOptions, APIError, User, Project, Dataset, Site, Record, Statistic, ModelChoice } from './api.interfaces';
 
 /**
  * This class provides the Biosys API service.
@@ -91,7 +90,7 @@ export class APIService {
         });
     }
 
-    public deleteProject(id: number): Observable<Observation> {
+    public deleteProject(id: number): Observable<Project> {
         return this.fetch('projects/' + id, {
             method: 'Delete',
         });
@@ -123,7 +122,7 @@ export class APIService {
         });
     }
 
-    public deleteSite(id: number): Observable<Observation> {
+    public deleteSite(id: number): Observable<Site> {
         return this.fetch('sites/' + id, {
             method: 'Delete',
         });
@@ -131,6 +130,10 @@ export class APIService {
 
     public getAllDatasets(): Observable<Dataset[]> {
         return this.fetch('datasets', {});
+    }
+
+    public getDatasets(params: any): Observable<Dataset[]> {
+        return this.fetch('datasets', {urlParams: params});
     }
 
     public getAllDatasetsForProjectID(id: number): Observable<Dataset[]> {
@@ -155,7 +158,7 @@ export class APIService {
         });
     }
 
-    public deleteDataset(id: number): Observable<Observation> {
+    public deleteDataset(id: number): Observable<Dataset> {
         return this.fetch('dataset/' + id, {
             method: 'Delete',
         });
@@ -172,88 +175,39 @@ export class APIService {
         });
     }
 
-    public getAllGenericRecords(): Observable<GenericRecord[]> {
-        return this.fetch('generic_records', {});
+    public getAllRecords(): Observable<Record[]> {
+        return this.fetch('records', {});
     }
 
-    public getGenericRecordById(id: number): Observable<GenericRecord> {
-        return this.fetch('generic_records' + id, {});
+    public getRecordById(id: number): Observable<Record> {
+        return this.fetch('records' + id, {});
     }
 
-    public createGenericRecord(genericRecord: GenericRecord): Observable<GenericRecord> {
-        return this.fetch('generic_records', {
+    public createRecord(genericRecord: Record): Observable<Record> {
+        return this.fetch('records', {
             method: 'Post',
             data: genericRecord
         });
     }
 
-    public updateGenericRecord(id: number, genericRecord: GenericRecord): Observable<GenericRecord> {
-        return this.fetch('generic_records/' + id, {
+    public updateRecord(id: number, genericRecord: Record): Observable<Record> {
+        return this.fetch('records/' + id, {
             method: 'Put',
             data: genericRecord
         });
     }
 
-    public deleteGenericRecord(id: number): Observable<Observation> {
-        return this.fetch('generic_records/' + id, {
+    public deleteRecord(id: number): Observable<Record> {
+        return this.fetch('records/' + id, {
             method: 'Delete',
         });
     }
 
-    public getAllObservations(): Observable<Observation[]> {
-        return this.fetch('observations', {});
-    }
-
-    public getObservationById(id: number): Observable<Observation> {
-        return this.fetch('observations' + id, {});
-    }
-
-    public createObservation(observation: Observation): Observable<Observation> {
-        return this.fetch('observations', {
-            method: 'Post',
-            data: observation
-        });
-    }
-
-    public updateObservation(id: number, observation: Observation): Observable<Observation> {
-        return this.fetch('observations/' + id, {
-            method: 'Put',
-            data: observation
-        });
-    }
-
-    public deleteObservation(id: number): Observable<Observation> {
-        return this.fetch('observations/' + id, {
-            method: 'Delete',
-        });
-    }
-
-    public getAllSpeciesObservations(): Observable<SpeciesObservation[]> {
-        return this.fetch('species_observations', {});
-    }
-
-    public getSpeciesObservationById(id: number): Observable<SpeciesObservation> {
-        return this.fetch('species_observations' + id, {});
-    }
-
-    public createSpeciesObservation(speciesObservation: SpeciesObservation): Observable<SpeciesObservation> {
-        return this.fetch('species_observations', {
-            method: 'Post',
-            data: speciesObservation
-        });
-    }
-
-    public updateSpeciesObservation(id: number, speciesObservation: SpeciesObservation): Observable<SpeciesObservation> {
-        return this.fetch('species_observations/' + id, {
-            method: 'Put',
-            data: speciesObservation
-        });
-    }
-
-    public deleteSpeciesObservation(id: number): Observable<Observation> {
-        return this.fetch('species_observations/' + id, {
-            method: 'Delete',
-        });
+    public exportRecords(datasetId: number) {
+        return this.fetch('records', {urlParams: {
+            dataset__id: String(datasetId),
+            output: 'xlsx'
+        }});
     }
 
     public getStatistics(): Observable<Statistic> {
@@ -271,6 +225,10 @@ export class APIService {
         return this.fetch(modelName, {
             'method': 'Options'
         });
+    }
+
+    public getSpecies(): Observable<any> {
+        return this.fetch('species', {});
     }
 
     public getRecordsUploadURL(datasetId: number): string {
