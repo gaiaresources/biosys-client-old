@@ -29,6 +29,7 @@
     <div class="row mt-3">
         <div class="col-md">
             <h4>Upload records</h4>
+            <p>Select one or more Excel (xlxs) or CSV files to upload records for the {{ dataset.name }} dataset</p>
             <p-messages [value]="uploadErrorMessages"></p-messages>
             <p-messages [value]="uploadWarningMessages"></p-messages>
             <p-fileUpload name="file" [url]="uploadURL" accept=".csv,.xlsx"

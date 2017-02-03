@@ -302,14 +302,16 @@ export class ManageDataComponent implements OnInit {
     }
 
     public onUploadSelect(event: any) {
+        this.uploadErrorMessages = [];
+        this.uploadWarningMessages = [];
+
         // check file type (the last in the list)
         // use the file list of uploader instead of the file list given in the event so we can add/remove to it.
         let files: File[] = this.uploader.files;
         let file: File = files.pop();
         if (ManageDataComponent.ACCEPTED_TYPES.indexOf(file.type) === -1) {
-            this.messages = [];
-            this.messages.push({
-                severity: 'info',
+            this.uploadErrorMessages.push({
+                severity: 'error',
                 summary: 'Wrong file type',
                 detail: 'It must be an Excel (.xlsx) or a csv file.'
             });
