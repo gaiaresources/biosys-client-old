@@ -2,17 +2,20 @@
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
     <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
+    <p-growl [value]="msgs"></p-growl>
     <div class="row mt-1">
         <div class="col-md">
             <h3>Projects</h3>
-            <p>Select a project to edit or click add to create a new project</p>
+            <p>Select a project to edit or delete or click add to create a new project</p>
             <p-dataTable [value]="projects" [paginator]="true" [rows]="15" [responsive]="true">
                 <p-column field="title" header="Title" [sortable]="true"></p-column>
                 <p-column field="code" header="Code"></p-column>
-                <p-column styleClass="col-button" header="Edit">
+                <p-column styleClass="col-button" header="Action">
                     <template let-project="rowData" pTemplate type="body">
-                        <button type="button" pButton icon="fa-pencil-square-o"
+                        <button type="button" pButton icon="fa-pencil-square-o" title="Edit"
                                 [routerLink]="'/management/projects/edit-project/' + project.id"></button>
+                        <button type="button" pButton icon="fa-trash-o" title="Delete"
+                                (click)="confirmDelete(project)"></button>
                     </template>
                 </p-column>
                 <footer>
@@ -25,3 +28,5 @@
         </div>
     </div>
 </div>
+
+<p-confirmDialog header="Confirm Delete" icon="fa fa-question-circle" width="425"></p-confirmDialog>

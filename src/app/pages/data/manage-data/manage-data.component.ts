@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService, APIError, Project, Dataset, GenericRecord, Observation, SpeciesObservation } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Message, ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService, Message, SelectItem } from 'primeng/primeng';
+import * as moment from 'moment/moment';
 
 @Component({
     moduleId: module.id,
@@ -12,6 +13,7 @@ import { Message, ConfirmationService } from 'primeng/primeng';
 
 export class ManageDataComponent implements OnInit {
     private static COLUMN_WIDTH:number = 240;
+    private static AMBIGOUS_DATE_PATTERN: RegExp = /^(\d{1,2}).(\d{1,2}).(\d{4})$/;
 
     public breadcrumbItems: any = [];
     public dataset: Dataset = <Dataset>{};
@@ -19,8 +21,9 @@ export class ManageDataComponent implements OnInit {
     public selectedRecord: GenericRecord = null;
     public recordErrors: any = {};
     public showEditDialog: boolean = false;
-    public showConfirmDeleteDialog: boolean = false;
+    public tablePlaceholder: string = 'Loading Records';
     public msgs: Message[] = [];
+    public dropdownItems: any = {};
 
     constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute,
                 private confirmationService: ConfirmationService) {
@@ -29,8 +32,8 @@ export class ManageDataComponent implements OnInit {
     public ngOnInit() {
         let params = this.route.snapshot.params;
 
-        let projId:Number = Number(params['projId']);
-        let datasetId:Number = Number(params['datasetId']);
+        let projId: number = Number(params['projId']);
+        let datasetId: number = Number(params['datasetId']);
 
         this.apiService.getProjectById(projId)
             .subscribe(
@@ -45,7 +48,7 @@ export class ManageDataComponent implements OnInit {
             .subscribe(
                 (dataset: Dataset) => {
                     this.dataset = dataset;
-                    this.breadcrumbItems.push({label: 'Data for ' + this.dataset.name});
+                    this.breadcrumbItems.push({label: 'Records for ' + this.dataset.name});
                 },
                 (error: APIError) => console.log('error.msg', error.msg)
             );
@@ -53,75 +56,109 @@ export class ManageDataComponent implements OnInit {
         this.apiService.getDataByDatasetId(datasetId)
             .subscribe(
                 (data: any[]) => this.records = data,
-                (error: APIError) => console.log('error.msg', error.msg)
+                (error: APIError) => console.log('error.msg', error.msg),
+                () => this.tablePlaceholder = 'No records found'
             );
 
         this.breadcrumbItems = [
-            {label:'Enter Data - Project List', url: '#/data/projects'}
+            {label:'Enter Records - Project List', url: '#/data/projects'}
         ];
     }
 
     public getDataTableWidth(): any {
         if(!('data_package' in this.dataset)) {
-            return {
-                width: '100%'
-            };
+            return { width: '100%'};
         }
 
         // need to do the following to prevent linting error
         let data_package:any = this.dataset.data_package;
         let resources:any = data_package['resources'];
 
-        return {
-            'width': String(resources[0].schema.fields.length * ManageDataComponent.COLUMN_WIDTH) + 'px'
-        };
+        if (resources[0].schema.fields.length > 3) {
+            return {'width': String(resources[0].schema.fields.length * ManageDataComponent.COLUMN_WIDTH) + 'px'};
+        } else {
+            return { width: '100%'};
+        }
     }
 
     public onRowSelect(event:any) {
         // use JSON operations to make deep copy of datum
         this.selectedRecord = JSON.parse(JSON.stringify(event.data));
 
+        // convert date fields to Date type because calendar element in form expects a Date
+        for(let field of this.dataset.data_package.resources[0].schema.fields) {
+            if(field.type === 'date') {
+                // If date in DD?MM?YYYY format (where ? is any single char), convert to American (as Chrome, Firefox
+                // and IE expect this when creating Date from a string
+                let dateString:string = this.selectedRecord.data[field.name];
+                let regexGroup: string[] = dateString.match(ManageDataComponent.AMBIGOUS_DATE_PATTERN);
+                if(regexGroup) {
+                    dateString = regexGroup[2] + '/' + regexGroup[1] + '/' + regexGroup[3];
+                }
+                this.selectedRecord.data[field.name] = new Date(dateString);
+            }
+        }
+
         this.showEditDialog = true;
     }
 
+    public getDropdownOptions(fieldName: string, options: string[]): SelectItem[] {
+        if(!(fieldName in this.dropdownItems)) {
+            this.dropdownItems[fieldName] = options.map(option => ({'label': option, 'value': option}));
+        }
+
+        return this.dropdownItems[fieldName];
+    }
+
     public save(event:any) {
+        // need to use a copy because there may be Date objects within this.selectedRecord which are bound
+        // to calendar elements which must remain dates
+        let selectedRecordCopy = JSON.parse(JSON.stringify(this.selectedRecord));
+
+        // convert Date types back to string in DD/MM/YYYY format
+        for(let field of this.dataset.data_package.resources[0].schema.fields) {
+            if(field.type === 'date') {
+                selectedRecordCopy.data[field.name] = moment(selectedRecordCopy.data[field.name]).format('DD/MM/YYYY');
+            }
+        }
+
         if (this.dataset.type === 'generic') {
-            if('id' in this.selectedRecord) {
-                this.apiService.updateGenericRecord(this.selectedRecord.id, this.selectedRecord)
+            if('id' in selectedRecordCopy) {
+                this.apiService.updateGenericRecord(selectedRecordCopy.id, selectedRecordCopy)
                     .subscribe(
                         (genericRecord: GenericRecord) => this.onSaveSuccess(genericRecord, false),
                         (error: APIError) => this.onSaveError(error)
                     );
             } else {
-                this.apiService.createGenericRecord(this.selectedRecord)
+                this.apiService.createGenericRecord(selectedRecordCopy)
                     .subscribe(
                         (genericRecord: GenericRecord) => this.onSaveSuccess(genericRecord, true),
                         (error: APIError) => this.onSaveError(error)
                     );
             }
         } else if (this.dataset.type === 'observation') {
-            if('id' in this.selectedRecord) {
-                this.apiService.updateObservation(this.selectedRecord.id, this.selectedRecord)
+            if('id' in selectedRecordCopy) {
+                this.apiService.updateObservation(selectedRecordCopy.id, selectedRecordCopy)
                     .subscribe(
                         (observation: Observation) => this.onSaveSuccess(observation, false),
                         (error: APIError) => this.onSaveError(error)
                     );
             } else {
-                this.apiService.createObservation(this.selectedRecord)
+                this.apiService.createObservation(selectedRecordCopy)
                     .subscribe(
                         (observation: Observation) => this.onSaveSuccess(observation, true),
                         (error: APIError) => this.onSaveError(error)
                     );
             }
         } else if (this.dataset.type === 'species_observation') {
-            if('id' in this.selectedRecord) {
-                this.apiService.updateSpeciesObservation(this.selectedRecord.id, this.selectedRecord)
+            if('id' in selectedRecordCopy) {
+                this.apiService.updateSpeciesObservation(selectedRecordCopy.id, selectedRecordCopy)
                     .subscribe(
                         (speciesObservation: SpeciesObservation) => this.onSaveSuccess(speciesObservation, false),
                         (error: APIError) => this.onSaveError(error)
                     );
             } else {
-                this.apiService.createSpeciesObservation(this.selectedRecord)
+                this.apiService.createSpeciesObservation(selectedRecordCopy)
                     .subscribe(
                         (speciesObservation: SpeciesObservation) => this.onSaveSuccess(speciesObservation, true),
                         (error: APIError) => this.onSaveError(error)
@@ -182,13 +219,13 @@ export class ManageDataComponent implements OnInit {
             for (let i = 0; i < this.records.length; i++) {
                 if (this.records[i].id === genericRecord.id) {
                     this.records[i] = genericRecord;
+                    break;
                 }
             }
         }
         this.selectedRecord = null;
         this.recordErrors = {};
         this.showEditDialog = false;
-        this.showConfirmDeleteDialog = false;
         this.msgs.push({
             severity: 'success',
             summary: 'Data saved',
@@ -206,7 +243,6 @@ export class ManageDataComponent implements OnInit {
         });
     }
 
-
     private onDeleteSuccess(genericRecord: GenericRecord) {
         for (let i = 0; i < this.records.length; i++) {
             if (this.records[i].id === genericRecord.id) {
@@ -217,7 +253,6 @@ export class ManageDataComponent implements OnInit {
         this.selectedRecord = null;
         this.recordErrors = {};
         this.showEditDialog = false;
-        this.showConfirmDeleteDialog = false;
         this.msgs.push({
             severity: 'success',
             summary: 'Data deleted',
@@ -228,8 +263,8 @@ export class ManageDataComponent implements OnInit {
     private onDeleteError(recordErrors: any) {
         this.msgs.push({
             severity: 'error',
-            summary: 'Data save error',
-            detail: 'There were error(s) saving the data'
+            summary: 'Data delete error',
+            detail: 'There were error(s) deleting the data'
         });
     }
 }

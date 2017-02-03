@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { APIService, APIError, Project, Site, FeatureMapComponent } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -25,7 +25,7 @@ export class EditSiteComponent implements OnInit {
     ngOnInit() {
         let params = this.route.snapshot.params;
 
-        let projId: Number = Number(params['projId']);
+        let projId: number = Number(params['projId']);
 
         this.apiService.getProjectById(projId)
             .subscribe(
