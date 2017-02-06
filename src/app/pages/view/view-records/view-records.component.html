@@ -23,13 +23,19 @@
                     <p-calendar [(ngModel)]="dateEnd" dateFormat="yyyy-mm-dd">
                     </p-calendar>
                 </div>
-                <div class="col-2">
+                <div class="col-4">
                     <label>Species</label>
-                    <p-dropdown [(ngModel)]='speciesNameId' [options]="speciesDropdownItems" [filter]="true"
-                                [style]="{'width': '100%', 'font-weight': 'bold'}">
-                    </p-dropdown>
+                    <p-autoComplete [(ngModel)]='speciesName'
+                                    [style]="{'width': '100%', 'font-weight': 'bold'}"
+                                    [dropdown]="true"
+                                    [suggestions]="speciesFiltered"
+                                    (completeMethod)="filterSpecies($event)"
+                                    (onDropdownClick)="onSpeciesDropdown($event)"
+                                    placeholder="Species name"
+                                    >
+                    </p-autoComplete>
                 </div>
-                <div class="col-2 offset-2">
+                <div class="col-2">
                     <button pButton styleClass="pull-right" type="button" label="Search" (click)="search()"></button>
                 </div>
             </div>
@@ -39,7 +45,7 @@
                 <p-column styleClass="col-button" header="Action">
                     <template let-dataset="rowData" pTemplate type="body">
                         <button type="button" pButton icon="fa-file-excel-o" title="Export Records"
-                            (click)="exportRecords(dataset)"></button>
+                                (click)="exportRecords(dataset)"></button>
                     </template>
                 </p-column>
             </p-dataTable>
