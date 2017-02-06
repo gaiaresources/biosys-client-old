@@ -60,17 +60,13 @@ export interface Dataset {
         'resources'?: any[]
     };
 }
-export interface GenericRecord {
+export interface Record {
     id?: number;
     dataset?: number;
     site?: number | null;
     data?: {[key: string]: any} | null;
-}
-export interface Observation extends GenericRecord {
     datetime?: string;
     geometry?: Geometry;
-}
-export interface SpeciesObservation extends Observation {
     species_name?: string;
     name_id?: number;
 }

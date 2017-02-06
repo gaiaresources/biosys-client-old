@@ -1,0 +1,48 @@
+<div class="container">
+    <biosys-header></biosys-header>
+    <biosys-navbar></biosys-navbar>
+    <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
+    <div class="row mt-1">
+        <div class="col-md">
+            <h3>View and Export Records</h3>
+            <p></p>
+            <div class="row">
+                <div class="col-2">
+                    <label>Project</label>
+                    <p-dropdown [(ngModel)]="projectId" [options]="projectDropdownItems" [filter]="true"
+                                [style]="{'width': '100%', 'font-weight': 'bold'}">
+                    </p-dropdown>
+                </div>
+                <div class="col-2">
+                    <label>Start Date</label>
+                    <p-calendar [(ngModel)]="dateStart" dateFormat="yyyy-mm-dd">
+                    </p-calendar>
+                </div>
+                <div class="col-2">
+                    <label>End Date</label>
+                    <p-calendar [(ngModel)]="dateEnd" dateFormat="yyyy-mm-dd">
+                    </p-calendar>
+                </div>
+                <div class="col-2">
+                    <label>Species</label>
+                    <p-dropdown [(ngModel)]='speciesNameId' [options]="speciesDropdownItems" [filter]="true"
+                                [style]="{'width': '100%', 'font-weight': 'bold'}">
+                    </p-dropdown>
+                </div>
+                <div class="col-2 offset-2">
+                    <button pButton styleClass="pull-right" type="button" label="Search" (click)="search()"></button>
+                </div>
+            </div>
+            <p-dataTable [value]="datasets" emptyMessage="" [paginator]="true" [rows]="10" [responsive]="true">
+                <p-column field="name" header="Name" [sortable]="true"></p-column>
+                <p-column field="type" header="Type" [sortable]="true"></p-column>
+                <p-column styleClass="col-button" header="Action">
+                    <template let-dataset="rowData" pTemplate type="body">
+                        <button type="button" pButton icon="fa-file-excel-o" title="Export Records"
+                            (click)="exportRecords(dataset)"></button>
+                    </template>
+                </p-column>
+            </p-dataTable>
+        </div>
+    </div>
+</div>

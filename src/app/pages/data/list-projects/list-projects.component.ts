@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 export class DataListProjectsComponent implements OnInit {
     public breadcrumbItems: any = [];
-    projects: Project[] = [];
+    public projects: Project[] = [];
 
     constructor(private apiService: APIService, private router: Router) {
     }
