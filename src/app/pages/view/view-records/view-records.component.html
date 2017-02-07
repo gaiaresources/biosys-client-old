@@ -25,10 +25,20 @@
                                 yearRange="2000:2020" dateFormat="dd/mm/yy">
                     </p-calendar>
                 </div>
-                <div class="col-3">
-                    <p-dropdown [(ngModel)]="speciesNameId" (onChange)="filter()" [options]="speciesDropdownItems" [filter]="true"
-                                [style]="{'width': '100%'}">
-                    </p-dropdown>
+                <div class="col-4">
+                    <label>Species</label>
+                    <p-autoComplete [(ngModel)]='speciesName'
+                                    [style]="{'width': '100%', 'font-weight': 'bold'}"
+                                    [dropdown]="true"
+                                    [suggestions]="speciesFiltered"
+                                    (completeMethod)="filterSpecies($event)"
+                                    (onDropdownClick)="onSpeciesDropdown($event)"
+                                    placeholder="Species name"
+                                    >
+                    </p-autoComplete>
+                </div>
+                <div class="col-2 offset-2">
+                    <button pButton styleClass="pull-right" type="button" label="Search" (click)="search()"></button>
                 </div>
             </div>
             <p-dataTable selectionMode="single" [(selection)]="selectedDataset" (onRowSelect)="selectDataset($event)"

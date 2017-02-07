@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService, APIError, Project, Dataset, Record } from '../../../shared/index';
 import { Router } from '@angular/router';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem, AutoComplete } from 'primeng/primeng';
 
 @Component({
     moduleId: module.id,
@@ -14,6 +14,8 @@ export class ViewRecordsComponent implements OnInit {
     private static COLUMN_WIDTH: number = 240;
 
     public breadcrumbItems: any = [];
+    public datasets: Dataset[] = [];
+    public projectDropdownItems: SelectItem[] = [{label: 'Select Project', value: null}];
     public datasets: Dataset[];
     public records: Record[];
 
@@ -26,7 +28,8 @@ export class ViewRecordsComponent implements OnInit {
     public projectId: number;
     public dateStart: Date;
     public dateEnd: Date;
-    public speciesNameId: number;
+    public speciesName: string;
+    public speciesFiltered: string[] = [];
 
     public exportURL: string;
 
@@ -48,20 +51,15 @@ export class ViewRecordsComponent implements OnInit {
             (error: APIError) => console.log('error.msg', error.msg)
         );
 
-        this.apiService.getAllDatasets().subscribe(
-            (datasets: Dataset[]) => this.datasets = datasets,
+        this.apiService.getSpecies().subscribe(
+            (species: any) => this.speciesDropdownItems = this.speciesDropdownItems.concat(
+                Object.keys(species).map(speciesKey => ({
+                    'label': speciesKey,
+                    'value': species[speciesKey]
+                }))
+            ),
             (error: APIError) => console.log('error.msg', error.msg)
         );
-
-        // this.apiService.getSpecies().subscribe(
-        //     (species: any) => this.speciesDropdownItems = this.speciesDropdownItems.concat(
-        //         Object.keys(species).map(speciesKey => ({
-        //             'label': speciesKey,
-        //             'value': species[speciesKey]
-        //         }))
-        //     ),
-        //     (error: APIError) => console.log('error.msg', error.msg)
-        // );
 
         this.breadcrumbItems = [
             {label: 'View and export records'},
@@ -83,8 +81,8 @@ export class ViewRecordsComponent implements OnInit {
             params['record__datetime__end'] = this.dateEnd.toISOString();
         }
 
-        if (this.speciesNameId) {
-            params['record__name_id'] = this.speciesNameId;
+        if (this.speciesName) {
+            params['record__species_name'] = this.speciesName;
         }
 
         this.apiService.getDatasets(params).subscribe(
@@ -103,6 +101,31 @@ export class ViewRecordsComponent implements OnInit {
 
         this.exportURL = 'http://localhost:8000/api/records/?' +
             Object.keys(params).reduce(function(a,k){a.push(k+'='+encodeURIComponent(params[k]));return a;},[]).join('&');
+    public filterSpecies(event: any) {
+        let search = event.query.toLowerCase();
+        this.apiService.getSpecies(search).subscribe(
+            (species: any) => {
+                this.speciesFiltered = species;
+            },
+            (error: APIError) => console.log('error.msg', error.msg)
+        );
+    }
+
+    public onSpeciesDropdown() {
+        this.apiService.getSpecies().subscribe(
+            (species: any) => {
+                this.speciesFiltered = species;
+            },
+            (error: APIError) => console.log('error.msg', error.msg)
+        );
+    }
+
+    public exportRecords(dataset: Dataset) {
+        this.apiService.exportRecords(dataset.id).subscribe(
+            (species: any) => {
+            },
+            (error: APIError) => console.log('error.msg', error.msg)
+        );
     }
 
     public selectDataset(event: any) {

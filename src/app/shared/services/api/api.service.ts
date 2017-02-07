@@ -220,8 +220,14 @@ export class APIService {
         });
     }
 
-    public getSpecies(): Observable<any> {
-        return this.fetch('species', {});
+    public getSpecies(search?: string): Observable<any> {
+        let urlParams: any = {};
+        if (search) {
+            urlParams['search'] = search;
+        }
+        return this.fetch('species', {
+            urlParams: urlParams
+        });
     }
 
     public getRecordsUploadURL(datasetId: number): string {
