@@ -463,10 +463,6 @@ export class ProjectConfig {
             'rxjs': {
                 main: 'Rx.js',
                 defaultExtension: 'js'
-            },
-            'angular2-google-maps': {
-                main: 'index.js',
-                defaultExtention: 'js'
             }
         }
     };

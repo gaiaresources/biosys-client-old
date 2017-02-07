@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, APIError, Statistic, User } from '../../shared/index';
+import { APIService, APIError, Project, Statistic, User } from '../../shared/index';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -12,12 +12,19 @@ import { APIService, APIError, Statistic, User } from '../../shared/index';
 })
 
 export class HomeComponent implements OnInit {
+    public projects: Project[];
     public statistic: Statistic;
     public user: User;
 
     constructor(public apiService: APIService) {}
 
     ngOnInit() {
+        this.apiService.getProjects()
+            .subscribe(
+                (projects: Project[]) => this.projects = projects,
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
+
         this.apiService.getStatistics()
             .subscribe(
                 (statistic: Statistic) => this.statistic = statistic,
