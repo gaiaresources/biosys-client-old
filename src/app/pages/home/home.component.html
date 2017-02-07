@@ -2,13 +2,39 @@
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
     <div class="row mt-1">
-        <div class="col-md">
+        <div class="col">
             <h2>Welcome to Biosys</h2>
             <span *ngIf="user" class="float-right mt-2">Logged in as {{user.first_name}} {{user.last_name}}</span>
         </div>
     </div>
 	<div class="row mt-1">
-	    <div class="col-md-9">
+        <div class="col-3">
+            <div class="card mb-2">
+                <div class="card-block">
+                    <h5 class="card-title text-center">Manage Projects / Sites / Datasets</h5>
+                </div>
+                <a routerLink="/management/projects">
+                    <img class="card-img-bottom" src="/assets/img/project.jpg">
+                </a>
+            </div>
+            <div class="card mb-2">
+                <div class="card-block">
+                    <h5 class="card-title text-center">Create / Import / Edit / Delete Records</h5>
+                </div>
+                <a routerLink="/data/projects">
+                    <img class="card-img-bottom" src="/assets/img/data.jpg">
+                </a>
+            </div>
+            <div class="card mb-2">
+                <div class="card-block">
+                    <h5 class="card-title text-center">View and Export Records</h5>
+                </div>
+                <a routerLink="/view">
+                    <img class="card-img-bottom" src="/assets/img/export.jpg">
+                </a>
+            </div>
+        </div>
+        <div class="col-6">
             <aol-map class="w-100">
                 <aol-view zoom="4">
                     <aol-coordinate [x]="121" [y]="-27" [srid]="'EPSG:4326'"></aol-coordinate>
@@ -19,8 +45,8 @@
                 <aol-layer-vector>
                     <aol-source-vector>
                         <aol-feature *ngFor="let project of projects">
-                            <aol-geometry-point>
-                                <!--<aol-coordinate [x]="project.geometry?.coordinates[0]" [y]="project.geometry?.coordinates[1]" [srid]="'EPSG:4326'"></aol-coordinate>-->
+                            <aol-geometry-point *ngIf="project.centroid">
+                                <aol-coordinate [x]="project.centroid.coordinates[0]" [y]="project.centroid.coordinates[1]" [srid]="'EPSG:4326'"></aol-coordinate>
                             </aol-geometry-point>
                             <aol-style>
                                 <aol-style-icon
@@ -37,10 +63,10 @@
                 <aol-control-attribution></aol-control-attribution>
             </aol-map>
 	    </div>
-	    <div class="col-md-3">
+	    <div class="col-3">
             <div class="card">
                 <div class="card-header">
-                    Statistics
+                    Biosys summary
                 </div>
                 <div *ngIf="statistic" class="card-block">
                     <h5>Projects</h5>

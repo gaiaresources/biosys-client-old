@@ -20,3 +20,7 @@ ul {
 h2 {
     display: inline-block;
 }
+
+.card-block {
+    padding-bottom: 0px;
+}
