@@ -128,12 +128,8 @@ export class APIService {
         });
     }
 
-    public getAllDatasets(): Observable<Dataset[]> {
-        return this.fetch('datasets', {});
-    }
-
-    public getDatasets(params: any): Observable<Dataset[]> {
-        return this.fetch('datasets', {urlParams: params});
+    public getDatasets(params?: any): Observable<Dataset[]> {
+        return this.fetch('datasets', params ? {urlParams: params} : {});
     }
 
     public getAllDatasetsForProjectID(id: number): Observable<Dataset[]> {
@@ -236,6 +232,10 @@ export class APIService {
 
     public getProjectSiteUploadURL(projectId: number): string {
         return this.baseUrl + 'projects/' + projectId + '/upload-sites/';
+    }
+
+    public getRecordExportURL(): string {
+        return this.baseUrl + 'records/?output=xlsx&';
     }
 
     /**
