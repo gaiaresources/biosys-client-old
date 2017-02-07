@@ -5,44 +5,62 @@
     <div class="row mt-1">
         <div class="col-md">
             <h3>View and Export Records</h3>
-            <p></p>
+            <p>
+                Step 1: Find the appropriate dataset to export records from using the filtering mechanisms. From
+                there, click on the appropriate dataset to show the corresponding records.
+            </p>
             <div class="row">
-                <div class="col-2">
-                    <label>Project</label>
-                    <p-dropdown [(ngModel)]="projectId" [options]="projectDropdownItems" [filter]="true"
-                                [style]="{'width': '100%', 'font-weight': 'bold'}">
+                <div class="col-3">
+                    <p-dropdown [(ngModel)]="projectId" (onChange)="filter()" [options]="projectDropdownItems" [filter]="true"
+                                [style]="{'width': '100%', 'font-weight': 'bold'}" >
                     </p-dropdown>
                 </div>
-                <div class="col-2">
-                    <label>Start Date</label>
-                    <p-calendar [(ngModel)]="dateStart" dateFormat="yyyy-mm-dd">
+                <div class="col-3">
+                    <p-calendar placeholder="Start Date" (onSelect)="filter()" yearNavigator="true" yearRange="2000:2020"
+                                [(ngModel)]="dateStart" dateFormat="dd/mm/yy">
                     </p-calendar>
                 </div>
-                <div class="col-2">
-                    <label>End Date</label>
-                    <p-calendar [(ngModel)]="dateEnd" dateFormat="yyyy-mm-dd">
+                <div class="col-3">
+                    <p-calendar placeholder="End Date" (onSelect)="filter()" [(ngModel)]="dateEnd" yearNavigator="true"
+                                yearRange="2000:2020" dateFormat="dd/mm/yy">
                     </p-calendar>
                 </div>
-                <div class="col-2">
-                    <label>Species</label>
-                    <p-dropdown [(ngModel)]='speciesNameId' [options]="speciesDropdownItems" [filter]="true"
-                                [style]="{'width': '100%', 'font-weight': 'bold'}">
+                <div class="col-3">
+                    <p-dropdown [(ngModel)]="speciesNameId" (onChange)="filter()" [options]="speciesDropdownItems" [filter]="true"
+                                [style]="{'width': '100%'}">
                     </p-dropdown>
-                </div>
-                <div class="col-2 offset-2">
-                    <button pButton styleClass="pull-right" type="button" label="Search" (click)="search()"></button>
                 </div>
             </div>
-            <p-dataTable [value]="datasets" emptyMessage="" [paginator]="true" [rows]="10" [responsive]="true">
+            <p-dataTable selectionMode="single" [(selection)]="selectedDataset" (onRowSelect)="selectDataset($event)"
+                         [value]="datasets" emptyMessage="" [paginator]="true" [rows]="10" [responsive]="true">
                 <p-column field="name" header="Name" [sortable]="true"></p-column>
                 <p-column field="type" header="Type" [sortable]="true"></p-column>
-                <p-column styleClass="col-button" header="Action">
-                    <template let-dataset="rowData" pTemplate type="body">
-                        <button type="button" pButton icon="fa-file-excel-o" title="Export Records"
-                            (click)="exportRecords(dataset)"></button>
+                <p-column header="Project" [sortable]="true">
+                    <template let-dataset="rowData" pTemplate="body">
+                        <span>{{projectsMap[dataset.project]}}</span>
                     </template>
                 </p-column>
             </p-dataTable>
+
+            <div [hidden]="!selectedDataset" class="mt-5 mb-5">
+                <p>
+                    Step 2: You can further refine the records by adjusting the filtering mechanisms above. When you are
+                    satisfied with the results, click Export to export the records shown below to an Excel spreadsheet.
+                </p>
+                <div class="data-table-container">
+                    <p-dataTable [tableStyle]="getDataTableWidth()" [value]="records" [paginator]="true" [rows]="10"
+                                 [responsive]="true">
+                        <p-column *ngFor="let field of selectedDataset?.data_package?.resources[0]?.schema?.fields"
+                                  [field]="field.name" [header]="field.name" [sortable]="true">
+                            <template let-record="rowData" let-col pTemplate="body">
+                                <span [innerHTML]="record.data[col.field] | truncate:30"></span>
+                            </template>
+                        </p-column>
+                    </p-dataTable>
+                </div>
+
+                <a [href]="exportURL" style="float:right" label="Export">Export</a>
+            </div>
         </div>
     </div>
 </div>

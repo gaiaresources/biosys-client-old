@@ -175,8 +175,8 @@ export class APIService {
         });
     }
 
-    public getAllRecords(): Observable<Record[]> {
-        return this.fetch('records', {});
+    public getRecords(params?: any): Observable<Record[]> {
+        return this.fetch('records', params ? {urlParams: params} : {});
     }
 
     public getRecordById(id: number): Observable<Record> {
@@ -201,13 +201,6 @@ export class APIService {
         return this.fetch('records/' + id, {
             method: 'Delete',
         });
-    }
-
-    public exportRecords(datasetId: number) {
-        return this.fetch('records', {urlParams: {
-            dataset__id: String(datasetId),
-            output: 'xlsx'
-        }});
     }
 
     public getStatistics(): Observable<Statistic> {
