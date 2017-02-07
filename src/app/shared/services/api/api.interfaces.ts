@@ -38,6 +38,7 @@ export interface Project {
     datum?: number | string | null;
     attributes?: {[key: string]: string} | null;
     geometry?: Geometry | null;
+    centroid?: Geometry | null;
     site_data_package?: {} | null;
     custodians?: number[];
 }

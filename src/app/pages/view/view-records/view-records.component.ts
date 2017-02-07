@@ -100,8 +100,9 @@ export class ViewRecordsComponent implements OnInit {
         }
 
         this.exportURL = this.apiService.getRecordExportURL() +
-            Object.keys(recordParams).reduce(function(left, right){
-                left.push(right+'='+encodeURIComponent(recordParams[right]));return left;
+            Object.keys(recordParams).reduce(function(left, right) {
+                left.push(right + '=' + encodeURIComponent(recordParams[right]));
+                return left;
             },[]).join('&');
     }
 

@@ -11,9 +11,11 @@ import { ConfirmationService, Message, SelectItem } from 'primeng/primeng';
 })
 
 export class EditProjectComponent implements OnInit {
+    public static DEFAULT_TIMEZONE: string = 'Australia/Perth';
+
     public breadcrumbItems: any = [];
 
-    public project: Project = <Project>{};
+    public project: Project = <Project>{timezone: EditProjectComponent.DEFAULT_TIMEZONE};
     public sites: Site[];
     public datasets: Dataset[];
 
