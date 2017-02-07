@@ -44,36 +44,3 @@
         </div>
     </div>
 </div>
-
-<p-dialog header="Edit Data" [(visible)]="showEditDialog" [responsive]="true" dismissableMask="true"
-          showEffect="fade" [modal]="true">
-    <div *ngIf="selectedRecord">
-    <div class="row mt-1" *ngFor="let field of dataset?.data_package?.resources[0]?.schema?.fields">
-        <div class="col-md-4">
-            <label [for]="field.name">{{field.name}}</label>
-        </div>
-        <div [ngSwitch]="field.type" class="col-md-8">
-            <div *ngSwitchCase="'date'">
-                <p-calendar *ngIf="field.type === 'date'" dateFormat="dd/mm/yy"
-                            [id]="field.name" [(ngModel)]="selectedRecord.data[field.name]">
-                </p-calendar>
-            </div>
-            <div *ngSwitchDefault>
-                <p-dropdown *ngIf="field.constraints?.enum"
-                            [options]="getDropdownOptions(field.name, field.constraints.enum)"
-                            [(ngModel)]="selectedRecord.data[field.name]"
-                            [style]="{'width': '92%', 'font-weight': 'bold'}">
-                </p-dropdown>
-                <input *ngIf="!field.constraints?.enum" pInputText [id]="field.name"
-                       [(ngModel)]="selectedRecord.data[field.name]" />
-            </div>
-        </div>
-    </div>
-        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-            <button type="button" pButton icon="fa-close" (click)="confirmDelete()" label="Delete"></button>
-            <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
-        </div>
-    </div>
-</p-dialog>
-
-<p-confirmDialog header="Confirm Delete" icon="fa fa-question-circle" width="425"></p-confirmDialog>
