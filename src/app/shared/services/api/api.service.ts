@@ -176,7 +176,7 @@ export class APIService {
     }
 
     public getRecordById(id: number): Observable<Record> {
-        return this.fetch('records' + id, {});
+        return this.fetch('records/' + id, {});
     }
 
     public createRecord(genericRecord: Record): Observable<Record> {

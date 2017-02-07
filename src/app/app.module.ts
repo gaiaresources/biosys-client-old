@@ -30,6 +30,7 @@ import * as view from './pages/view/index';
         data.DataListProjectsModule,
         data.ListDatasetsModule,
         data.ManageDataModule,
+        data.EditRecordModule,
         view.ViewRecordsModule
     ],
     declarations: [AppComponent],

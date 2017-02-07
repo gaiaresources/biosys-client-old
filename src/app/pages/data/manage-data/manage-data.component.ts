@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { APIService, APIError, Project, Dataset, Record } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ConfirmationService, Message, SelectItem, FileUpload } from 'primeng/primeng';
-import * as moment from 'moment/moment';
+import { Message, FileUpload } from 'primeng/primeng';
 
 @Component({
     moduleId: module.id,
@@ -21,17 +20,13 @@ export class ManageDataComponent implements OnInit {
         'application/vnd.ms-excel',
         'application/vnd.msexcel'
     ];
-    private static AMBIGOUS_DATE_PATTERN: RegExp = /^(\d{1,2}).(\d{1,2}).(\d{4})$/;
 
     public breadcrumbItems: any = [];
     public dataset: Dataset = <Dataset>{};
     public records: Record[] = [];
-    public selectedRecord: Record = null;
     public recordErrors: any = {};
-    public showEditDialog: boolean = false;
     public tablePlaceholder: string = 'Loading Records';
     public messages: Message[] = [];
-    public dropdownItems: any = {};
     public uploadURL: string;
     public uploadCreateSites: boolean = true;
     public uploadDeleteExistingRecords: boolean = false;
@@ -41,8 +36,7 @@ export class ManageDataComponent implements OnInit {
     @ViewChild(FileUpload)
     public uploader: FileUpload;
 
-    constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute,
-                private confirmationService: ConfirmationService) {
+    constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute) {
     }
 
     public ngOnInit() {
@@ -79,8 +73,22 @@ export class ManageDataComponent implements OnInit {
         this.uploadURL = this.apiService.getRecordsUploadURL(datasetId);
 
         this.breadcrumbItems = [
-            {label:'Enter Records - Project List', url: '#/data/projects'}
+            {label:'Enter Records - Project List', routerLink: '/data/projects'}
         ];
+
+        if('recordSaved' in params) {
+            this.messages.push({
+                severity: 'success',
+                summary: 'Record saved',
+                detail: 'The record was saved'
+            });
+        } else if ('recordDeleted' in params) {
+            this.messages.push({
+                severity: 'success',
+                summary: 'Record deleted',
+                detail: 'The record was deleted'
+            });
+        }
     }
 
     public getDataTableWidth(): any {
@@ -100,82 +108,21 @@ export class ManageDataComponent implements OnInit {
     }
 
     public onRowSelect(event:any) {
-        // use JSON operations to make deep copy of datum
-        this.selectedRecord = JSON.parse(JSON.stringify(event.data));
+        let params = this.route.snapshot.params;
 
-        // convert date fields to Date type because calendar element in form expects a Date
-        for(let field of this.dataset.data_package.resources[0].schema.fields) {
-            if(field.type === 'date') {
-                // If date in DD?MM?YYYY format (where ? is any single char), convert to American (as Chrome, Firefox
-                // and IE expect this when creating Date from a string
-                let dateString:string = this.selectedRecord.data[field.name];
-                let regexGroup: string[] = dateString.match(ManageDataComponent.AMBIGOUS_DATE_PATTERN);
-                if(regexGroup) {
-                    dateString = regexGroup[2] + '/' + regexGroup[1] + '/' + regexGroup[3];
-                }
-                this.selectedRecord.data[field.name] = new Date(dateString);
-            }
-        }
+        let projId: number = Number(params['projId']);
+        let datasetId: number = Number(params['datasetId']);
 
-        this.showEditDialog = true;
-    }
-
-    public getDropdownOptions(fieldName: string, options: string[]): SelectItem[] {
-        if(!(fieldName in this.dropdownItems)) {
-            this.dropdownItems[fieldName] = options.map(option => ({'label': option, 'value': option}));
-        }
-
-        return this.dropdownItems[fieldName];
-    }
-
-    public save(event:any) {
-        // need to use a copy because there may be Date objects within this.selectedRecord which are bound
-        // to calendar elements which must remain dates
-        let selectedRecordCopy = JSON.parse(JSON.stringify(this.selectedRecord));
-
-        // convert Date types back to string in DD/MM/YYYY format
-        for(let field of this.dataset.data_package.resources[0].schema.fields) {
-            if(field.type === 'date') {
-                selectedRecordCopy.data[field.name] = moment(selectedRecordCopy.data[field.name]).format('DD/MM/YYYY');
-            }
-        }
-
-        if('id' in selectedRecordCopy) {
-            this.apiService.updateRecord(selectedRecordCopy.id, selectedRecordCopy)
-                .subscribe(
-                    (record: Record) => this.onSaveSuccess(record, false),
-                    (error: APIError) => this.onSaveError(error)
-                );
-        } else {
-            this.apiService.createRecord(selectedRecordCopy)
-                .subscribe(
-                    (record: Record) => this.onSaveSuccess(record, true),
-                    (error: APIError) => this.onSaveError(error)
-                );
-        }
+        this.router.navigate(['/data/projects/' + projId + '/datasets/' + datasetId + '/record/' + event.data.id]);
     }
 
     public add() {
-        let data: any = {};
-        for(let datum of this.dataset.data_package.resources[0].schema.fields) {
-            data[datum['name']] = '';
-        }
+        let params = this.route.snapshot.params;
 
-        this.selectedRecord = {
-            dataset: this.dataset.id,
-            data: data
-        };
+        let projId: number = Number(params['projId']);
+        let datasetId: number = Number(params['datasetId']);
 
-        this.showEditDialog = true;
-    }
-
-    public confirmDelete(event:any) {
-        this.confirmationService.confirm({
-            message: 'Are you sure that you want to delete this record?',
-            accept: () =>  this.apiService.deleteRecord(this.selectedRecord.id).subscribe(
-                            (record: Record) => this.onDeleteSuccess(this.selectedRecord),
-                            (error: APIError) => this.onDeleteError(error))
-        });
+        this.router.navigate(['/data/projects/' + projId + '/datasets/' + datasetId + '/create-record/']);
     }
 
     public onUpload(event: any) {
@@ -267,61 +214,5 @@ export class ManageDataComponent implements OnInit {
             // put back the file in the list
             files.push(file);
         }
-    }
-
-    private onSaveSuccess(record: Record, isNew:boolean) {
-        if(isNew) {
-            this.records.push(record);
-        } else {
-            for (let i = 0; i < this.records.length; i++) {
-                if (this.records[i].id === record.id) {
-                    this.records[i] = record;
-                    break;
-                }
-            }
-        }
-        this.selectedRecord = null;
-        this.recordErrors = {};
-        this.showEditDialog = false;
-        this.messages.push({
-            severity: 'success',
-            summary: 'Data saved',
-            detail: isNew ? 'The data was added' : 'The data was saved'
-        });
-    }
-
-    private onSaveError(recordErrors: any) {
-        this.recordErrors = recordErrors;
-
-        this.messages.push({
-            severity: 'error',
-            summary: 'Data save error',
-            detail: 'There were error(s) saving the data'
-        });
-    }
-
-    private onDeleteSuccess(record: Record) {
-        for (let i = 0; i < this.records.length; i++) {
-            if (this.records[i].id === record.id) {
-                this.records.splice(i, 1);
-            }
-        }
-
-        this.selectedRecord = null;
-        this.recordErrors = {};
-        this.showEditDialog = false;
-        this.messages.push({
-            severity: 'success',
-            summary: 'Data deleted',
-            detail: 'The data was deleted'
-        });
-    }
-
-    private onDeleteError(recordErrors: any) {
-        this.messages.push({
-            severity: 'error',
-            summary: 'Data delete error',
-            detail: 'There were error(s) deleting the data'
-        });
     }
 }
