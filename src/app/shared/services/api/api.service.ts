@@ -65,7 +65,7 @@ export class APIService {
 
     public getProjects(custodians?: number[]): Observable<Project[]> {
         let params: FetchOptions = {};
-        if(custodians) {
+        if (custodians) {
             params['urlParams'] = {custodians: custodians.toString()};
         }
 
@@ -249,6 +249,10 @@ export class APIService {
             headers.push(['Authorization', 'Token ' + authToken]);
         }
         return headers;
+    }
+
+    public logout(): Observable<any> {
+        return this.fetch('logout', {});
     }
 
     public fetch(path: string, options: FetchOptions): Observable<any> {
