@@ -377,6 +377,7 @@ export class ProjectConfig {
 			'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
             'angular2-openlayers': 'node_modules/angular2-openlayers/dist/index.js',
             'moment': 'node_modules/moment/moment.js',
+            'ng2-cookies/*': 'node_modules/ng2-cookies/*',
             'rxjs/*': 'node_modules/rxjs/*',
             'app/*': '/app/*',
             // For test projectConfig
