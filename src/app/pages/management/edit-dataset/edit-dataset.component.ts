@@ -19,6 +19,8 @@ export class EditDatasetComponent implements OnInit {
     public ds: Dataset = <Dataset>{};
     public editorOptions: JsonEditorOptions;
 
+    public dsErrors: any = {};
+
     @Input()
     public isValid: boolean = true;
 
@@ -87,19 +89,23 @@ export class EditDatasetComponent implements OnInit {
         }
     }
 
-    save() {
+    public save() {
         let successUrl = '/management/projects/edit-project/' + this.ds.project;
         if (this.ds.id) {
             this.apiService.updateDataset(this.ds).subscribe(
-                () => this.router.navigate([successUrl]),
-                (error: APIError) => console.log('error.msg', error.msg)
+                () => this.router.navigate([successUrl, {'datasetSaved': true}]),
+                (errors: APIError) => this.dsErrors = errors.text
             );
         } else {
             this.apiService.createDataset(this.ds).subscribe(
-                () => this.router.navigate([successUrl]),
-                (error: APIError) => this.showError(error)
+                () => this.router.navigate([successUrl, {'datasetSaved': true}]),
+                (errors: APIError) => this.dsErrors = errors.text
             );
         }
+    }
+
+    public cancel() {
+        this.router.navigate(['/management/projects/edit-project/' + this.ds.project]);
     }
 
     private onEditorChanged() {

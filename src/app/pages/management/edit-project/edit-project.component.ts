@@ -24,6 +24,8 @@ export class EditProjectComponent implements OnInit {
     public datamTypeChoices: SelectItem[];
     public custodianChoices: SelectItem[];
 
+    public projectErrors: any = {};
+
     public messages: Message[] = [];
 
     @ViewChild(FeatureMapComponent)
@@ -95,6 +97,20 @@ export class EditProjectComponent implements OnInit {
         if (this.isEditing) {
             this.breadcrumbItems.push({label: 'Create Project'});
         }
+
+        if('siteSaved' in params) {
+            this.messages.push({
+                severity: 'success',
+                summary: 'Site saved',
+                detail: 'The site was saved'
+            });
+        } else if ('datasetSaved' in params) {
+            this.messages.push({
+                severity: 'success',
+                summary: 'Dataset saved',
+                detail: 'The dataset was saved'
+            });
+        }
     }
 
     public getDatumLabel(value: string): string {
@@ -119,9 +135,12 @@ export class EditProjectComponent implements OnInit {
 
         if (this.project.id) {
             this.apiService.updateProject(this.project).subscribe(
-                (project: Project) => this.project = project,
-                (error: APIError) => console.log('error.msg', error.msg),
-                () => this.isEditing = false
+                (project: Project) => {
+                    this.project = project;
+                    this.projectErrors = {};
+                    this.isEditing = false;
+                },
+                (errors: APIError) => this.projectErrors = errors.text,
             );
         } else {
             this.apiService.createProject(this.project).subscribe(
@@ -129,15 +148,25 @@ export class EditProjectComponent implements OnInit {
                     this.project = project;
                     this.breadcrumbItems.pop();
                     this.breadcrumbItems.push({label: 'Edit ' + this.project.title});
+                    this.projectErrors = {};
+                    this.isEditing = false;
                 },
-                (error: APIError) => console.log('error.msg', error.msg),
-                () => this.isEditing = false
+                (errors: APIError) => this.projectErrors = errors.text
             );
         }
     }
 
     public editProject() {
         this.isEditing = true;
+    }
+
+    public cancelEditProject() {
+        this.apiService.getProjectById(this.project.id).subscribe(
+            (project: Project) => this.project = project,
+            (error: APIError) => console.log('error.msg', error.msg)
+        );
+
+        this.isEditing = false;
     }
 
     public confirmDeleteDataset(dataset:Dataset) {

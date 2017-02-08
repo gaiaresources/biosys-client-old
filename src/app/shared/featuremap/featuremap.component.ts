@@ -1,7 +1,7 @@
 import { OnInit, Component, Input, OnChanges, SimpleChange, ViewChild } from '@angular/core';
 import { Geometry } from '../../shared/index';
 import { MapComponent, LayerVectorComponent } from 'angular2-openlayers';
-import { Collection, Feature, Coordinate, source, interaction, proj, geom } from 'openlayers';
+import { Collection, Feature, Coordinate, control, coordinate, source, interaction, proj, geom } from 'openlayers';
 
 @Component({
     moduleId: module.id,
@@ -21,6 +21,8 @@ export class FeatureMapComponent implements OnInit, OnChanges {
 
     private sourceVector: source.Vector;
 
+    private mousePosition: control.MousePosition;
+
     private features: Collection<Feature>;
 
     private select: interaction.Select;
@@ -36,6 +38,11 @@ export class FeatureMapComponent implements OnInit, OnChanges {
     ngOnInit() {
         this.sourceVector = new source.Vector({useSpatialIndex: false});
         this.layerVectorComponent.setSource(this.sourceVector);
+
+        this.mousePosition = new control.MousePosition({
+            coordinateFormat: coordinate.createStringXY(4),
+            projection: 'EPSG:4326'
+        });
 
         if (this.isEditing) {
             if (this.features) {
@@ -90,8 +97,6 @@ export class FeatureMapComponent implements OnInit, OnChanges {
     }
 
     public getFeatureGeometry(): Geometry {
-        this.endDrawingModification();
-
         if (!this.features || !this.features.getLength()) {
             return null;
         }
@@ -120,6 +125,8 @@ export class FeatureMapComponent implements OnInit, OnChanges {
 
         this.draw.on('drawend', (drawEvent: interaction.DrawEvent) => this.drawEnded(drawEvent));
         this.mapComponent.addInteraction(this.draw);
+
+        this.mousePosition.setMap(this.mapComponent);
     }
 
     public startModification() {
@@ -128,6 +135,8 @@ export class FeatureMapComponent implements OnInit, OnChanges {
 
         this.mapComponent.addInteraction(this.select);
         this.mapComponent.addInteraction(this.modify);
+
+        this.mousePosition.setMap(this.mapComponent);
     }
 
     private drawEnded(drawEvent: interaction.DrawEvent) {
@@ -144,5 +153,7 @@ export class FeatureMapComponent implements OnInit, OnChanges {
         this.mapComponent.removeInteraction(this.select);
         this.mapComponent.removeInteraction(this.modify);
         this.mapComponent.removeInteraction(this.draw);
+
+        this.mousePosition.setMap(null);
     }
 }
