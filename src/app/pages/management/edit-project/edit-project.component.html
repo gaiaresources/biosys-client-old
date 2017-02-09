@@ -62,7 +62,9 @@
                         <div [hidden]="!isEditing" class="col-md-4 text-danger">{{projectErrors['timezone']}}</div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-md-3">Custodians</div>
+                        <div class="col-md-3">
+                            <strong *ngIf="isEditing">Custodians</strong><label *ngIf="!isEditing">Custodians</label>
+                        </div>
                         <div class="col-md-5">
                             <label [hidden]="isEditing">{{getSelectedCustodiansLabel(project.custodians)}}</label>
                             <p-multiSelect [hidden]="!isEditing" *ngIf="custodianChoices" [options]="custodianChoices"

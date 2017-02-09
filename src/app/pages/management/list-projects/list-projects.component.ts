@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, APIError, Project } from '../../../shared/index';
+import { APIService, APIError, Project, User } from '../../../shared/index';
 import { Router } from '@angular/router';
 import { ConfirmationService, Message } from 'primeng/primeng';
 
@@ -20,6 +20,23 @@ export class ManagementListProjectsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.apiService.whoAmI().subscribe(
+            (user: User) => {
+                if(user.is_superuser) {
+                    this.apiService.getProjects().subscribe(
+                        (projects: Project[]) => this.projects = projects,
+                        (error: APIError) => console.log('error.msg', error.msg)
+                    );
+                } else {
+                    this.apiService.getProjects([user.id]).subscribe(
+                        (projects: Project[]) => this.projects = projects,
+                        (error: APIError) => console.log('error.msg', error.msg)
+                    );
+                }
+            },
+            (error: APIError) => console.log('error.msg', error.msg)
+        );
+
         this.apiService.getProjects()
             .subscribe(
                 (projects: Project[]) => this.projects = projects,

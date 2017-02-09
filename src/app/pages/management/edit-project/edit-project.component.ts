@@ -15,7 +15,11 @@ export class EditProjectComponent implements OnInit {
 
     public breadcrumbItems: any = [];
 
-    public project: Project = <Project>{timezone: EditProjectComponent.DEFAULT_TIMEZONE};
+    public project: Project = <Project>{
+        timezone: EditProjectComponent.DEFAULT_TIMEZONE,
+        custodians: []
+    };
+
     public sites: Site[];
     public datasets: Dataset[];
 
@@ -96,6 +100,12 @@ export class EditProjectComponent implements OnInit {
 
         if (this.isEditing) {
             this.breadcrumbItems.push({label: 'Create Project'});
+
+            // add self to selected custodians if creating project
+            this.apiService.whoAmI().subscribe(
+                (user: User) => this.project.custodians.push(user.id),
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
         }
 
         if('siteSaved' in params) {
