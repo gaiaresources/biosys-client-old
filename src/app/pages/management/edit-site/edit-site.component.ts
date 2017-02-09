@@ -17,6 +17,8 @@ export class EditSiteComponent implements OnInit {
 
     public site: Site = <Site>{};
 
+    public siteErrors: any = {};
+
     constructor(private apiService: APIService,
                 private router: Router,
                 private route: ActivatedRoute) {
@@ -57,20 +59,24 @@ export class EditSiteComponent implements OnInit {
         }
     }
 
-    save() {
+    public save() {
         this.site.geometry = this.featureMapComponent.getFeatureGeometry();
 
         let successUrl = 'management/projects/edit-project/' + this.site.project;
         if (this.site.id) {
             this.apiService.updateSite(this.site).subscribe(
-                () => this.router.navigate([successUrl]),
-                (error: APIError) => console.log('error.msg', error.msg)
+                () => this.router.navigate([successUrl, {'siteSaved': true}]),
+                (errors: APIError) => this.siteErrors = errors.text
             );
         } else {
             this.apiService.createSite(this.site).subscribe(
-                () => this.router.navigate([successUrl]),
-                (error: APIError) => console.log('error.msg', error.msg)
+                () => this.router.navigate([successUrl, {'siteSaved': true}]),
+                (errors: APIError) => this.siteErrors = errors.text
             );
         }
+    }
+
+    public cancel() {
+        this.router.navigate(['management/projects/edit-project/' + this.site.project]);
     }
 }

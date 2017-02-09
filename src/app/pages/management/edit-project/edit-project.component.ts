@@ -15,7 +15,11 @@ export class EditProjectComponent implements OnInit {
 
     public breadcrumbItems: any = [];
 
-    public project: Project = <Project>{timezone: EditProjectComponent.DEFAULT_TIMEZONE};
+    public project: Project = <Project>{
+        timezone: EditProjectComponent.DEFAULT_TIMEZONE,
+        custodians: []
+    };
+
     public sites: Site[];
     public datasets: Dataset[];
 
@@ -23,6 +27,8 @@ export class EditProjectComponent implements OnInit {
 
     public datamTypeChoices: SelectItem[];
     public custodianChoices: SelectItem[];
+
+    public projectErrors: any = {};
 
     public messages: Message[] = [];
 
@@ -94,6 +100,26 @@ export class EditProjectComponent implements OnInit {
 
         if (this.isEditing) {
             this.breadcrumbItems.push({label: 'Create Project'});
+
+            // add self to selected custodians if creating project
+            this.apiService.whoAmI().subscribe(
+                (user: User) => this.project.custodians.push(user.id),
+                (error: APIError) => console.log('error.msg', error.msg)
+            );
+        }
+
+        if('siteSaved' in params) {
+            this.messages.push({
+                severity: 'success',
+                summary: 'Site saved',
+                detail: 'The site was saved'
+            });
+        } else if ('datasetSaved' in params) {
+            this.messages.push({
+                severity: 'success',
+                summary: 'Dataset saved',
+                detail: 'The dataset was saved'
+            });
         }
     }
 
@@ -119,9 +145,12 @@ export class EditProjectComponent implements OnInit {
 
         if (this.project.id) {
             this.apiService.updateProject(this.project).subscribe(
-                (project: Project) => this.project = project,
-                (error: APIError) => console.log('error.msg', error.msg),
-                () => this.isEditing = false
+                (project: Project) => {
+                    this.project = project;
+                    this.projectErrors = {};
+                    this.isEditing = false;
+                },
+                (errors: APIError) => this.projectErrors = errors.text,
             );
         } else {
             this.apiService.createProject(this.project).subscribe(
@@ -129,15 +158,25 @@ export class EditProjectComponent implements OnInit {
                     this.project = project;
                     this.breadcrumbItems.pop();
                     this.breadcrumbItems.push({label: 'Edit ' + this.project.title});
+                    this.projectErrors = {};
+                    this.isEditing = false;
                 },
-                (error: APIError) => console.log('error.msg', error.msg),
-                () => this.isEditing = false
+                (errors: APIError) => this.projectErrors = errors.text
             );
         }
     }
 
     public editProject() {
         this.isEditing = true;
+    }
+
+    public cancelEditProject() {
+        this.apiService.getProjectById(this.project.id).subscribe(
+            (project: Project) => this.project = project,
+            (error: APIError) => console.log('error.msg', error.msg)
+        );
+
+        this.isEditing = false;
     }
 
     public confirmDeleteDataset(dataset:Dataset) {

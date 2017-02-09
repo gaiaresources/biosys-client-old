@@ -2,83 +2,93 @@
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
     <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
-    <div class="row mt-1">
+    <p-growl [value]="messages"></p-growl>
+    <div class="row mt-3">
         <div class="col-md">
             <div class="mb-1">
                 <h3 *ngIf="project.id">Project Details</h3>
                 <h3 *ngIf="!project.id">Create Project</h3>
                 <p *ngIf="project.id">
                     Edit details of the project by clicking the edit button below. You can also create/edit datasets
-                    and sites for the project through the tables below.
+                    and sites for the project through the tables below. Note that fields in <strong>bold</strong> are
+                    mandatory.
                 </p>
                 <p *ngIf="!project.id">
                     Create a new project by entering the details below project and click the save butten when complete.
-                    You will then be able to create/import datasets and sites for the project.
+                    You will then be able to create/import datasets and sites for the project. Note that fields in
+                    <strong>bold</strong> are mandatory.
                 </p>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="row mb-1">
-                        <div class="col-md-5"><label>Title</label></div>
-                        <div class="col-md-7">
+                        <div class="col-md-3">
+                            <strong *ngIf="isEditing">Title</strong><label *ngIf="!isEditing">Title</label>
+                        </div>
+                        <div class="col-md-5">
                             <label [hidden]="isEditing">{{project.title}}</label>
-                            <input [hidden]="!isEditing" id="title" type="text" pInputText
-                                   [(ngModel)]="project.title" name="title" styleClass="w-100"/>
+                            <input [hidden]="!isEditing" type="text" pInputText [(ngModel)]="project.title" size="21"/>
                         </div>
+                        <div [hidden]="!isEditing" class="col-md-4 text-danger">{{projectErrors['title']}}</div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-md-5"><label>Code</label></div>
-                        <div class="col-md-7">
+                        <div class="col-md-3">Code</div>
+                        <div class="col-md-5">
                             <label [hidden]="isEditing">{{project.code}}</label>
-                            <input [hidden]="!isEditing" id="code" type="text" pInputText [(ngModel)]="project.code"
-                                   name="code" styleClass="w-100"/>
+                            <input [hidden]="!isEditing" type="text" pInputText [(ngModel)]="project.code" size="21"/>
                         </div>
+                        <div [hidden]="!isEditing" class="col-md-4 text-danger">{{projectErrors['code']}}</div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-md-5"><label>Default Datum</label></div>
-                        <div class="col-md-7">
+                        <div class="col-md-3">Default Datum</div>
+                        <div class="col-md-5">
                             <label [hidden]="isEditing" *ngIf="project.datum">{{getDatumLabel(project.datum)}}</label>
                             <p-dropdown [hidden]="!isEditing" [options]="datamTypeChoices"
                                         [(ngModel)]="project.datum" [ngModelOptions]="{standalone: true}"
                                         autoWidth="false" styleClass="w-100">
                             </p-dropdown>
                         </div>
+                        <div [hidden]="!isEditing" class="col-md-4 text-danger">{{projectErrors['datum']}}</div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-md-5"><label>Timezone</label></div>
-                        <div class="col-md-7">
-                            <label [hidden]="isEditing">{{project.timezone}}</label>
-                            <input [hidden]="!isEditing" id="timezone" type="text" pInputText
-                                   [(ngModel)]="project.timezone"
-                                   name="timezone" styleClass="w-100"/>
+                        <div class="col-md-3">
+                            <strong *ngIf="isEditing">Timezone</strong><label *ngIf="!isEditing">Timezone</label>
                         </div>
+                        <div class="col-md-5">
+                            <label [hidden]="isEditing">{{project.timezone}}</label>
+                            <input [hidden]="!isEditing" type="text" pInputText [(ngModel)]="project.timezone"
+                                   size="21"/>
+                        </div>
+                        <div [hidden]="!isEditing" class="col-md-4 text-danger">{{projectErrors['timezone']}}</div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-md-5"><label>Custodians</label></div>
-                        <div class="col-md-7">
+                        <div class="col-md-3">
+                            <strong *ngIf="isEditing">Custodians</strong><label *ngIf="!isEditing">Custodians</label>
+                        </div>
+                        <div class="col-md-5">
                             <label [hidden]="isEditing">{{getSelectedCustodiansLabel(project.custodians)}}</label>
                             <p-multiSelect [hidden]="!isEditing" *ngIf="custodianChoices" [options]="custodianChoices"
                                            [(ngModel)]="project.custodians" styleClass="w-100"></p-multiSelect>
                         </div>
+                        <div [hidden]="!isEditing" class="col-md-4 text-danger">{{projectErrors['custodians']}}</div>
                     </div>
                     <button [hidden]="isEditing" pButton icon="fa-pencil-square-o" label="Edit"
                             (click)="editProject()"></button>
+                    <button [hidden]="!isEditing || !project.id" pButton icon="fa-close" label="Cancel"
+                            (click)="cancelEditProject()"></button>
                     <button [hidden]="!isEditing" pButton icon="fa-save" label="Save" (click)="saveProject()">
                     </button>
                 </div>
-                <div class="col-md-8">
-                    <div class="row mb-1">
-                        <div class="col-md-1 offset-md-2"><label>Extent</label></div>
-                        <div class="col-md-9">
-                            <biosys-featuremap [isEditing]="isEditing"
-                                               [geometry]="project.geometry"></biosys-featuremap>
-                        </div>
+                <div class="col-md-6">
+                    <label>Extent</label>
+                    <div>
+                        <biosys-featuremap [isEditing]="isEditing" [geometry]="project.geometry"></biosys-featuremap>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <hr *ngIf="project.id" />
+    <hr *ngIf="project.id" class="mt-3"/>
     <div *ngIf="project.id" class="row mt-1">
         <div class="col-md">
             <h4>Datasets</h4>
@@ -103,7 +113,7 @@
             </p-dataTable>
         </div>
     </div>
-    <div *ngIf="project.id" class="row mt-1">
+    <div *ngIf="project.id" class="row mt-3 mb-3">
         <div class="col-md">
             <h4>Sites</h4>
             <p-dataTable [value]="sites" [paginator]="true" [rows]="10" [responsive]="true">

@@ -39,10 +39,11 @@
         </div>
         <div class="row mt-3 mb-3">
             <div class="col-2">
-                <button type="button" pButton icon="fa-close" (click)="confirmDelete()" label="Delete"></button>
+                <button pButton icon="fa-close" (click)="confirmDelete()" label="Delete"></button>
             </div>
-            <div class="col-2">
-                <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+            <div class="col-4">
+                <button pButton icon="fa-close" label="Cancel" (click)="cancel()"></button>
+                <button pButton icon="fa-check" (click)="save()" label="Save"></button>
             </div>
         </div>
     </div>

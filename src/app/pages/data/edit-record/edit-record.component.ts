@@ -22,7 +22,7 @@ export class EditRecordComponent implements OnInit {
     public record: Record;
 
     private dataset: Dataset;
-    private saveDeleteUrl: string;
+    private completeUrl: string;
 
     constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute,
                 private confirmationService: ConfirmationService) {
@@ -78,7 +78,7 @@ export class EditRecordComponent implements OnInit {
             {label: 'recordId' in params ? 'Edit Record' : 'Create Record'}
         ];
 
-        this.saveDeleteUrl = '/data/projects/' + projId + '/datasets/' + datasetId;
+        this.completeUrl = '/data/projects/' + projId + '/datasets/' + datasetId;
     }
 
     public getDropdownOptions(fieldName: string, options: string[]): SelectItem[] {
@@ -125,8 +125,12 @@ export class EditRecordComponent implements OnInit {
         });
     }
 
+    public cancel() {
+        this.router.navigate([this.completeUrl]);
+    }
+
     private onSaveSuccess(record: Record) {
-        this.router.navigate([this.saveDeleteUrl, {'recordSaved': true}]);
+        this.router.navigate([this.completeUrl, {'recordSaved': true}]);
     }
 
     private onSaveError(error: any) {
@@ -147,7 +151,7 @@ export class EditRecordComponent implements OnInit {
     }
 
     private onDeleteSuccess(record: Record) {
-        this.router.navigate([this.saveDeleteUrl, {'recordDeleted': true}]);
+        this.router.navigate([this.completeUrl, {'recordDeleted': true}]);
     }
 
     private onDeleteError(recordErrors: any) {

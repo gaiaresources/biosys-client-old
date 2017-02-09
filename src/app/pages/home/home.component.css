@@ -24,3 +24,11 @@ h2 {
 .card-block {
     padding-bottom: 0px;
 }
+
+.main-section {
+    height: 478px;
+}
+
+.statistics-card {
+    height: 100%;
+}

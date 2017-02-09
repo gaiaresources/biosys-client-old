@@ -7,7 +7,7 @@
             <span *ngIf="user" class="float-right mt-2">Logged in as {{user.first_name}} {{user.last_name}}</span>
         </div>
     </div>
-	<div class="row mt-1">
+	<div class="row mt-1 main-section">
         <div class="col-3">
             <div class="card mb-2">
                 <div class="card-block">
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="col-6">
-            <aol-map class="w-100">
+            <aol-map>
                 <aol-view zoom="4">
                     <aol-coordinate [x]="121" [y]="-27" [srid]="'EPSG:4326'"></aol-coordinate>
                 </aol-view>
@@ -64,7 +64,7 @@
             </aol-map>
 	    </div>
 	    <div class="col-3">
-            <div class="card">
+            <div class="card statistics-card">
                 <div class="card-header">
                     Biosys summary
                 </div>

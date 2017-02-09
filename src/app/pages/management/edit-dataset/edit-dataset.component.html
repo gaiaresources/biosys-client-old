@@ -2,43 +2,42 @@
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
     <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
-    <div class="row mt-2">
-        <p-messages [value]="messages"></p-messages>
-    </div>
     <div class="row mt-1">
         <div class="col-md">
             <h3 *ngIf="ds.id">Edit Dataset</h3>
             <h3 *ngIf="!ds.id">Create Dataset</h3>
-            <p *ngIf="ds.id">Edit the dataset by changing the details below.</p>
-            <p *ngIf="!ds.id">Create the dataset by entering the details below.</p>
-            <form (ngSubmit)="save()">
-                <div class="row mb-1">
-                    <div class="col-md-1"><label for="name">Name</label></div>
-                    <div class="col-md-3">
-                        <input id="name" type="text" pInputText [(ngModel)]="ds.name" name="name"/>
-                    </div>
+            <p *ngIf="ds.id">Edit the dataset by changing the details below. All fields are required.</p>
+            <p *ngIf="!ds.id">Create the dataset by entering the details below. All fields are required.</p>
+            <div class="row mb-1">
+                <div class="col-md-1"><strong>Name</strong></div>
+                <div class="col-md-3">
+                    <input type="text" pInputText [(ngModel)]="ds.name" size="27"/>
                 </div>
-                <div class="row mb-1">
-                    <div class="col-md-1"><label for="type">Type</label></div>
-                    <div class="col-md-3">
-                        <p-dropdown
-                            id="type"
-                            [options]="typeChoices" [(ngModel)]="ds.type" [ngModelOptions]="{standalone: true}"
-                            autoWidth="false"
-                            styleClass="w-100"
-                        >
-                        </p-dropdown>
-                    </div>
+                <div class="col-md-4 text-danger">{{dsErrors['name']}}</div>
+            </div>
+            <div class="row mb-1">
+                <div class="col-md-1"><strong>Type</strong></div>
+                <div class="col-md-3">
+                    <p-dropdown [options]="typeChoices" [(ngModel)]="ds.type" [ngModelOptions]="{standalone: true}"
+                        autoWidth="false" styleClass="w-100">
+                    </p-dropdown>
                 </div>
-                <div class="row mb-1">
-                    <div class="col-md-1"><label>Data Package</label></div>
-                    <div class="col-md-8" style="height:500px">
-                        <biosys-json-editor id="dataPackage" [options]="editorOptions"
-                                     [(data)]="ds.data_package"></biosys-json-editor>
-                    </div>
+                <div class="col-md-4 text-danger">{{dsErrors['type']}}</div>
+            </div>
+            <div class="row mb-1">
+                <div class="col-md-1"><strong>Data Package</strong></div>
+                <div class="col-md-8" style="height:500px">
+                    <biosys-json-editor id="dataPackage" [options]="editorOptions"
+                                        [(data)]="ds.data_package"></biosys-json-editor>
                 </div>
-                <button pButton [disabled]="!isValid" type="submit" label="Save"></button>
-            </form>
+                <div class="col-md-3 text-danger">{{dsErrors['data_package']}}</div>
+            </div>
+            <div class="row mt-3 mb-3">
+                <div class="col-md">
+                    <button pButton icon="fa-close" label="Cancel" (click)="cancel()"></button>
+                    <button pButton [disabled]="!isValid" icon="fa-save" label="Save" (click)="save()"></button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
