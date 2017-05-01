@@ -311,8 +311,8 @@ export class ProjectConfig {
         {src: 'bootstrap/dist/css/bootstrap.css', inject: true},
         {src: 'font-awesome/css/font-awesome.min.css', inject: true},
         {src: 'primeng/resources/primeng.min.css', inject: true},
-        {src: 'primeng/resources/themes/' + this.PRIME_NG_THEME + '/theme.css', inject: true},
-        {src: 'openlayers/dist/ol.css', inject: true}
+        {src: 'primeng/resources/themes/' + this.PRIME_NG_THEME + '/theme.css', inject: true}
+        //{src: 'openlayers/dist/ol.css', inject: true}
     ];
 
     /**
@@ -375,7 +375,7 @@ export class ProjectConfig {
             '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
             'primeng': 'node_modules/primeng',
 			'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
-            'angular2-openlayers': 'node_modules/angular2-openlayers/dist/index.js',
+            //'angular2-openlayers': 'node_modules/angular2-openlayers/dist/index.js',
             'moment': 'node_modules/moment/moment.js',
             'ng2-cookies/*': 'node_modules/ng2-cookies/*',
             'rxjs/*': 'node_modules/rxjs/*',

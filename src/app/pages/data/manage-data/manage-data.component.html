@@ -13,9 +13,9 @@
                              [rows]="10" [responsive]="true">
                     <p-column *ngFor="let field of dataset?.data_package?.resources[0]?.schema?.fields"
                               [field]="field.name" [header]="field.name" [sortable]="true">
-                        <template let-record="rowData" let-col pTemplate="body">
+                        <ng-template let-record="rowData" let-col pTemplate="body">
                             <span [innerHTML]="record.data[col.field] | truncate:30"></span>
-                        </template>
+                        </ng-template>
                     </p-column>
                     <footer>
                         <div class="ui-helper-clearfix" style="width:100%">
@@ -36,10 +36,10 @@
                           (onUpload)="onUpload($event)" (onError)="onUploadError($event)"
                           (onSelect)="onUploadSelect($event)" (onBeforeSend)="onUploadBeforeSend($event)"
                           (onBeforeUpload)="onBeforeUpload($event)">
-                <template pTemplate="content">
+                <ng-template pTemplate="content">
                     <p-checkbox styleClass="mr-3" label="Create Sites"[(ngModel)]="uploadCreateSites" binary="true"></p-checkbox>
                     <p-checkbox label="Delete Existing Records"[(ngModel)]="uploadDeleteExistingRecords" binary="true"></p-checkbox>
-                </template>
+                </ng-template>
             </p-fileUpload>
         </div>
     </div>

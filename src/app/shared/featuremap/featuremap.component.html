@@ -1,25 +1,25 @@
 <div class="row">
     <div class="col-md-12" style="height: 300px">
-        <aol-map>
-            <aol-view zoom="4" projection="EPSG: 4326">
-                <aol-coordinate [x]="121" [y]="-27" [srid]="'EPSG:4326'"></aol-coordinate>
-            </aol-view>
-            <aol-layer-tile>
-                <aol-source-osm></aol-source-osm>
-            </aol-layer-tile>
-            <aol-control-zoomslider></aol-control-zoomslider>
-            <aol-control-zoom></aol-control-zoom>
-            <aol-control-rotate></aol-control-rotate>
-            <aol-control-attribution></aol-control-attribution>
-            <aol-layer-vector>
-            </aol-layer-vector>
-        </aol-map>
-        <p *ngIf="isEditing && features && features.getLength()"
-           class="small">
-            To modify the extent, select the feature and drag the vertices to the desired location.
-        </p>
-        <p *ngIf="isEditing && !features" class="small">
-            To draw the extent, click to place vertices and double-click to complete the feature.
-        </p>
+        <!--<aol-map>-->
+            <!--<aol-view zoom="4" projection="EPSG: 4326">-->
+                <!--<aol-coordinate [x]="121" [y]="-27" [srid]="'EPSG:4326'"></aol-coordinate>-->
+            <!--</aol-view>-->
+            <!--<aol-layer-tile>-->
+                <!--<aol-source-osm></aol-source-osm>-->
+            <!--</aol-layer-tile>-->
+            <!--<aol-control-zoomslider></aol-control-zoomslider>-->
+            <!--<aol-control-zoom></aol-control-zoom>-->
+            <!--<aol-control-rotate></aol-control-rotate>-->
+            <!--<aol-control-attribution></aol-control-attribution>-->
+            <!--<aol-layer-vector>-->
+            <!--</aol-layer-vector>-->
+        <!--</aol-map>-->
+        <!--<p *ngIf="isEditing && features && features.getLength()"-->
+           <!--class="small">-->
+            <!--To modify the extent, select the feature and drag the vertices to the desired location.-->
+        <!--</p>-->
+        <!--<p *ngIf="isEditing && !features" class="small">-->
+            <!--To draw the extent, click to place vertices and double-click to complete the feature.-->
+        <!--</p>-->
     </div>
 </div>

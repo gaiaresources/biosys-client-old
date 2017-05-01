@@ -39,7 +39,7 @@ typings
 .vscode
 *.iml
 
-/tools/**/*.js
+*.js
 dist
 dev
 docs

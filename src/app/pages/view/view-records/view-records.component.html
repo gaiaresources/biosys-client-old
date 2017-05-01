@@ -41,9 +41,9 @@
                 <p-column field="name" header="Name" [sortable]="true"></p-column>
                 <p-column field="type" header="Type" [sortable]="true"></p-column>
                 <p-column header="Project" [sortable]="true">
-                    <template let-dataset="rowData" pTemplate="body">
+                    <ng-template let-dataset="rowData" pTemplate="body">
                         <span>{{projectsMap[dataset.project]}}</span>
-                    </template>
+                    </ng-template>
                 </p-column>
             </p-dataTable>
 
@@ -59,9 +59,9 @@
                                  [emptyMessage]="records == null ? 'Loading records': 'No records found'">
                         <p-column *ngFor="let field of selectedDataset?.data_package?.resources[0]?.schema?.fields"
                                   [field]="field.name" [header]="field.name" [sortable]="true">
-                            <template let-record="rowData" let-col pTemplate="body">
+                            <ng-template let-record="rowData" let-col pTemplate="body">
                                 <span [innerHTML]="record.data[col.field] | truncate:30"></span>
-                            </template>
+                            </ng-template>
                         </p-column>
                     </p-dataTable>
                 </div>

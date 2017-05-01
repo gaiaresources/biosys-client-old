@@ -60,7 +60,7 @@ export class EditSiteComponent implements OnInit {
     }
 
     public save() {
-        this.site.geometry = this.featureMapComponent.getFeatureGeometry();
+        // this.site.geometry = this.featureMapComponent.getFeatureGeometry();
 
         let successUrl = 'management/projects/edit-project/' + this.site.project;
         if (this.site.id) {

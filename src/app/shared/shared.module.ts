@@ -9,14 +9,14 @@ import { FeatureMapComponent } from './featuremap/index';
 import { TruncatePipe } from './pipes/index';
 import { APIService } from './services/api/index';
 import { MenubarModule, BreadcrumbModule } from 'primeng/primeng';
-import { AngularOpenlayersModule } from 'angular2-openlayers';
+// import { AngularOpenlayersModule } from 'angular2-openlayers';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
-  imports: [CommonModule, RouterModule, MenubarModule, BreadcrumbModule, AngularOpenlayersModule],
+  imports: [CommonModule, RouterModule, MenubarModule, BreadcrumbModule],
   declarations: [HeaderComponent, NavbarComponent, BreadcrumbsComponent, FeatureMapComponent, TruncatePipe],
   exports: [CommonModule, FormsModule, RouterModule, HeaderComponent, NavbarComponent, BreadcrumbsComponent,
       FeatureMapComponent, TruncatePipe]
