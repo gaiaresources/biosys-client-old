@@ -14,7 +14,6 @@ loadTasks(config.BIOSYS_TASKS_DIR);
 gulp.task('build.dev', (done: any) =>
     runSequence(//'clean.dev',
 //              'tslint',
-//              'css-lint',
         'build.assets.dev',
         'build.html_css',
         'build.fonts',
@@ -44,7 +43,6 @@ gulp.task('build.e2e', (done: any) =>
 gulp.task('build.uat', (done: any) =>
     runSequence('clean.uat',
         'tslint',
-        'css-lint',
         'build.assets.uat',
         'build.fonts',
         'build.html_css',
@@ -62,7 +60,6 @@ gulp.task('build.uat', (done: any) =>
 gulp.task('build.prod', (done: any) =>
     runSequence('clean.prod',
         'tslint',
-        'css-lint',
         'build.assets.prod',
         'build.fonts',
         'build.html_css',
@@ -80,7 +77,6 @@ gulp.task('build.prod', (done: any) =>
 gulp.task('build.prod.exp', (done: any) =>
     runSequence('clean.prod',
         'tslint',
-        'css-lint',
         'build.assets.prod',
         'build.html_css',
         'copy.prod',

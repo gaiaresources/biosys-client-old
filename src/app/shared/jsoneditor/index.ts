@@ -1,3 +1,3 @@
-export * from './jsoneditor.module'
-export * from './jsoneditor.component'
-export * from './jsoneditor.options'
+export * from './jsoneditor.module';
+export * from './jsoneditor.component';
+export * from './jsoneditor.options';

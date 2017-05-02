@@ -24,7 +24,10 @@
       "types": [
           "jasmine",
           "node",
-          "systemjs"
+          "systemjs",
+          "geojson",
+          "leaflet",
+          "leaflet-draw"
       ]
   },
     "exclude": [

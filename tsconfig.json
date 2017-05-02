@@ -1,33 +1,50 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "declaration": false,
-    "removeComments": true,
-    "noLib": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "lib": ["es6", "es2015", "dom"],
-    "sourceMap": true,
-    "pretty": true,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitUseStrict": false,
-    "noFallthroughCasesInSwitch": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules"
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": false,
+        "removeComments": true,
+        "noLib": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "lib": ["es2015"],
+        "sourceMap": true,
+        "pretty": true,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitUseStrict": false,
+        "noFallthroughCasesInSwitch": true,
+        "typeRoots": [
+            "./node_modules/@types",
+            "./node_modules"
+        ],
+        "types": [
+            "node",
+            "geojson",
+            "leaflet",
+            "leaflet-draw"
+        ]
+    },
+    "files": [
+        "gulpfile.ts",
+        "tools/manual_typings/biosys/autoprefixer.d.ts",
+        "tools/manual_typings/biosys/cssnano.d.ts",
+        "tools/manual_typings/biosys/express-history-api-fallback.d.ts",
+        "tools/manual_typings/biosys/istream.d.ts",
+        "tools/manual_typings/biosys/karma.d.ts",
+        "tools/manual_typings/biosys/merge-stream.d.ts",
+        "tools/manual_typings/biosys/open.d.ts",
+        "tools/manual_typings/biosys/operators.d.ts",
+        "tools/manual_typings/biosys/slash.d.ts",
+        "tools/manual_typings/biosys/systemjs-builder.d.ts",
+        "tools/manual_typings/biosys/tildify.d.ts"
     ],
-    "types": [
-      "node"
-    ]
-  },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "src"
-  ],
-  "compileOnSave": false
+    "exclude": [
+        "node_modules",
+        "dist",
+        "src"
+    ],
+    "compileOnSave": false
 }

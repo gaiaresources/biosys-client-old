@@ -73,7 +73,7 @@ export function serveUAT() {
     server.listen(Config.PORT, () =>
         openResource('http://localhost:' + Config.PORT + Config.APP_BASE)
     );
-};
+}
 
 /**
  * Starts a new `express` server, serving the built files from `dist/prod`.
@@ -91,4 +91,4 @@ export function serveProd() {
   server.listen(Config.PORT, () =>
     openResource('http://localhost:' + Config.PORT + Config.APP_BASE)
   );
-};
+}

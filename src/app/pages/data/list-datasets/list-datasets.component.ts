@@ -38,7 +38,7 @@ export class ListDatasetsComponent implements OnInit {
             );
 
         this.breadcrumbItems = [
-            {label: 'Enter Data - Project List', routerLink: ['data/projects']},
+            {label: 'Enter Data - Project List', routerLink: ['/data/projects']},
         ];
     }
 }

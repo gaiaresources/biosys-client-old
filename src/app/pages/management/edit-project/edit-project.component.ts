@@ -95,7 +95,7 @@ export class EditProjectComponent implements OnInit {
             );
 
         this.breadcrumbItems = [
-            {label:'Management - Project List', routerLink: ['management/projects']},
+            {label:'Management - Project List', routerLink: ['/management/projects']},
         ];
 
         if (this.isEditing) {
