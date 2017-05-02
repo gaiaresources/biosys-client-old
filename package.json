@@ -1,7 +1,7 @@
 {
     "name": "biosys-client",
-    "version": "0.0.0",
-    "description": "Biosys Client built on Angular 2",
+    "version": "0.0.1",
+    "description": "Biosys Client built on Angular 4",
     "repository": {
         "url": "https://github.com/gaiaresources/biosys"
     },
@@ -118,6 +118,7 @@
         "slash": "~1.0.0",
         "supports-color": "^3.1.2",
         "systemjs-builder": "0.15.34",
+        "systemjs-plugin-css": "^0.1.33",
         "tildify": "^1.2.0",
         "traceur": "^0.0.111",
         "ts-node": "^2.0.0",
@@ -142,13 +143,13 @@
         "rxjs": "^5.2.0",
         "systemjs": "0.19.41",
         "zone.js": "^0.8.4",
-        "async": "*",
+        "async": "^2.4.0",
         "bootstrap": "^4.0.0-alpha.4",
         "es-module-loader": "^2.1.5",
-        "font-awesome": "*",
+        "font-awesome": "^4.7.0",
         "jsoneditor": "^5.5.10",
-        "ng2-bootstrap": "*",
-        "ng2-cookies": "*",
+        "ng2-bootstrap": "^1.6.3",
+        "ng2-cookies": "^1.0.12",
         "primeng": "^4.0.0"
     }
 }
