@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, APIError, Project, Statistic, User, LAYER_OSM, WA_CENTER } from '../../shared/index';
+import { APIService, APIError, Project, Statistic, User, WA_CENTER } from '../../shared/index';
 import * as L from 'leaflet';
 
 /**
@@ -13,15 +13,6 @@ import * as L from 'leaflet';
 })
 
 export class HomeComponent implements OnInit {
-    public base_layers: any = {
-        'Open Street Map': LAYER_OSM
-    };
-
-    public map_options: any = {
-        zoom: 4,
-        center: WA_CENTER
-    };
-
     public projects: Project[];
     public statistic: Statistic;
     public user: User;
@@ -51,6 +42,16 @@ export class HomeComponent implements OnInit {
                 (user: User) => this.user = user,
                 (error: APIError) => console.log('error.msg', error.msg)
             );
+
+        this.map = L.map('map', {
+            zoom: 4,
+            center: WA_CENTER
+        });
+
+        this.map.addLayer(L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Open Street Map'
+        }));
     }
 
     public onMapReady(map: L.Map) {

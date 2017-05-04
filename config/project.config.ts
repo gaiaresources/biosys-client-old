@@ -298,7 +298,6 @@ export class ProjectConfig {
         {src: 'font-awesome/css/font-awesome.min.css', inject: true},
         {src: 'primeng/resources/primeng.min.css', inject: true},
         {src: 'primeng/resources/themes/' + this.PRIME_NG_THEME + '/theme.css', inject: true},
-        //{src: 'openlayers/dist/ol.css', inject: true}
         {src: 'leaflet/dist/leaflet.css', inject: true},
         {src: 'leaflet-draw/dist/leaflet.draw.css', inject: true},
     ];
@@ -339,7 +338,6 @@ export class ProjectConfig {
             `/node_modules/*/package.json`,
             `/node_modules/**/package.json`,
             `/node_modules/@angular/*/package.json`,
-            `/node_modules/@asymmetrik/*/package.json`
         ],
         paths: {
             [this.BOOTSTRAP_MODULE]: `${this.APP_BASE}${this.BOOTSTRAP_MODULE}`,
@@ -369,7 +367,6 @@ export class ProjectConfig {
             'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
             'leaflet': 'node_modules/leaflet/dist/leaflet.js',
             'leaflet-draw': 'node_modules/leaflet-draw/dist/leaflet.draw.js',
-            '@asymmetrik/angular2-leaflet': 'node_modules/@asymmetrik/angular2-leaflet',
             'moment': 'node_modules/moment/moment.js',
             'ng2-cookies/*': 'node_modules/ng2-cookies/*',
             'rxjs/*': 'node_modules/rxjs/*',
@@ -404,7 +401,6 @@ export class ProjectConfig {
         packageConfigPaths: [
             join('node_modules', '*', 'package.json'),
             join('node_modules', '@angular', '*', 'package.json'),
-            join('node_modules', '@asymmetrik', '*', 'package.json')
         ],
         paths: {
             'css': 'node_modules/systemjs-plugin-css/css.js',

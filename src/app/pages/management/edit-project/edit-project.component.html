@@ -86,6 +86,7 @@
                             [isEditing]="isEditing"
                             [geometry]="project.geometry"
                             [drawFeatureTypes]="['POLYGON']"
+                            [extraMarkers]="[{type: 'Point', coordinates: [127.26957486939979, -26.247739149191045]}]"
                         ></biosys-featuremap>
                     </div>
                 </div>
@@ -108,12 +109,12 @@
                                 (click)="confirmDeleteDataset(dataset)"></button>
                     </ng-template>
                 </p-column>
-                <footer>
+                <p-footer>
                     <div class="ui-helper-clearfix" style="width:100%">
                         <button type="button" pButton icon="fa-plus" style="float:right" label="Add"
                                 [routerLink]="'/management/projects/edit-project/' + project.id + '/create-dataset'"></button>
                     </div>
-                </footer>
+                </p-footer>
             </p-dataTable>
         </div>
     </div>
@@ -133,14 +134,14 @@
                                 (click)="confirmDeleteSite(site)"></button>
                     </ng-template>
                 </p-column>
-                <footer>
+                <p-footer>
                     <div class="ui-helper-clearfix" style="width:100%">
                         <button type="button" class="ml-1" pButton icon="fa-plus" style="float:right" label="Add"
                                 [routerLink]="'/management/projects/edit-project/' + project.id + '/create-site'"></button>
                         <button type="button" pButton icon="fa-reply" style="float:right" label="Import"
                                 [routerLink]="'/management/projects/edit-project/' + project.id + '/upload-sites'"></button>
                     </div>
-                </footer>
+                </p-footer>
             </p-dataTable>
         </div>
     </div>

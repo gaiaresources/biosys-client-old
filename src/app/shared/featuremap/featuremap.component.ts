@@ -1,10 +1,7 @@
 import { OnInit, Component, Input, OnChanges, SimpleChange, ViewChild } from '@angular/core';
-import { LAYER_OSM, WA_CENTER } from '../../shared/index';
+import { WA_CENTER } from '../../shared/index';
 import * as L from 'leaflet';
 import 'leaflet-draw';
-
-// import { MapComponent, LayerVectorComponent } from 'angular2-openlayers';
-// import { Collection, Feature, Coordinate, control, coordinate, source, interaction, proj, geom } from 'openlayers';
 
 @Component({
     moduleId: module.id,
@@ -16,15 +13,7 @@ export class FeatureMapComponent implements OnInit, OnChanges {
     @Input() public drawFeatureTypes: [string] = [] as [string];
     @Input() public isEditing: boolean;
     @Input() public geometry: GeoJSON.DirectGeometryObject;
-
-    public baseLayers: any = {
-        'Open Street Map': LAYER_OSM
-    };
-
-    public mapOptions: any = {
-        zoom: 4,
-        center: WA_CENTER
-    };
+    @Input() public extraMarkers: [GeoJSON.DirectGeometryObject];
 
     public layersControlOptions: any = {
         position: 'bottomleft'
@@ -59,6 +48,36 @@ export class FeatureMapComponent implements OnInit, OnChanges {
         };
 
         this.initialised = true;
+
+        this.map = L.map('map', {
+            zoom: 4,
+            center: WA_CENTER
+        });
+        this.map.addLayer(L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Open Street Map'
+        }));
+        this.map.addLayer(this.drawnFeatures);
+        this.map.on('draw:created', (e: any) => this.onFeatureCreated(e));
+
+        this.drawControl = new L.Control.Draw(this.drawOptions);
+
+        if (this.isEditing) {
+            this.map.addControl(this.drawControl);
+        }
+
+        let icon: L.Icon = L.icon({
+            iconUrl: 'assets/img/extra-marker-icon.png',
+            shadowUrl: 'assets/img/marker-shadow.png'
+        });
+
+        if (this.extraMarkers) {
+            for(let point of this.extraMarkers) {
+                let coord: GeoJSON.Position = point.coordinates as GeoJSON.Position;
+                let marker: L.Marker = L.marker(L.GeoJSON.coordsToLatLng([coord[0], coord[1]]), {icon: icon});
+                this.map.addLayer(marker);
+            }
+        }
     }
 
     ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
@@ -70,12 +89,13 @@ export class FeatureMapComponent implements OnInit, OnChanges {
                     this.drawnFeatures.addLayer(polyline);
                     this.drawnFeatureType = 'polyline';
                 } else if (this.geometry.type === 'Polygon') {
-                    let coords: GeoJSON.Position = this.geometry.coordinates[0] as GeoJSON.Position;
+                    let coords: GeoJSON.Position[] = this.geometry.coordinates[0] as GeoJSON.Position[];
                     let polygon: L.Polygon = L.polygon(L.GeoJSON.coordsToLatLngs(coords));
                     this.drawnFeatures.addLayer(polygon);
                     this.drawnFeatureType = 'polygon';
                 } else if (this.geometry.type === 'Point') {
-                    let marker: L.GeoJSON = L.geoJSON(this.geometry); // L.geoJSON will convert to marker if it's a point
+                    let coord: GeoJSON.Position = this.geometry.coordinates as GeoJSON.Position;
+                    let marker: L.Marker = L.marker(L.GeoJSON.coordsToLatLng([coord[0], coord[1]]));
                     this.drawnFeatures.addLayer(marker);
                     this.drawnFeatureType = 'point';
                 }
@@ -89,20 +109,6 @@ export class FeatureMapComponent implements OnInit, OnChanges {
                 } else {
                     this.map.removeControl(this.drawControl);
                 }
-            }
-        }
-    }
-
-    public onMapReady(map: L.Map) {
-        this.map = map;
-        this.map.addLayer(this.drawnFeatures);
-        this.map.on('draw:created', (e: any) => this.onFeatureCreated(e));
-
-        this.drawControl = new L.Control.Draw(this.drawOptions);
-
-        if (this.initialised) {
-            if (this.isEditing) {
-                this.map.addControl(this.drawControl);
             }
         }
     }

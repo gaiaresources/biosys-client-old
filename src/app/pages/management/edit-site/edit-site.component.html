@@ -43,7 +43,10 @@
         </div>
         <div class="col-md-6">
             <label>Location</label>
-            <biosys-featuremap [isEditing]="true" [geometry]="site.geometry"></biosys-featuremap>
+            <biosys-featuremap
+                [isEditing]="true"
+                [geometry]="site.geometry"
+                [drawFeatureTypes]="['POINT', 'LINE', 'POLYGON']"></biosys-featuremap>
         </div>
     </div>
 </div>
