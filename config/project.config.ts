@@ -337,7 +337,7 @@ export class ProjectConfig {
         packageConfigPaths: [
             `/node_modules/*/package.json`,
             `/node_modules/**/package.json`,
-            `/node_modules/@angular/*/package.json`,
+            `/node_modules/@angular/*/package.json`
         ],
         paths: {
             [this.BOOTSTRAP_MODULE]: `${this.APP_BASE}${this.BOOTSTRAP_MODULE}`,
@@ -400,7 +400,7 @@ export class ProjectConfig {
         base: this.PROJECT_ROOT,
         packageConfigPaths: [
             join('node_modules', '*', 'package.json'),
-            join('node_modules', '@angular', '*', 'package.json'),
+            join('node_modules', '@angular', '*', 'package.json')
         ],
         paths: {
             'css': 'node_modules/systemjs-plugin-css/css.js',
