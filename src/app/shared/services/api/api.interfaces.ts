@@ -25,11 +25,6 @@ export interface User {
     groups?: any[] | null;
     user_permissions?: any[] | null;
 }
-// Biosys remote models
-export interface Geometry {
-    type: string;
-    coordinates: [number, number][];
-}
 export interface Project {
     id?: number;
     title?: string;
@@ -37,8 +32,8 @@ export interface Project {
     timezone?: string;
     datum?: number | string | null;
     attributes?: {[key: string]: string} | null;
-    geometry?: Geometry | null;
-    centroid?: Geometry | null;
+    geometry?: GeoJSON.DirectGeometryObject | null;
+    centroid?: GeoJSON.DirectGeometryObject | null;
     site_data_package?: {} | null;
     custodians?: number[];
 }
@@ -48,7 +43,7 @@ export interface Site {
     name?: string;
     parent_site?: number | null;
     project?: number;
-    geometry?: Geometry | null;
+    geometry?: GeoJSON.DirectGeometryObject | null;
     comments?: string;
     attributes?: {[key: string]: string} | null;
 }
@@ -67,7 +62,7 @@ export interface Record {
     site?: number | null;
     data?: {[key: string]: any} | null;
     datetime?: string;
-    geometry?: Geometry;
+    geometry?: GeoJSON.DirectGeometryObject | null;
     species_name?: string;
     name_id?: number;
 }

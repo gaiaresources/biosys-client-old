@@ -370,7 +370,6 @@ export class ProjectConfig {
             'leaflet': 'node_modules/leaflet/dist/leaflet.js',
             'leaflet-draw': 'node_modules/leaflet-draw/dist/leaflet.draw.js',
             '@asymmetrik/angular2-leaflet': 'node_modules/@asymmetrik/angular2-leaflet',
-            '@asymmetrik/angular2-leaflet-draw': 'node_modules/@asymmetrik/angular2-leaflet-draw',
             'moment': 'node_modules/moment/moment.js',
             'ng2-cookies/*': 'node_modules/ng2-cookies/*',
             'rxjs/*': 'node_modules/rxjs/*',

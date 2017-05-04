@@ -15,7 +15,7 @@ export class EditProjectComponent implements OnInit {
 
     public breadcrumbItems: any = [];
 
-    public project: Project = <Project>{
+    public project: Project = <Project> {
         timezone: EditProjectComponent.DEFAULT_TIMEZONE,
         custodians: []
     };
@@ -141,7 +141,7 @@ export class EditProjectComponent implements OnInit {
     }
 
     public saveProject() {
-        // this.project.geometry = this.featureMapComponent.getFeatureGeometry();
+        this.project.geometry = this.featureMapComponent.getFeatureGeometry();
 
         if (this.project.id) {
             this.apiService.updateProject(this.project).subscribe(

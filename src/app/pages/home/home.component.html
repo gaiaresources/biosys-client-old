@@ -36,8 +36,8 @@
         </div>
         <div class="col-6">
             <div leaflet class="main-section"
-                 [leafletOptions]="OPTIONS"
-                 [leafletBaseLayers]="BASE_LAYERS"
+                 [leafletOptions]="map_options"
+                 [leafletBaseLayers]="base_layers"
                  (leafletMapReady)="onMapReady($event)">
             </div>
 	    </div>

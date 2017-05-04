@@ -82,7 +82,11 @@
                 <div class="col-md-6">
                     <label>Extent</label>
                     <div>
-                        <biosys-featuremap [isEditing]="isEditing" [geometry]="project.geometry"></biosys-featuremap>
+                        <biosys-featuremap
+                            [isEditing]="isEditing"
+                            [geometry]="project.geometry"
+                            [drawFeatureTypes]="['POLYGON']"
+                        ></biosys-featuremap>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, APIError, Project, Statistic, User } from '../../shared/index';
+import { APIService, APIError, Project, Statistic, User, LAYER_OSM, WA_CENTER } from '../../shared/index';
 import * as L from 'leaflet';
 
 /**
@@ -13,22 +13,13 @@ import * as L from 'leaflet';
 })
 
 export class HomeComponent implements OnInit {
-    public LAYER_OSM = {
-        id: 'openstreetmap',
-        name: 'Open Street Map',
-        enabled: false,
-        layer: L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Open Street Map'
-        })
+    public base_layers: any = {
+        'Open Street Map': LAYER_OSM
     };
 
-    public BASE_LAYERS = {
-        'Open Street Map': this.LAYER_OSM.layer
-    };
-    public OPTIONS = {
+    public map_options: any = {
         zoom: 4,
-        center: L.latLng([ -27, 121 ])
+        center: WA_CENTER
     };
 
     public projects: Project[];
@@ -69,7 +60,7 @@ export class HomeComponent implements OnInit {
     private loadProjectMarkers() {
         for (let project of this.projects) {
             if(project.centroid) {
-                let marker:L.Marker = L.marker([project.centroid.coordinates[1], project.centroid.coordinates[0]]);
+                let marker = L.geoJSON(project.centroid).addTo(this.map);
                 marker.bindPopup(project.title);
                 marker.addTo(this.map);
             }
