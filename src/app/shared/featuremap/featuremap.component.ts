@@ -13,7 +13,7 @@ export class FeatureMapComponent implements OnInit, OnChanges {
     @Input() public drawFeatureTypes: [string] = [] as [string];
     @Input() public isEditing: boolean;
     @Input() public geometry: GeoJSON.DirectGeometryObject;
-    @Input() public extraMarkers: [GeoJSON.DirectGeometryObject];
+    @Input() public extraMarkers: [any];
 
     public layersControlOptions: any = {
         position: 'bottomleft'
@@ -72,10 +72,11 @@ export class FeatureMapComponent implements OnInit, OnChanges {
         });
 
         if (this.extraMarkers) {
-            for(let point of this.extraMarkers) {
-                let coord: GeoJSON.Position = point.coordinates as GeoJSON.Position;
-                let marker: L.Marker = L.marker(L.GeoJSON.coordsToLatLng([coord[0], coord[1]]), {icon: icon});
-                this.map.addLayer(marker);
+            for(let marker of this.extraMarkers) {
+                let coord: GeoJSON.Position = marker.geometry.coordinates as GeoJSON.Position;
+                let leafletMarker: L.Marker = L.marker(L.GeoJSON.coordsToLatLng([coord[0], coord[1]]), {icon: icon});
+                leafletMarker.bindPopup(marker.text);
+                this.map.addLayer(leafletMarker);
             }
         }
     }

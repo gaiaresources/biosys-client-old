@@ -14,6 +14,7 @@ export class ManagementListProjectsComponent implements OnInit {
     public breadcrumbItems: any = [];
     public projects: Project[] = [];
     public messages: Message[] = [];
+    public custodiansString: string = '';
 
     constructor(private apiService: APIService, private router: Router,
                 private confirmationService: ConfirmationService) {
@@ -46,6 +47,29 @@ export class ManagementListProjectsComponent implements OnInit {
         this.breadcrumbItems = [
             {label:'Management - Project List'}
         ];
+    }
+
+    public getCustodiansAsText(custodians: number[]): string {
+        return '';
+        // if (!custodians || !custodians.length) {
+        //     return '';
+        // }
+        //
+        // let users: User[] = [];
+        //
+        // for (let custodian of custodians) {
+        //     this.apiService.getUser(custodian)
+        //     .subscribe(
+        //         (user: User) => users.push(user),
+        //         (error: APIError) => console.log('error.msg', error.msg)
+        //     );
+        // }
+        //
+        // if (users.length) {
+        //     return users.map(user => user.first_name + ' ' + user.last_name).reduce((a, b) => a + '; ' + b);
+        // } else {
+        //     return '';
+        // }
     }
 
     public confirmDelete(project:Project) {
