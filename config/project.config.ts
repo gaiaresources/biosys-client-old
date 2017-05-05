@@ -465,6 +465,11 @@ export class ProjectConfig {
             'rxjs': {
                 main: 'Rx.js',
                 defaultExtension: 'js'
+            },
+            'jsoneditor': {
+                main: 'jsoneditor.js',
+                defaultExtension: 'js',
+                format: 'global'
             }
         }
     };
