@@ -109,10 +109,6 @@ export class ManageDataComponent implements OnInit {
         }
     }
 
-    public onRowSelect(event:any) {
-        this.router.navigate(['/data/projects/' + this.projId + '/datasets/' + this.datasetId + '/record/' + event.data.id]);
-    }
-
     public add() {
         this.router.navigate(['/data/projects/' + this.projId + '/datasets/' + this.datasetId + '/create-record/']);
     }

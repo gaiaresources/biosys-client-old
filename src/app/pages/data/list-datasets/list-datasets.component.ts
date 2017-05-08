@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, APIError, Project, Dataset } from '../../../shared/index';
+import { APIService, APIError, Project, Dataset, DATASET_TYPE_MAP } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,6 +10,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class ListDatasetsComponent implements OnInit {
+    public DATASET_TYPE_MAP: string = DATASET_TYPE_MAP;
+
     public breadcrumbItems: any = [];
     public project: Project;
     public datasets: Dataset[] = [];
