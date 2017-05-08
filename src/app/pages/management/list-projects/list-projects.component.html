@@ -7,7 +7,13 @@
         <div class="col-md">
             <h3>Projects</h3>
             <p>Select a project to edit or delete or click add to create a new project</p>
-            <p-dataTable [value]="projects" [paginator]="true" [rows]="15" [responsive]="true">
+            <p-dataTable [value]="projects" [globalFilter]="projectSearch" [paginator]="true" [rows]="15" [responsive]="true">
+                <p-header>
+                    <div class="ui-helper-clearfix" style="width:100%">
+                        <i class="fa fa-search float-left mt-1 mr-1"></i>
+                        <input #projectSearch type="text" class="float-left" pInputText placeholder="Search">
+                    </div>
+                </p-header>
                 <p-column field="title" header="Title" [sortable]="true">
                     <ng-template let-project="rowData" pTemplate="body">
                         <a class="table-link" [routerLink]="'/management/projects/edit-project/' + project.id">{{project.title}}</a>

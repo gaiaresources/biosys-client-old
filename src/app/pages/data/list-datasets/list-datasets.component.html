@@ -6,13 +6,20 @@
         <div class="col-md">
             <h3>Datasets for {{project?.title}}</h3>
             <p>Select the dataset the records belong to</p>
-            <p-dataTable [value]="datasets" emptyMessage="No datasets found"[paginator]="true" [rows]="15" [responsive]="true">
-                <p-column field="name" header="Name" [sortable]="true" [filter]="true">
+            <p-dataTable [value]="datasets" emptyMessage="No datasets found" [paginator]="true" [rows]="15"
+                         [globalFilter]="datasetSearch" [responsive]="true">
+                <p-header>
+                    <div class="ui-helper-clearfix" style="width:100%">
+                        <i class="fa fa-search float-left mt-1 mr-1"></i>
+                        <input #datasetSearch type="text" class="float-left" pInputText placeholder="Search">
+                    </div>
+                </p-header>
+                <p-column field="name" header="Name" [sortable]="true">
                     <ng-template let-dataset="rowData" pTemplate="body">
                         <a [routerLink]="'/data/projects/' + project?.id + '/datasets/' + dataset.id">{{dataset.name}}</a>
                     </ng-template>
                 </p-column>
-                <p-column field="type" header="Type" [sortable]="true" [filter]="true">
+                <p-column field="type" header="Type" [sortable]="true">
                     <ng-template let-dataset="rowData" pTemplate="body">
                         {{DATASET_TYPE_MAP[dataset.type]}}
                     </ng-template>

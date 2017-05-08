@@ -94,13 +94,19 @@
     <div *ngIf="project.id" class="row mt-1">
         <div class="col-md">
             <h4>Datasets</h4>
-            <p-dataTable [value]="datasets" [paginator]="true" [rows]="10" [responsive]="true">
-                <p-column header="Name">
+            <p-dataTable [value]="datasets" [globalFilter]="datasetSearch" [paginator]="true" [rows]="10" [responsive]="true">
+                <p-header>
+                    <div class="ui-helper-clearfix" style="width:100%">
+                        <i class="fa fa-search float-left mt-1 mr-1"></i>
+                        <input #datasetSearch type="text" class="float-left" pInputText placeholder="Search">
+                    </div>
+                </p-header>
+                <p-column field="name" header="Name">
                     <ng-template let-dataset="rowData" pTemplate="body">
                         <a [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-dataset/' + dataset.id">{{dataset.name}}</a>
                     </ng-template>
                 </p-column>
-                <p-column header="Type">
+                <p-column field="type" header="Type">
                     <ng-template let-dataset="rowData" pTemplate="body">
                         {{DATASET_TYPE_MAP[dataset.type]}}
                     </ng-template>
@@ -126,8 +132,14 @@
     <div *ngIf="project.id" class="row mt-3 mb-3">
         <div class="col-md">
             <h4>Sites</h4>
-            <p-dataTable [value]="sites" [paginator]="true" [rows]="10" [responsive]="true">
-                <p-column header="Code">
+            <p-dataTable [value]="sites" [globalFilter]="siteSearch" [paginator]="true" [rows]="10" [responsive]="true">
+                <p-header>
+                    <div class="ui-helper-clearfix" style="width:100%">
+                        <i class="fa fa-search float-left mt-1 mr-1"></i>
+                        <input #siteSearch type="text" class="float-left" pInputText placeholder="Search">
+                    </div>
+                </p-header>
+                <p-column field="code" header="Code">
                     <ng-template let-site="rowData" pTemplate="body">
                         <a [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-site/' + site.id">{{site.code}}</a>
                     </ng-template>
