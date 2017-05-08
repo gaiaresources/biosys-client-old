@@ -8,12 +8,19 @@
             <h3>Projects</h3>
             <p>Select a project to edit or delete or click add to create a new project</p>
             <p-dataTable [value]="projects" [paginator]="true" [rows]="15" [responsive]="true">
-                <p-column field="title" header="Title" [sortable]="true"></p-column>
-                <p-column field="code" header="Code"></p-column>
-                <p-column styleClass="col-button" header="Action">
+                <p-column field="title" header="Title" [sortable]="true">
                     <ng-template let-project="rowData" pTemplate="body">
-                        <button type="button" pButton icon="fa-pencil-square-o" title="Edit"
-                                [routerLink]="'/management/projects/edit-project/' + project.id"></button>
+                        <a class="table-link" [routerLink]="'/management/projects/edit-project/' + project.id">{{project.title}}</a>
+                    </ng-template>
+                </p-column>
+                <p-column field="code" header="Code" [sortable]="true"></p-column>
+                <p-column header="Custodians">
+                    <ng-template let-project="rowData" pTemplate="body">
+                        {{getCustodiansAsText(project.custodians)}}
+                    </ng-template>
+                </p-column>
+                <p-column styleClass="col-button" header="Delete">
+                    <ng-template let-project="rowData" pTemplate="body">
                         <button type="button" pButton icon="fa-trash-o" title="Delete"
                                 (click)="confirmDelete(project)"></button>
                     </ng-template>

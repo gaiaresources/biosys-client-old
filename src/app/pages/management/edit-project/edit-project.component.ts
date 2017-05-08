@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { APIService, APIError, User, Project, Site, Dataset, ModelChoice, FeatureMapComponent } from '../../../shared/index';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { APIService, APIError, User, Project, Site, Dataset, ModelChoice, FeatureMapComponent, MarkerDirective, DATASET_TYPE_MAP }
+    from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationService, Message, SelectItem } from 'primeng/primeng';
 
@@ -13,6 +14,8 @@ import { ConfirmationService, Message, SelectItem } from 'primeng/primeng';
 export class EditProjectComponent implements OnInit {
     public static DEFAULT_TIMEZONE: string = 'Australia/Perth';
 
+    public DATASET_TYPE_MAP: string = DATASET_TYPE_MAP;
+
     public breadcrumbItems: any = [];
 
     public project: Project = <Project> {
@@ -22,6 +25,17 @@ export class EditProjectComponent implements OnInit {
 
     public sites: Site[];
     public datasets: Dataset[];
+
+    @Input()
+    set selectAllSites(selected: boolean) {
+        this.isAllSitesSelected = selected;
+        this.selectedSites = selected ? this.sites.map((site:Site) => site.id): [];
+    }
+    get selectAllSites(): boolean {
+        return this.isAllSitesSelected;
+    }
+
+    public selectedSites: number[] = [];
 
     public isEditing: boolean;
 
@@ -34,6 +48,8 @@ export class EditProjectComponent implements OnInit {
 
     @ViewChild(FeatureMapComponent)
     public featureMapComponent: FeatureMapComponent;
+
+    private isAllSitesSelected: boolean = false;
 
     constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute,
         private confirmationService: ConfirmationService) {
@@ -192,15 +208,15 @@ export class EditProjectComponent implements OnInit {
         });
     }
 
-    public confirmDeleteSite(site:Site) {
+    public confirmDeleteSelectedSites(site:Site) {
         this.confirmationService.confirm({
-            message: 'Are you sure that you want to delete this site?',
+            message: 'Are you sure that you want to delete all selected sites?',
             accept: () => {
-                this.apiService.deleteSite(site.id)
-                    .subscribe(
-                        () => this.onDeleteSiteSuccess(site),
-                        (error: APIError) => this.onDeleteSiteError(error)
-                    );
+                this.apiService.deleteSites(this.project.id, this.selectedSites)
+                .subscribe(
+                    () => this.onDeleteSitesSuccess(),
+                    (error: APIError) => this.onDeleteSiteError(error)
+                );
             }
         });
     }
@@ -228,18 +244,16 @@ export class EditProjectComponent implements OnInit {
         });
     }
 
-    private onDeleteSiteSuccess(site: Site) {
-        for (let i = 0; i < this.sites.length; i++) {
-            if (this.sites[i].id === site.id) {
-                this.sites.splice(i, 1);
-                break;
-            }
-        }
+    private onDeleteSitesSuccess() {
+        this.apiService.getAllSitesForProjectID(this.project.id).subscribe(
+            (sites: Site[]) => this.sites = sites,
+            (error: APIError) => console.log('error.msg', error.msg)
+        );
 
         this.messages.push({
             severity: 'success',
-            summary: 'Site deleted',
-            detail: 'The site was deleted'
+            summary: 'Site(s) deleted',
+            detail: 'The site(s) was deleted'
         });
     }
 
@@ -247,7 +261,7 @@ export class EditProjectComponent implements OnInit {
         this.messages.push({
             severity: 'error',
             summary: 'Site delete error',
-            detail: 'There were error(s) deleting the site: ' + error.msg
+            detail: 'There were error(s) deleting the site(s): ' + error.msg
         });
     }
 }

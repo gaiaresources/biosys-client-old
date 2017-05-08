@@ -22,6 +22,8 @@ export class ManageDataComponent implements OnInit {
     ];
 
     public breadcrumbItems: any = [];
+    public projId: number;
+    public datasetId: number;
     public dataset: Dataset = <Dataset>{};
     public records: Record[] = [];
     public recordErrors: any = {};
@@ -42,19 +44,19 @@ export class ManageDataComponent implements OnInit {
     public ngOnInit() {
         let params = this.route.snapshot.params;
 
-        let projId: number = Number(params['projId']);
-        let datasetId: number = Number(params['datasetId']);
+        this.projId = Number(params['projId']);
+        this.datasetId = Number(params['datasetId']);
 
-        this.apiService.getProjectById(projId)
+        this.apiService.getProjectById(this.projId)
             .subscribe(
                 (project: Project) => this.breadcrumbItems.splice(1, 0, {
                     label: 'Datasets for ' + project.title,
-                    routerLink: ['/data/projects/' + projId + '/datasets']
+                    routerLink: ['/data/projects/' + this.projId + '/datasets']
                 }),
                 (error: APIError) => console.log('error.msg', error.msg)
             );
 
-        this.apiService.getDatasetById(datasetId)
+        this.apiService.getDatasetById(this.datasetId)
             .subscribe(
                 (dataset: Dataset) => {
                     this.dataset = dataset;
@@ -63,14 +65,14 @@ export class ManageDataComponent implements OnInit {
                 (error: APIError) => console.log('error.msg', error.msg)
             );
 
-        this.apiService.getDataByDatasetId(datasetId)
+        this.apiService.getDataByDatasetId(this.datasetId)
             .subscribe(
                 (data: any[]) => this.records = data,
                 (error: APIError) => console.log('error.msg', error.msg),
                 () => this.tablePlaceholder = 'No records found'
             );
 
-        this.uploadURL = this.apiService.getRecordsUploadURL(datasetId);
+        this.uploadURL = this.apiService.getRecordsUploadURL(this.datasetId);
 
         this.breadcrumbItems = [
             {label:'Enter Records - Project List', routerLink: '/data/projects'}
@@ -107,22 +109,8 @@ export class ManageDataComponent implements OnInit {
         }
     }
 
-    public onRowSelect(event:any) {
-        let params = this.route.snapshot.params;
-
-        let projId: number = Number(params['projId']);
-        let datasetId: number = Number(params['datasetId']);
-
-        this.router.navigate(['/data/projects/' + projId + '/datasets/' + datasetId + '/record/' + event.data.id]);
-    }
-
     public add() {
-        let params = this.route.snapshot.params;
-
-        let projId: number = Number(params['projId']);
-        let datasetId: number = Number(params['datasetId']);
-
-        this.router.navigate(['/data/projects/' + projId + '/datasets/' + datasetId + '/create-record/']);
+        this.router.navigate(['/data/projects/' + this.projId + '/datasets/' + this.datasetId + '/create-record/']);
     }
 
     public onUpload(event: any) {

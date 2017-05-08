@@ -55,6 +55,10 @@ export class APIService {
         });
     }
 
+    public getUser(id: number): Observable<User> {
+        return this.fetch('users/' + id, {});
+    }
+
     public getUsers(): Observable<User[]> {
         return this.fetch('users', {});
     }
@@ -125,6 +129,13 @@ export class APIService {
     public deleteSite(id: number): Observable<Site> {
         return this.fetch('sites/' + id, {
             method: 'Delete',
+        });
+    }
+
+    public deleteSites(projectId: number, siteIds: number[]): Observable<void> {
+        return this.fetch('projects/' + projectId + '/sites/', {
+            method: 'Delete',
+            data: siteIds
         });
     }
 

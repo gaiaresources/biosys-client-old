@@ -7,6 +7,17 @@
     background: none;
 }
 
+.ui-breadcrumb .ui-state-active {
+    border: none;
+    color: #000000;
+    background: none;
+}
+
+.ui-menuitem .ui-state-active {
+    border: none;
+    background: none;
+}
+
 .ui-dropdown-label {
     font-weight: bold !important;
 }
@@ -43,3 +54,6 @@
     color: #ffffff;
 }
 
+.ui-widget-content a {
+    color: #2779aa;
+}

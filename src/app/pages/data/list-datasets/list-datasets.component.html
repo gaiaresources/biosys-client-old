@@ -7,12 +7,14 @@
             <h3>Datasets for {{project?.title}}</h3>
             <p>Select the dataset the records belong to</p>
             <p-dataTable [value]="datasets" emptyMessage="No datasets found"[paginator]="true" [rows]="15" [responsive]="true">
-                <p-column field="name" header="Name" [sortable]="true" [filter]="true"></p-column>
-                <p-column field="type" header="Type" [sortable]="true" [filter]="true"></p-column>
-                <p-column styleClass="col-button" header="Action">
+                <p-column field="name" header="Name" [sortable]="true" [filter]="true">
                     <ng-template let-dataset="rowData" pTemplate="body">
-                        <button type="button" pButton icon="fa-list-alt" title="View Records"
-                                [routerLink]="'/data/projects/' + project?.id + '/datasets/' + dataset.id"></button>
+                        <a [routerLink]="'/data/projects/' + project?.id + '/datasets/' + dataset.id">{{dataset.name}}</a>
+                    </ng-template>
+                </p-column>
+                <p-column field="type" header="Type" [sortable]="true" [filter]="true">
+                    <ng-template let-dataset="rowData" pTemplate="body">
+                        {{DATASET_TYPE_MAP[dataset.type]}}
                     </ng-template>
                 </p-column>
             </p-dataTable>

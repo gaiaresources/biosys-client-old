@@ -8,14 +8,13 @@
             <p>Select a project to view available datasets to create / edit / delete records for</p>
             <p-dataTable [value]="projects" emptyMessage="No projects found" [paginator]="true" [rows]="15"
                          [responsive]="true">
-                <p-column field="title" header="Title" [sortable]="true" [filter]="true"></p-column>
-                <p-column field="code" header="Code" [sortable]="true" [filter]="true"></p-column>
-                <p-column styleClass="col-button" header="Action">
+                <p-column field="title" header="Title" [sortable]="true" [filter]="true">
                     <ng-template let-project="rowData" pTemplate="body">
-                        <button type="button" pButton icon="fa-list-alt" title="View Datasets"
-                                [routerLink]="'/data/projects/' + project.id + '/datasets'"></button>
+                        <a class="table-link" [routerLink]="'/data/projects/' + project.id + '/datasets'">{{project.title}}</a>
                     </ng-template>
                 </p-column>
+                <p-column field="code" header="Code" [sortable]="true" [filter]="true"></p-column>
+                <!--<p-column header="Custodians" [sortable]="true" [filter]="true"></p-column>-->
             </p-dataTable>
         </div>
     </div>

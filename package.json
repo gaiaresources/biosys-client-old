@@ -36,7 +36,7 @@
         "webdriver-start": "webdriver-manager start",
         "webdriver-update": "webdriver-manager update"
     },
-    "author": "Minko Gechev <mgechev>",
+    "author": "Gaia Resources",
     "license": "MIT",
     "devDependencies": {
         "@angular/compiler-cli": "^4.0.0",
