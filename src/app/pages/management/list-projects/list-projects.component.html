@@ -11,19 +11,19 @@
                 <p-column field="title" header="Title" [sortable]="true"></p-column>
                 <p-column field="code" header="Code"></p-column>
                 <p-column styleClass="col-button" header="Action">
-                    <template let-project="rowData" pTemplate type="body">
+                    <ng-template let-project="rowData" pTemplate="body">
                         <button type="button" pButton icon="fa-pencil-square-o" title="Edit"
                                 [routerLink]="'/management/projects/edit-project/' + project.id"></button>
                         <button type="button" pButton icon="fa-trash-o" title="Delete"
                                 (click)="confirmDelete(project)"></button>
-                    </template>
+                    </ng-template>
                 </p-column>
-                <footer>
+                <p-footer>
                     <div class="ui-helper-clearfix" style="width:100%">
                         <button type="button" pButton icon="fa-plus" style="float:left" label="Add"
                                 routerLink="/management/projects/create-project"></button>
                     </div>
-                </footer>
+                </p-footer>
             </p-dataTable>
         </div>
     </div>

@@ -1,5 +1,0 @@
-{
-  "globalDependencies": {
-    "leaflet": "registry:dt/leaflet#1.0.0-rc3+20161006211457"
-  }
-}

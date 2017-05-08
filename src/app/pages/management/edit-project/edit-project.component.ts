@@ -15,7 +15,7 @@ export class EditProjectComponent implements OnInit {
 
     public breadcrumbItems: any = [];
 
-    public project: Project = <Project>{
+    public project: Project = <Project> {
         timezone: EditProjectComponent.DEFAULT_TIMEZONE,
         custodians: []
     };
@@ -95,7 +95,7 @@ export class EditProjectComponent implements OnInit {
             );
 
         this.breadcrumbItems = [
-            {label:'Management - Project List', routerLink: ['management/projects']},
+            {label:'Management - Project List', routerLink: ['/management/projects']},
         ];
 
         if (this.isEditing) {

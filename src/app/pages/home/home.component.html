@@ -35,33 +35,8 @@
             </div>
         </div>
         <div class="col-6">
-            <aol-map>
-                <aol-view zoom="4">
-                    <aol-coordinate [x]="121" [y]="-27" [srid]="'EPSG:4326'"></aol-coordinate>
-                </aol-view>
-                <aol-layer-tile>
-                    <aol-source-osm></aol-source-osm>
-                </aol-layer-tile>
-                <aol-layer-vector>
-                    <aol-source-vector>
-                        <aol-feature *ngFor="let project of projects">
-                            <aol-geometry-point *ngIf="project.centroid">
-                                <aol-coordinate [x]="project.centroid.coordinates[0]" [y]="project.centroid.coordinates[1]" [srid]="'EPSG:4326'"></aol-coordinate>
-                            </aol-geometry-point>
-                            <aol-style>
-                                <aol-style-icon
-                                    [src]="'assets/img/map-marker.png'"
-                                    [anchor]="[0.5, 0.0]"
-                                    [anchorXUnits]="'fraction'" [anchorYUnits]="'fraction'"
-                                    [anchorOrigin]="'top-left'"></aol-style-icon>
-                            </aol-style>
-                        </aol-feature>
-                    </aol-source-vector>
-                </aol-layer-vector>
-                <aol-control-zoomslider></aol-control-zoomslider>
-                <aol-control-zoom></aol-control-zoom>
-                <aol-control-attribution></aol-control-attribution>
-            </aol-map>
+            <div id="map" class="main-section">
+            </div>
 	    </div>
 	    <div class="col-3">
             <div class="card statistics-card">

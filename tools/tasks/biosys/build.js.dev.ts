@@ -67,7 +67,7 @@ export = () => {
 //      sourceRoot: (file: any) =>
 //        relative(file.path, PROJECT_ROOT + '/' + APP_SRC).replace(sep, '/') + '/' + APP_SRC
 //    }))
-    .pipe(plugins.template(Object.assign(
+    .pipe(plugins.template((<any>Object).assign(
       templateLocals(), {
         SYSTEM_CONFIG_DEV: jsonSystemConfig
       }

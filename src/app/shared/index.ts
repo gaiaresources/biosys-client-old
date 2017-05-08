@@ -8,4 +8,4 @@ export * from './featuremap/index';
 export * from './services/index';
 export * from './auth.guard';
 export * from './jsoneditor/index';
-
+export * from './utils/index';

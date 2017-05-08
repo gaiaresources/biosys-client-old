@@ -105,20 +105,6 @@ export class ProjectConfig {
     NPM_BASE = slash(join(this.APP_BASE, 'node_modules/'));
 
     /**
-     * The flag for the hot-loader option of the application.
-     * Per default the option is not set, but can be set by the `--hot-loader` flag when running `npm start`.
-     * @type {boolean}
-     */
-    ENABLE_HOT_LOADING = argv['hot-loader'];
-
-    /**
-     * The port where the application will run, if the `hot-loader` option mode is used.
-     * The default hot-loader port is `5578`.
-     * @type {number}
-     */
-    HOT_LOADER_PORT = 5578;
-
-    /**
      * The build interval which will force the TypeScript compiler to perform a typed compile run.
      * Between the typed runs, a typeless compile is run, which is typically much faster.
      * For example, if set to 5, the initial compile will be typed, followed by 5 typeless runs,
@@ -143,7 +129,7 @@ export class ProjectConfig {
      * `hot_loader_main.ts` file will be used.
      * @type {string}
      */
-    BOOTSTRAP_MODULE = `${this.BOOTSTRAP_DIR}/` + (this.ENABLE_HOT_LOADING ? 'hot_loader_main' : 'main');
+    BOOTSTRAP_MODULE = `${this.BOOTSTRAP_DIR}/main`;
 
     BOOTSTRAP_PROD_MODULE = `${this.BOOTSTRAP_DIR}/` + 'main';
 
@@ -312,7 +298,8 @@ export class ProjectConfig {
         {src: 'font-awesome/css/font-awesome.min.css', inject: true},
         {src: 'primeng/resources/primeng.min.css', inject: true},
         {src: 'primeng/resources/themes/' + this.PRIME_NG_THEME + '/theme.css', inject: true},
-        {src: 'openlayers/dist/ol.css', inject: true}
+        {src: 'leaflet/dist/leaflet.css', inject: true},
+        {src: 'leaflet-draw/dist/leaflet.draw.css', inject: true},
     ];
 
     /**
@@ -354,16 +341,19 @@ export class ProjectConfig {
         ],
         paths: {
             [this.BOOTSTRAP_MODULE]: `${this.APP_BASE}${this.BOOTSTRAP_MODULE}`,
-            css: 'node_modules/systemjs-plugin-css/css.js',
+            'css': 'node_modules/systemjs-plugin-css/css.js',
+            '@angular/animations': 'node_modules/@angular/animations/bundles/animations.umd.js',
+            '@angular/platform-browser/animations': 'node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
             '@angular/common': 'node_modules/@angular/common/bundles/common.umd.js',
             '@angular/compiler': 'node_modules/@angular/compiler/bundles/compiler.umd.js',
             '@angular/core': 'node_modules/@angular/core/bundles/core.umd.js',
             '@angular/forms': 'node_modules/@angular/forms/bundles/forms.umd.js',
             '@angular/http': 'node_modules/@angular/http/bundles/http.umd.js',
             '@angular/platform-browser': 'node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
-            '@angular/platform-browser-dynamic':
-                'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+            '@angular/platform-browser-dynamic': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
             '@angular/router': 'node_modules/@angular/router/bundles/router.umd.js',
+            '@angular/animations/browser': 'node_modules/@angular/animations/bundles/animations-browser.umd.js',
+
             '@angular/common/testing': 'node_modules/@angular/common/bundles/common-testing.umd.js',
             '@angular/compiler/testing': 'node_modules/@angular/compiler/bundles/compiler-testing.umd.js',
             '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
@@ -374,8 +364,9 @@ export class ProjectConfig {
                 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
             '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
             'primeng': 'node_modules/primeng',
-			'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
-            'angular2-openlayers': 'node_modules/angular2-openlayers/dist/index.js',
+            'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
+            'leaflet': 'node_modules/leaflet/dist/leaflet.js',
+            'leaflet-draw': 'node_modules/leaflet-draw/dist/leaflet.draw.js',
             'moment': 'node_modules/moment/moment.js',
             'ng2-cookies/*': 'node_modules/ng2-cookies/*',
             'rxjs/*': 'node_modules/rxjs/*',
@@ -390,8 +381,7 @@ export class ProjectConfig {
             }
         },
         packages: {
-            rxjs: {defaultExtension: 'js'},
-        }
+        },
     };
 
     /**
@@ -413,9 +403,12 @@ export class ProjectConfig {
             join('node_modules', '@angular', '*', 'package.json')
         ],
         paths: {
-            css: 'node_modules/systemjs-plugin-css/css.js',
-            jsoneditor: 'node_modules/jsoneditor/dist/jsoneditor.js',
-            [join(this.TMP_DIR, 'app', '*')]: `${this.TMP_DIR}/app/*`,
+            'css': 'node_modules/systemjs-plugin-css/css.js',
+            'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
+            [join(this.TMP_DIR, this.BOOTSTRAP_DIR, '*')]: `${this.TMP_DIR}/${this.BOOTSTRAP_DIR}/*`,
+            '@angular/platform-browser/animations': 'node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
+            '@angular/animations/browser': 'node_modules/@angular/animations/bundles/animations-browser.umd.js',
+            'dist/tmp/node_modules/*': 'dist/tmp/node_modules/*',
             'node_modules/*': 'node_modules/*',
             '*': 'node_modules/*'
         },
@@ -425,45 +418,58 @@ export class ProjectConfig {
             }
         },
         packages: {
+            '@angular/animations': {
+                main: 'bundles/animations.umd.js',
+                defaultExtension: 'js'
+            },
             '@angular/common': {
-                main: 'index.js',
+                main: 'bundles/common.umd.js',
                 defaultExtension: 'js'
             },
             '@angular/compiler': {
-                main: 'index.js',
+                main: 'bundles/compiler.umd.js',
                 defaultExtension: 'js'
             },
             '@angular/core/testing': {
-                main: 'index.js',
+                main: 'bundles/core-testing.umd.js',
                 defaultExtension: 'js'
             },
             '@angular/core': {
-                main: 'index.js',
+                main: 'bundles/core.umd.js',
                 defaultExtension: 'js'
             },
             '@angular/forms': {
-                main: 'index.js',
+                main: 'bundles/forms.umd.js',
                 defaultExtension: 'js'
             },
             '@angular/http': {
-                main: 'index.js',
+                main: 'bundles/http.umd.js',
                 defaultExtension: 'js'
             },
             '@angular/platform-browser': {
-                main: 'index.js',
+                main: 'bundles/platform-browser.umd.js',
                 defaultExtension: 'js'
             },
             '@angular/platform-browser-dynamic': {
-                main: 'index.js',
+                main: 'bundles/platform-browser-dynamic.umd.js',
                 defaultExtension: 'js'
             },
             '@angular/router': {
-                main: 'index.js',
+                main: 'bundles/router.umd.js',
+                defaultExtension: 'js'
+            },
+            '@angular/service-worker': {
+                main: 'bundles/service-worker.umd.js',
                 defaultExtension: 'js'
             },
             'rxjs': {
                 main: 'Rx.js',
                 defaultExtension: 'js'
+            },
+            'jsoneditor': {
+                main: 'jsoneditor.js',
+                defaultExtension: 'js',
+                format: 'global'
             }
         }
     };
@@ -508,7 +514,7 @@ export class ProjectConfig {
             })],
             port: this.PORT,
             startPath: this.APP_BASE,
-            open: argv['b'] ? false : true,
+            open: !argv['b'],
             injectChanges: false,
             server: {
                 baseDir: `${this.DIST_DIR}/empty/`,
@@ -604,7 +610,7 @@ function filterDependency(env: string, d: InjectableDependency): boolean {
  * @return {number} The applications version.
  */
 function appVersion(): number | string {
-    var pkg = require('../package.json');
+    let pkg = require('../package.json');
     return pkg.version;
 }
 
@@ -613,7 +619,7 @@ function appVersion(): number | string {
  * @return {string[]} The list of linting rules.
  */
 function customRules(): string[] {
-    var lintConf = require('../tslint.json');
+    let lintConf = require('../tslint.json');
     return lintConf.rulesDirectory;
 }
 

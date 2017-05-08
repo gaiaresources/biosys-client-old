@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../services/index';
 import { MenuItem } from 'primeng/primeng';
 
@@ -15,7 +14,7 @@ import { MenuItem } from 'primeng/primeng';
 export class NavbarComponent implements OnInit {
     public items: MenuItem[];
 
-    constructor(public auth: AuthService, private router: Router) {
+    constructor(public auth: AuthService) {
     }
 
     ngOnInit() {
@@ -28,17 +27,17 @@ export class NavbarComponent implements OnInit {
             {
                 label: 'Manage',
                 icon: 'fa-university',
-                routerLink: ['management/projects']
+                routerLink: ['/management/projects']
             },
             {
                 label: 'Data',
                 icon: 'fa-database',
-                routerLink: ['data/projects']
+                routerLink: ['/data/projects']
             },
             {
                 label: 'View',
                 icon: 'fa-search',
-                routerLink: ['view']
+                routerLink: ['/view']
             },
             {
                 label: 'Logout',

@@ -82,7 +82,12 @@
                 <div class="col-md-6">
                     <label>Extent</label>
                     <div>
-                        <biosys-featuremap [isEditing]="isEditing" [geometry]="project.geometry"></biosys-featuremap>
+                        <biosys-featuremap
+                            [isEditing]="isEditing"
+                            [geometry]="project.geometry"
+                            [drawFeatureTypes]="['POLYGON']"
+                            [extraMarkers]="[{type: 'Point', coordinates: [127.26957486939979, -26.247739149191045]}]"
+                        ></biosys-featuremap>
                     </div>
                 </div>
             </div>
@@ -96,20 +101,20 @@
                 <p-column field="name" header="Name"></p-column>
                 <p-column field="type" header="Type"></p-column>
                 <p-column styleClass="col-button" header="Action">
-                    <template let-dataset="rowData" pTemplate type="body">
+                    <ng-template let-dataset="rowData" pTemplate="body">
                         <button type="button" pButton icon="fa-pencil-square-o" title="Edit"
                                 [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-dataset/' + dataset.id">
                         </button>
                         <button type="button" pButton icon="fa-trash-o" title="Delete"
                                 (click)="confirmDeleteDataset(dataset)"></button>
-                    </template>
+                    </ng-template>
                 </p-column>
-                <footer>
+                <p-footer>
                     <div class="ui-helper-clearfix" style="width:100%">
                         <button type="button" pButton icon="fa-plus" style="float:right" label="Add"
                                 [routerLink]="'/management/projects/edit-project/' + project.id + '/create-dataset'"></button>
                     </div>
-                </footer>
+                </p-footer>
             </p-dataTable>
         </div>
     </div>
@@ -121,22 +126,22 @@
                 <p-column field="code" header="Code"></p-column>
                 <p-column field="comments" header="Comments"></p-column>
                 <p-column styleClass="col-button" header="Action">
-                    <template let-site="rowData" pTemplate type="body">
+                    <ng-template let-site="rowData" pTemplate="body">
                         <button type="button" pButton icon="fa-pencil-square-o" title="Edit"
                                 [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-site/' + site.id">
                         </button>
                         <button type="button" pButton icon="fa-trash-o" title="Delete"
                                 (click)="confirmDeleteSite(site)"></button>
-                    </template>
+                    </ng-template>
                 </p-column>
-                <footer>
+                <p-footer>
                     <div class="ui-helper-clearfix" style="width:100%">
                         <button type="button" class="ml-1" pButton icon="fa-plus" style="float:right" label="Add"
                                 [routerLink]="'/management/projects/edit-project/' + project.id + '/create-site'"></button>
                         <button type="button" pButton icon="fa-reply" style="float:right" label="Import"
                                 [routerLink]="'/management/projects/edit-project/' + project.id + '/upload-sites'"></button>
                     </div>
-                </footer>
+                </p-footer>
             </p-dataTable>
         </div>
     </div>
