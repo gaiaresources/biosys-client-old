@@ -132,10 +132,10 @@ export class APIService {
         });
     }
 
-    public deleteSites(ids: number[]): Observable<number[]> {
-        return this.fetch('sites/', {
+    public deleteSites(projectId: number, siteIds: number[]): Observable<void> {
+        return this.fetch('projects/' + projectId + '/sites/', {
             method: 'Delete',
-            data: ids
+            data: siteIds
         });
     }
 

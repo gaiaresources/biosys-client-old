@@ -212,9 +212,9 @@ export class EditProjectComponent implements OnInit {
         this.confirmationService.confirm({
             message: 'Are you sure that you want to delete all selected sites?',
             accept: () => {
-                this.apiService.deleteSites(this.selectedSites)
+                this.apiService.deleteSites(this.project.id, this.selectedSites)
                 .subscribe(
-                    () => this.onDeleteSiteSuccess(site),
+                    () => this.onDeleteSitesSuccess(),
                     (error: APIError) => this.onDeleteSiteError(error)
                 );
             }
@@ -244,13 +244,11 @@ export class EditProjectComponent implements OnInit {
         });
     }
 
-    private onDeleteSiteSuccess(site: Site) {
-        for (let i = 0; i < this.sites.length; i++) {
-            if (this.sites[i].id === site.id) {
-                this.sites.splice(i, 1);
-                break;
-            }
-        }
+    private onDeleteSitesSuccess() {
+        this.apiService.getAllSitesForProjectID(this.project.id).subscribe(
+            (sites: Site[]) => this.sites = sites,
+            (error: APIError) => console.log('error.msg', error.msg)
+        );
 
         this.messages.push({
             severity: 'success',
