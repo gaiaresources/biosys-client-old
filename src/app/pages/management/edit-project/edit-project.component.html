@@ -82,7 +82,7 @@
                 <div class="col-md-6">
                     <label>Extent</label>
                     <div>
-                        <biosys-featuremap [isEditing]="isEditing" [geometry]="project.geometry" [drawFeatureTypes]="['POLYGON']">
+                        <biosys-featuremap [isEditing]="isEditing" [geometry]="project.geometry" [drawFeatureTypes]="['POLYGON', 'LINE']">
                             <biosys-marker *ngFor="let site of sites" [geometry]="site.centroid" [popupText]="site.name ? site.name : site.code"></biosys-marker>
                         </biosys-featuremap>
                     </div>
