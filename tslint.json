@@ -41,7 +41,7 @@
         "triple-equals": true,
         "variable-name": false,
 
-        "directive-selector": [true, "attribute", ["biosys", "test"], "camelCase"],
+        "directive-selector": [true, ["attribute", "element"], ["biosys", "test"], ["camelCase", "kebab-case"]],
         "component-selector": [true, "element", ["biosys", "test"], "kebab-case"],
         "use-input-property-decorator": true,
         "use-output-property-decorator": true,

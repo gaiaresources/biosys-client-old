@@ -44,6 +44,7 @@ export interface Site {
     parent_site?: number | null;
     project?: number;
     geometry?: GeoJSON.DirectGeometryObject | null;
+    centroid?: GeoJSON.DirectGeometryObject | null;
     comments?: string;
     attributes?: {[key: string]: string} | null;
 }

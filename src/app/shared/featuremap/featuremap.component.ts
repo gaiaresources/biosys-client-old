@@ -1,7 +1,16 @@
-import { OnInit, Component, Input, OnChanges, SimpleChange, ViewChild } from '@angular/core';
+import { OnInit, Component, Directive, ContentChildren, Input, QueryList, OnChanges, SimpleChange }
+    from '@angular/core';
 import { WA_CENTER } from '../../shared/index';
 import * as L from 'leaflet';
 import 'leaflet-draw';
+
+@Directive({
+    selector: 'biosys-marker'
+})
+export class MarkerDirective {
+    @Input() geometry: GeoJSON.DirectGeometryObject;
+    @Input() popupText: string;
+}
 
 @Component({
     moduleId: module.id,
@@ -13,11 +22,26 @@ export class FeatureMapComponent implements OnInit, OnChanges {
     @Input() public drawFeatureTypes: [string] = [] as [string];
     @Input() public isEditing: boolean;
     @Input() public geometry: GeoJSON.DirectGeometryObject;
-    @Input() public extraMarkers: [any];
+    @ContentChildren(MarkerDirective)
+    set markers(markers: QueryList<MarkerDirective>) {
+        markers.forEach((marker:MarkerDirective) => {
+            if (marker.geometry) {
+                let coord: GeoJSON.Position = marker.geometry.coordinates as GeoJSON.Position;
+                let leafletMarker: L.Marker = L.marker(L.GeoJSON.coordsToLatLng([coord[0], coord[1]]), {icon: this.icon});
+                leafletMarker.bindPopup(marker.popupText);
+                this.map.addLayer(leafletMarker);
+            }
+        });
+    }
 
     public layersControlOptions: any = {
         position: 'bottomleft'
     };
+
+    private icon: L.Icon = L.icon({
+        iconUrl: 'assets/img/extra-marker-icon.png',
+        shadowUrl: 'assets/img/marker-shadow.png'
+    });
 
     private drawOptions: any;
 
@@ -70,15 +94,6 @@ export class FeatureMapComponent implements OnInit, OnChanges {
             iconUrl: 'assets/img/extra-marker-icon.png',
             shadowUrl: 'assets/img/marker-shadow.png'
         });
-
-        if (this.extraMarkers) {
-            for(let marker of this.extraMarkers) {
-                let coord: GeoJSON.Position = marker.geometry.coordinates as GeoJSON.Position;
-                let leafletMarker: L.Marker = L.marker(L.GeoJSON.coordsToLatLng([coord[0], coord[1]]), {icon: icon});
-                leafletMarker.bindPopup(marker.text);
-                this.map.addLayer(leafletMarker);
-            }
-        }
     }
 
     ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {

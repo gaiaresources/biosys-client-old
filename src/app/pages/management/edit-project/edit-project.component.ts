@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { APIService, APIError, User, Project, Site, Dataset, ModelChoice, FeatureMapComponent, DATASET_TYPE_MAP }
+import { APIService, APIError, User, Project, Site, Dataset, ModelChoice, FeatureMapComponent, MarkerDirective, DATASET_TYPE_MAP }
     from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationService, Message, SelectItem } from 'primeng/primeng';
