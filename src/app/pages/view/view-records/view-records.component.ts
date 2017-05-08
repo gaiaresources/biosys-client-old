@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, APIError, Project, Dataset, Record } from '../../../shared/index';
+import { APIService, APIError, Project, Dataset, Record, DATASET_TYPE_MAP } from '../../../shared/index';
 import { Router } from '@angular/router';
 import { SelectItem, AutoComplete } from 'primeng/primeng';
 
@@ -13,6 +13,7 @@ import { SelectItem, AutoComplete } from 'primeng/primeng';
 export class ViewRecordsComponent implements OnInit {
     private static COLUMN_WIDTH: number = 240;
 
+    public DATASET_TYPE_MAP: string = DATASET_TYPE_MAP;
     public breadcrumbItems: any = [];
     public projectDropdownItems: SelectItem[] = [{label: 'Select Project', value: null}];
     public projectsMap: any = {};

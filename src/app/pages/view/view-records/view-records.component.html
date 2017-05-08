@@ -39,7 +39,11 @@
             <p-dataTable selectionMode="single" [(selection)]="selectedDataset" (onRowSelect)="selectDataset($event)"
                          [value]="datasets" [paginator]="true" [rows]="10" [responsive]="true">
                 <p-column field="name" header="Name" [sortable]="true"></p-column>
-                <p-column field="type" header="Type" [sortable]="true"></p-column>
+                <p-column field="type" header="Type" [sortable]="true">
+                    <ng-template let-dataset="rowData" pTemplate="body">
+                        {{DATASET_TYPE_MAP[dataset.type]}}
+                    </ng-template>
+                </p-column>
                 <p-column header="Project" [sortable]="true">
                     <ng-template let-dataset="rowData" pTemplate="body">
                         <span>{{projectsMap[dataset.project]}}</span>
