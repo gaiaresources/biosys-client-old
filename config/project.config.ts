@@ -363,7 +363,7 @@ export class ProjectConfig {
                 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
             '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
             'primeng': 'node_modules/primeng',
-            'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
+            'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor-minimalist.js',
             'leaflet': 'node_modules/leaflet/dist/leaflet.js',
             'leaflet-draw': 'node_modules/leaflet-draw/dist/leaflet.draw.js',
             'moment': 'node_modules/moment/moment.js',
@@ -403,7 +403,7 @@ export class ProjectConfig {
         ],
         paths: {
             'css': 'node_modules/systemjs-plugin-css/css.js',
-            'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor.js',
+            'jsoneditor': 'node_modules/jsoneditor/dist/jsoneditor-minimalist.js',
             [join(this.TMP_DIR, this.BOOTSTRAP_DIR, '*')]: `${this.TMP_DIR}/${this.BOOTSTRAP_DIR}/*`,
             '@angular/platform-browser/animations': 'node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
             '@angular/animations/browser': 'node_modules/@angular/animations/bundles/animations-browser.umd.js',
@@ -466,7 +466,6 @@ export class ProjectConfig {
                 defaultExtension: 'js'
             },
             'jsoneditor': {
-                main: 'jsoneditor.js',
                 defaultExtension: 'js',
                 format: 'global'
             }

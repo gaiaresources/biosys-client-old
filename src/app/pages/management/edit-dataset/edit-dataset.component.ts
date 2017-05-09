@@ -31,8 +31,8 @@ export class EditDatasetComponent implements OnInit {
                 private router: Router,
                 private route: ActivatedRoute) {
         this.editorOptions = new JsonEditorOptions();
-        this.editorOptions.mode = 'code';
-        this.editorOptions.modes = ['code', 'form', 'text', 'tree', 'view'];
+        this.editorOptions.mode = 'text';
+        this.editorOptions.modes = ['form', 'text', 'tree', 'view'];
         this.editorOptions.onChange = this.onEditorChanged.bind(this);
     }
 
