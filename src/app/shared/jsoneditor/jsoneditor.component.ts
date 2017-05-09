@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, Input } from '@angular/core';
 
 import { JsonEditorOptions } from './jsoneditor.options';
 
-// declare var editor: any;
+// TODO: why the jsoneditor with ace breaks when bundled. Also the css can't find the icons.svg file
 let JSONEditor = require('jsoneditor');
 
 import 'jsoneditor/dist/jsoneditor.min.css';
