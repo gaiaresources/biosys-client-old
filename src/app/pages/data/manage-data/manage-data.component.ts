@@ -109,6 +109,10 @@ export class ManageDataComponent implements OnInit {
         }
     }
 
+    public getRecordsData(): any[] {
+        return this.records.map((r) => Object.assign({recordId: r.id}, r.data));
+    }
+
     public add() {
         this.router.navigate(['/data/projects/' + this.projId + '/datasets/' + this.datasetId + '/create-record/']);
     }

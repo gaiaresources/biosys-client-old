@@ -29,6 +29,12 @@ export class FeatureMapComponent implements OnInit, OnChanges {
                 let coord: GeoJSON.Position = marker.geometry.coordinates as GeoJSON.Position;
                 let leafletMarker: L.Marker = L.marker(L.GeoJSON.coordsToLatLng([coord[0], coord[1]]), {icon: this.icon});
                 leafletMarker.bindPopup(marker.popupText);
+                leafletMarker.on('mouseover', function (e) {
+                    this.openPopup();
+                });
+                leafletMarker.on('mouseout', function (e) {
+                    this.closePopup();
+                });
                 this.map.addLayer(leafletMarker);
             }
         });
