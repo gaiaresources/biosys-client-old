@@ -46,7 +46,11 @@ export class FeatureMapComponent implements OnInit, OnChanges {
 
     private icon: L.Icon = L.icon({
         iconUrl: 'assets/img/extra-marker-icon.png',
-        shadowUrl: 'assets/img/marker-shadow.png'
+        shadowUrl: 'css/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor:  [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize:  [41, 41]
     });
 
     private drawOptions: any;
