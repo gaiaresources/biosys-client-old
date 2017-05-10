@@ -20,7 +20,7 @@
                     </ng-template>
                 </p-column>
                 <p-column field="code" header="Code" [sortable]="true"></p-column>
-                <p-column header="Comments">
+                <p-column header="Description">
                     <ng-template let-project="rowData" pTemplate="body">
                         <label [innerHtml]="project.comments"></label>
                     </ng-template>
