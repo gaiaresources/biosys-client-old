@@ -20,20 +20,20 @@
             <div class="ui-fluid">
                 <div class="row mb-1">
                     <div class="col-md-4">
-                        <label class="field-label">Name *</label>
-                    </div>
-                    <div class="col-md-8">
-                        <input id="name" type="text" pInputText [(ngModel)]="site.name" name="name"/>
-                        <div class="text-danger">{{siteErrors['name']}}</div>
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <div class="col-md-4">
                         <label class="field-label">Code *</label>
                     </div>
                     <div class="col-md-8">
                         <input id="code" type="text" pInputText [(ngModel)]="site.code" name="code"/>
                         <div class="text-danger">{{siteErrors['code']}}</div>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <div class="col-md-4">
+                        <label class="field-label">Name</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input id="name" type="text" pInputText [(ngModel)]="site.name" name="name"/>
+                        <div class="text-danger">{{siteErrors['name']}}</div>
                     </div>
                 </div>
                 <div class="row mb-1">
