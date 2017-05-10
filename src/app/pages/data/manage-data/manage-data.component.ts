@@ -26,7 +26,6 @@ export class ManageDataComponent implements OnInit {
     public datasetId: number;
     public dataset: Dataset = <Dataset>{};
     public records: Record[] = [];
-    public recordErrors: any = {};
     public tablePlaceholder: string = 'Loading Records';
     public messages: Message[] = [];
     public uploadURL: string;
@@ -75,10 +74,10 @@ export class ManageDataComponent implements OnInit {
         this.uploadURL = this.apiService.getRecordsUploadURL(this.datasetId);
 
         this.breadcrumbItems = [
-            {label:'Enter Records - Project List', routerLink: '/data/projects'}
+            {label: 'Enter Records - Project List', routerLink: '/data/projects'}
         ];
 
-        if('recordSaved' in params) {
+        if ('recordSaved' in params) {
             this.messages.push({
                 severity: 'success',
                 summary: 'Record saved',
@@ -94,18 +93,18 @@ export class ManageDataComponent implements OnInit {
     }
 
     public getDataTableWidth(): any {
-        if(!('data_package' in this.dataset)) {
-            return { width: '100%'};
+        if (!('data_package' in this.dataset)) {
+            return {width: '100%'};
         }
 
         // need to do the following to prevent linting error
-        let data_package:any = this.dataset.data_package;
-        let resources:any = data_package['resources'];
+        let data_package: any = this.dataset.data_package;
+        let resources: any = data_package['resources'];
 
         if (resources[0].schema.fields.length > 3) {
             return {'width': String(resources[0].schema.fields.length * ManageDataComponent.COLUMN_WIDTH) + 'px'};
         } else {
-            return { width: '100%'};
+            return {width: '100%'};
         }
     }
 
@@ -118,12 +117,7 @@ export class ManageDataComponent implements OnInit {
     }
 
     public onUpload(event: any) {
-        this.messages.push({
-            severity: 'success',
-            summary: 'Upload successful',
-            detail: 'The records were successfully uploaded'
-        });
-
+        this.parseAndDisplayResponse(event.xhr.response);
         this.apiService.getDataByDatasetId(this.dataset.id)
             .subscribe(
                 (data: any[]) => this.records = data,
@@ -138,47 +132,18 @@ export class ManageDataComponent implements OnInit {
     }
 
     public onUploadError(event: any) {
-        this.uploadErrorMessages = [];
-        this.uploadWarningMessages = [];
         let statusCode = event.xhr.status;
         let resp = event.xhr.response;
         if (statusCode === 400) {
-            resp = JSON.parse(resp);
-
-            for (let item of resp) {
-                if('errors' in item) {
-                    for (let errorKey in item['errors']) {
-                        this.uploadErrorMessages.push({
-                            severity: 'error',
-                            summary: 'Error for ' + errorKey + ' in row ' + item['row'],
-                            detail: item['errors'][errorKey]
-                        });
-                    }
-                }
-
-                if('warnings' in item) {
-                    for (let warningKey in item['warnings']) {
-                        this.uploadWarningMessages.push({
-                            severity: 'warn',
-                            summary: 'Warning for ' + warningKey + ' in row ' + item['row'],
-                            detail: item['warnings'][warningKey]
-                        });
-                    }
-                }
-            }
+            this.parseAndDisplayResponse(resp);
         } else {
+            this.uploadErrorMessages = [];
             this.uploadErrorMessages.push({
                 severity: 'error',
                 summary: 'Error',
                 detail: statusCode + ':' + resp
             });
         }
-
-        this.messages.push({
-            severity: 'error',
-            summary: 'Error uploading records',
-            detail: 'There were one or more errors uploading the records file'
-        });
     }
 
     public onUploadBeforeSend(event: any) {
@@ -205,6 +170,58 @@ export class ManageDataComponent implements OnInit {
         } else {
             // put back the file in the list
             files.push(file);
+        }
+    }
+
+    private parseAndDisplayResponse(resp: any) {
+        let items = resp ? JSON.parse(resp) : [];
+        let totalRecords = items.length,
+            totalErrors = 0,
+            totalWarnings = 0;
+        this.messages = [];
+        this.uploadErrorMessages = [];
+        this.uploadWarningMessages = [];
+        for (let item of items) {
+            if ('errors' in item) {
+                for (let errorKey in item['errors']) {
+                    totalErrors += 1;
+                    this.uploadErrorMessages.push({
+                        severity: 'error',
+                        summary: 'Error for ' + errorKey + ' in row ' + item['row'],
+                        detail: item['errors'][errorKey]
+                    });
+                }
+            }
+            if ('warnings' in item) {
+                for (let warningKey in item['warnings']) {
+                    totalWarnings += 1;
+                    this.uploadWarningMessages.push({
+                        severity: 'warn',
+                        summary: 'Warning for ' + warningKey + ' in row ' + item['row'],
+                        detail: item['warnings'][warningKey]
+                    });
+                }
+            }
+        }
+        if (totalErrors > 0) {
+            this.messages.push({
+                severity: 'error',
+                summary: 'Error uploading records',
+                detail: 'There were ' + totalErrors + ' error(s) uploading the records file. See details below.'
+            });
+        } else if (totalWarnings > 0) {
+            this.messages.push({
+                severity: 'warn',
+                summary: 'Records uploaded with some warnings',
+                detail: 'The records were accepted but there were ' + totalWarnings + ' warning(s). See details below.'
+            });
+        } else {
+            console.log('success');
+            this.messages.push({
+                severity: 'success',
+                summary: 'Upload successful',
+                detail: '' + totalRecords + ' records were successfully uploaded'
+            });
         }
     }
 }
