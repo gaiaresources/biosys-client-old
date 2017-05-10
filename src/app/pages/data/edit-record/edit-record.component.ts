@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { APIService, APIError, Project, Dataset, Record } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationService, SelectItem, Message } from 'primeng/primeng';
@@ -53,8 +53,7 @@ export class EditRecordComponent implements OnInit {
                 if('recordId' in params) {
                     this.apiService.getRecordById(Number(params['recordId'])).subscribe(
                         (record: Record) => {
-                            this.record = record;
-                            this.formatRecord();
+                            this.record = this.formatRecord(record);
                         },
                         (error: APIError) => console.log('error.msg', error.msg)
                     );
@@ -134,14 +133,12 @@ export class EditRecordComponent implements OnInit {
     }
 
     private onSaveError(error: any) {
-        this.recordErrors = {};
-
-        for(let err of error.msg.data) {
-            err = err.substring(1, err.length - 1);
-            let keyValue: string[] = err.split(',');
-            this.recordErrors[keyValue[0].substring(1, keyValue[0].length - 1)] =
-                keyValue[1].substring(2, keyValue[1].length - 1);
-        }
+        this.recordErrors = error.msg.data.map((err: string) => err.split('::')).reduce((acc: any, cur: any) => {
+                acc[cur[0]] = cur[1];
+                return acc;
+            },
+            {}
+        );
 
         this.messages.push({
             severity: 'error',
@@ -154,7 +151,7 @@ export class EditRecordComponent implements OnInit {
         this.router.navigate([this.completeUrl, {'recordDeleted': true}]);
     }
 
-    private onDeleteError(recordErrors: any) {
+    private onDeleteError(error: any) {
         this.messages.push({
             severity: 'error',
             summary: 'Record delete error',
@@ -162,19 +159,21 @@ export class EditRecordComponent implements OnInit {
         });
     }
 
-    private formatRecord() {
+    private formatRecord(record: Record) {
         // convert date fields to Date type because calendar element in form expects a Date
         for(let field of this.dataset.data_package.resources[0].schema.fields) {
             if(field.type === 'date') {
                 // If date in DD?MM?YYYY format (where ? is any single char), convert to American (as Chrome, Firefox
                 // and IE expect this when creating Date from a string
-                let dateString:string = this.record.data[field.name];
+                let dateString:string = record.data[field.name];
                 let regexGroup: string[] = dateString.match(EditRecordComponent.AMBIGOUS_DATE_PATTERN);
                 if(regexGroup) {
                     dateString = regexGroup[2] + '/' + regexGroup[1] + '/' + regexGroup[3];
                 }
-                this.record.data[field.name] = new Date(dateString);
+                record.data[field.name] = new Date(dateString);
             }
         }
+
+        return record;
     }
 }

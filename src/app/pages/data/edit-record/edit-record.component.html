@@ -8,33 +8,40 @@
             <div class="col">
                 <h3 *ngIf="record.id">Edit Record</h3>
                 <h3 *ngIf="!record.id">Create Record</h3>
-                <p *ngIf="record.id">Edit the record by changing the details below.</p>
-                <p *ngIf="!record.id">Create the record by entering the details below.</p>
+                <p *ngIf="record.id">Edit the record by changing the details below. Fields marked with a <strong>*</strong> are required.
+                </p>
+                <p *ngIf="!record.id">
+                    Create the record by entering the details below. Fields marked with a <strong>*</strong> are required.
+                </p>
             </div>
         </div>
 
-        <div class="row mt-1" *ngFor="let field of dataset?.data_package?.resources[0]?.schema?.fields">
-            <div class="col-2">
-                <label [for]="field.name">{{field.name}}</label>
-            </div>
-            <div [ngSwitch]="field.type" class="col-2">
-                <div *ngSwitchCase="'date'">
-                    <p-calendar *ngIf="field.type === 'date'" dateFormat="dd/mm/yy"
-                                [id]="field.name" [(ngModel)]="record.data[field.name]">
-                    </p-calendar>
+        <div class="ui-fluid">
+            <div class="row mt-1" *ngFor="let field of dataset?.data_package?.resources[0]?.schema?.fields">
+                <div class="col-2">
+                    <label [for]="field.name" [style.font-weight]="'bold'">
+                        {{field.name}}
+                        <span *ngIf="field.constraints?.required">*</span>
+                    </label>
                 </div>
-                <div *ngSwitchDefault>
-                    <p-dropdown *ngIf="field.constraints?.enum"
-                                [options]="getDropdownOptions(field.name, field.constraints.enum)"
-                                [(ngModel)]="record.data[field.name]"
-                                [style]="{'width': '187px', 'font-weight': 'bold'}">
-                    </p-dropdown>
-                    <input *ngIf="!field.constraints?.enum" pInputText [id]="field.name"
-                           [(ngModel)]="record.data[field.name]"/>
+                <div [ngSwitch]="field.type" class="col-5">
+                    <div *ngSwitchCase="'date'">
+                        <p-calendar dateFormat="dd/mm/yy" [id]="field.name" [(ngModel)]="record.data[field.name]">
+                        </p-calendar>
+                    </div>
+                    <div *ngSwitchDefault>
+                        <p-dropdown *ngIf="field.constraints?.enum"
+                                    [options]="getDropdownOptions(field.name, field.constraints.enum)"
+                                    [(ngModel)]="record.data[field.name]"
+                                    [autoWidth]="false">
+                        </p-dropdown>
+                        <input pInputText *ngIf="!field.constraints?.enum"[id]="field.name"
+                               [(ngModel)]="record.data[field.name]"/>
+                    </div>
                 </div>
-            </div>
-            <div class="col text-danger">
-                {{recordErrors[field.name]}}
+                <div class="col-5 text-danger">
+                    {{recordErrors[field.name]}}
+                </div>
             </div>
         </div>
         <div class="row mt-3 mb-3">
