@@ -8,7 +8,7 @@
             <h3>Records for {{dataset?.name}}</h3>
             <p>Select a particular record to edit or click Add to add a new record</p>
             <div class="data-table-container">
-                <p-dataTable [tableStyle]="getDataTableWidth()" [value]="getRecordsData()" [emptyMessage]="tablePlaceholder"
+                <p-dataTable [tableStyle]="getDataTableWidth()" [value]="flatRecords" [emptyMessage]="tablePlaceholder"
                              [paginator]="true" [rows]="10" [globalFilter]="recordSearch">
                     <p-header>
                         <div class="ui-helper-clearfix" style="width:100%">
@@ -17,14 +17,14 @@
                         </div>
                     </p-header>
                     <p-column field="id" header="Record ID" [sortable]="true">
-                        <ng-template let-data="rowData" pTemplate="body">
-                            <a class="table-link" [routerLink]="'/data/projects/' + projId + '/datasets/' + datasetId + '/record/' + data.recordId">{{data.recordId}}</a>
+                        <ng-template let-flatRecord="rowData" pTemplate="body">
+                            <a class="table-link" [routerLink]="'/data/projects/' + projId + '/datasets/' + datasetId + '/record/' + flatRecord.id">{{flatRecord.id}}</a>
                         </ng-template>
                     </p-column>
                     <p-column *ngFor="let field of dataset?.data_package?.resources[0]?.schema?.fields"
                               [field]="field.name" [header]="field.name" [sortable]="true">
-                        <ng-template let-data="rowData" let-col pTemplate="body">
-                            <span [innerHTML]="data[col.field] | truncate:30"></span>
+                        <ng-template let-flatRecord="rowData" let-col pTemplate="body">
+                            <span [innerHTML]="flatRecord[col.field] | truncate:30"></span>
                         </ng-template>
                     </p-column>
                     <p-footer>

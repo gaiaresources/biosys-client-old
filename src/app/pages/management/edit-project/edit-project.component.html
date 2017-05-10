@@ -10,67 +10,88 @@
                 <h3 *ngIf="!project.id">Create Project</h3>
                 <p *ngIf="project.id">
                     Edit details of the project by clicking the edit button below. You can also create/edit datasets
-                    and sites for the project through the tables below. Note that fields in <strong>bold</strong> are
-                    mandatory.
+                    and sites for the project through the tables below. When editing, fields marked with a
+                    <strong>*</strong> are required.
                 </p>
                 <p *ngIf="!project.id">
                     Create a new project by entering the details below project and click the save butten when complete.
-                    You will then be able to create/import datasets and sites for the project. Note that fields in
-                    <strong>bold</strong> are mandatory.
+                    You will then be able to create/import datasets and sites for the project. When editing, fields
+                    marked with a <strong>*</strong> are required.
                 </p>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="row mb-1">
-                        <div class="col-md-3">
-                            <strong *ngIf="isEditing">Title</strong><label *ngIf="!isEditing">Title</label>
+                    <div class="ui-fluid">
+                        <div class="row mb-1">
+                            <div class="col-md-4">
+                                <label class="field-label">Title <span *ngIf="isEditing">*</span></label>
+                            </div>
+                            <div class="col-md-8">
+                                <label [hidden]="isEditing">{{project.title}}</label>
+                                <input [hidden]="!isEditing" type="text" pInputText [(ngModel)]="project.title"
+                                       size="21"/>
+                                <div [hidden]="!isEditing" class="text-danger">{{projectErrors['title']}}</div>
+                            </div>
+                            <div [hidden]="!isEditing" class="text-danger">{{projectErrors['title']}}</div>
                         </div>
-                        <div class="col-md-5">
-                            <label [hidden]="isEditing">{{project.title}}</label>
-                            <input [hidden]="!isEditing" type="text" pInputText [(ngModel)]="project.title" size="21"/>
+                        <div class="row mb-1">
+                            <div class="col-md-4">
+                                <label class="field-label">Code</label>
+                            </div>
+                            <div class="col-md-8">
+                                <label [hidden]="isEditing">{{project.code}}</label>
+                                <input [hidden]="!isEditing" type="text" pInputText [(ngModel)]="project.code"/>
+                                <div [hidden]="!isEditing" class="text-danger">{{projectErrors['code']}}</div>
+                            </div>
                         </div>
-                        <div [hidden]="!isEditing" class="col-md-4 text-danger">{{projectErrors['title']}}</div>
-                    </div>
-                    <div class="row mb-1">
-                        <div class="col-md-3">Code</div>
-                        <div class="col-md-5">
-                            <label [hidden]="isEditing">{{project.code}}</label>
-                            <input [hidden]="!isEditing" type="text" pInputText [(ngModel)]="project.code" size="21"/>
+                        <div class="row mb-1">
+                            <div class="col-md-4">
+                                <label class="field-label">Default Datum</label>
+                            </div>
+                            <div class="col-md-8">
+                                <label [hidden]="isEditing"
+                                       *ngIf="project.datum">{{getDatumLabel(project.datum)}}</label>
+                                <p-dropdown [hidden]="!isEditing" [options]="datamTypeChoices"
+                                            [(ngModel)]="project.datum" [autoWidth]="false">
+                                </p-dropdown>
+                                <div [hidden]="!isEditing" class="text-danger">{{projectErrors['datum']}}</div>
+                            </div>
                         </div>
-                        <div [hidden]="!isEditing" class="col-md-4 text-danger">{{projectErrors['code']}}</div>
-                    </div>
-                    <div class="row mb-1">
-                        <div class="col-md-3">Default Datum</div>
-                        <div class="col-md-5">
-                            <label [hidden]="isEditing" *ngIf="project.datum">{{getDatumLabel(project.datum)}}</label>
-                            <p-dropdown [hidden]="!isEditing" [options]="datamTypeChoices"
-                                        [(ngModel)]="project.datum" [ngModelOptions]="{standalone: true}"
-                                        autoWidth="false" styleClass="w-100">
-                            </p-dropdown>
+                        <div class="row mb-1">
+                            <div class="col-md-4">
+                                <label class="field-label">Timezome <span *ngIf="isEditing">*</span></label>
+                            </div>
+                            <div class="col-md-8">
+                                <label [hidden]="isEditing">{{project.timezone}}</label>
+                                <input [hidden]="!isEditing" type="text" pInputText [(ngModel)]="project.timezone"/>
+                                <div [hidden]="!isEditing" class="text-danger">{{projectErrors['timezone']}}</div>
+                            </div>
                         </div>
-                        <div [hidden]="!isEditing" class="col-md-4 text-danger">{{projectErrors['datum']}}</div>
-                    </div>
-                    <div class="row mb-1">
-                        <div class="col-md-3">
-                            <strong *ngIf="isEditing">Timezone</strong><label *ngIf="!isEditing">Timezone</label>
+                        <div class="row mb-1">
+                            <div class="col-md-4">
+                                <label class="field-label">Custodians <span *ngIf="isEditing">*</span></label>
+                            </div>
+                            <div class="col-md-8">
+                                <label
+                                    [hidden]="isEditing">{{getSelectedCustodiansLabel(project.custodians)}}</label>
+                                <p-multiSelect [hidden]="!isEditing" *ngIf="custodianChoices"
+                                               [options]="custodianChoices"
+                                               [(ngModel)]="project.custodians"></p-multiSelect>
+                                <div [hidden]="!isEditing" class="text-danger">{{projectErrors['custodians']}}</div>
+                            </div>
                         </div>
-                        <div class="col-md-5">
-                            <label [hidden]="isEditing">{{project.timezone}}</label>
-                            <input [hidden]="!isEditing" type="text" pInputText [(ngModel)]="project.timezone"
-                                   size="21"/>
+                        <div class="row mb-1">
+                            <div class="col-md-4">
+                                <label class="field-label">Comments</label>
+                            </div>
+                            <div class="col-md-8">
+                                <label [hidden]="isEditing" [innerHtml]="project.comments"></label>
+                                <textarea [hidden]="!isEditing" pInputTextarea [(ngModel)]="project.comments"
+                                          size="21">
+                            </textarea>
+                                <div [hidden]="!isEditing" class="text-danger">{{projectErrors['custodians']}}</div>
+                            </div>
                         </div>
-                        <div [hidden]="!isEditing" class="col-md-4 text-danger">{{projectErrors['timezone']}}</div>
-                    </div>
-                    <div class="row mb-1">
-                        <div class="col-md-3">
-                            <strong *ngIf="isEditing">Custodians</strong><label *ngIf="!isEditing">Custodians</label>
-                        </div>
-                        <div class="col-md-5">
-                            <label [hidden]="isEditing">{{getSelectedCustodiansLabel(project.custodians)}}</label>
-                            <p-multiSelect [hidden]="!isEditing" *ngIf="custodianChoices" [options]="custodianChoices"
-                                           [(ngModel)]="project.custodians" styleClass="w-100"></p-multiSelect>
-                        </div>
-                        <div [hidden]="!isEditing" class="col-md-4 text-danger">{{projectErrors['custodians']}}</div>
                     </div>
                     <button [hidden]="isEditing" pButton icon="fa-pencil-square-o" label="Edit"
                             (click)="editProject()"></button>
@@ -80,94 +101,94 @@
                     </button>
                 </div>
                 <div class="col-md-6">
-                    <label>Extent</label>
+                    <label class="field-label">Extent</label>
                     <div>
-                        <biosys-featuremap [isEditing]="isEditing" [geometry]="project.geometry" [drawFeatureTypes]="['POLYGON', 'LINE']">
-                            <biosys-marker *ngFor="let site of sites" [geometry]="site.centroid" [popupText]="site.name ? site.name : site.code"></biosys-marker>
+                        <biosys-featuremap [isEditing]="isEditing" [geometry]="project.geometry"
+                                           [drawFeatureTypes]="['POLYGON', 'LINE']">
+                            <biosys-marker *ngFor="let site of sites" [geometry]="site.centroid"
+                                           [popupText]="site.name ? site.name : site.code"></biosys-marker>
                         </biosys-featuremap>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <hr *ngIf="project.id" class="mt-3"/>
-    <div *ngIf="project.id" class="row mt-1">
-        <div class="col-md">
-            <h4>Datasets</h4>
-            <p-dataTable [value]="datasets" [globalFilter]="datasetSearch" [paginator]="true" [rows]="10" [responsive]="true">
-                <p-header>
-                    <div class="ui-helper-clearfix" style="width:100%">
-                        <i class="fa fa-search float-left mt-1 mr-1"></i>
-                        <input #datasetSearch type="text" class="float-left" pInputText placeholder="Search">
-                    </div>
-                </p-header>
-                <p-column field="name" header="Name">
-                    <ng-template let-dataset="rowData" pTemplate="body">
-                        <a [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-dataset/' + dataset.id">{{dataset.name}}</a>
-                    </ng-template>
-                </p-column>
-                <p-column field="type" header="Type">
-                    <ng-template let-dataset="rowData" pTemplate="body">
-                        {{DATASET_TYPE_MAP[dataset.type]}}
-                    </ng-template>
-                </p-column>
-                <p-column styleClass="col-button" header="Action">
-                    <ng-template let-dataset="rowData" pTemplate="body">
-                        <button type="button" pButton icon="fa-pencil-square-o" title="Edit"
-                                [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-dataset/' + dataset.id">
-                        </button>
-                        <button type="button" pButton icon="fa-trash-o" title="Delete"
-                                (click)="confirmDeleteDataset(dataset)"></button>
-                    </ng-template>
-                </p-column>
-                <p-footer>
-                    <div class="ui-helper-clearfix" style="width:100%">
-                        <button type="button" pButton icon="fa-plus" style="float:right" label="Add"
-                                [routerLink]="'/management/projects/edit-project/' + project.id + '/create-dataset'"></button>
-                    </div>
-                </p-footer>
-            </p-dataTable>
+        <hr *ngIf="project.id" class="mt-3"/>
+        <div *ngIf="project.id" class="row mt-1">
+            <div class="col-md">
+                <h4>Datasets</h4>
+                <p-dataTable [value]="datasets" [globalFilter]="datasetSearch" [paginator]="true" [rows]="10"
+                             [responsive]="true">
+                    <p-header>
+                        <div class="ui-helper-clearfix" style="width:100%">
+                            <i class="fa fa-search float-left mt-1 mr-1"></i>
+                            <input #datasetSearch type="text" class="float-left" pInputText placeholder="Search">
+                        </div>
+                    </p-header>
+                    <p-column field="name" header="Name">
+                        <ng-template let-dataset="rowData" pTemplate="body">
+                            <a [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-dataset/' + dataset.id">{{dataset.name}}</a>
+                        </ng-template>
+                    </p-column>
+                    <p-column field="type" header="Type">
+                        <ng-template let-dataset="rowData" pTemplate="body">
+                            {{DATASET_TYPE_MAP[dataset.type]}}
+                        </ng-template>
+                    </p-column>
+                    <p-column styleClass="col-button" header="Action">
+                        <ng-template let-dataset="rowData" pTemplate="body">
+                            <button type="button" pButton icon="fa-trash-o" title="Delete"
+                                    (click)="confirmDeleteDataset(dataset)"></button>
+                        </ng-template>
+                    </p-column>
+                    <p-footer>
+                        <div class="ui-helper-clearfix" style="width:100%">
+                            <button type="button" pButton icon="fa-plus" style="float:right" label="Add"
+                                    [routerLink]="'/management/projects/edit-project/' + project.id + '/create-dataset'"></button>
+                        </div>
+                    </p-footer>
+                </p-dataTable>
+            </div>
+        </div>
+        <div *ngIf="project.id" class="row mt-3 mb-3">
+            <div class="col-md">
+                <h4>Sites</h4>
+                <p-dataTable [value]="sites" [globalFilter]="siteSearch" [paginator]="true" [rows]="10"
+                             [responsive]="true">
+                    <p-header>
+                        <div class="ui-helper-clearfix" style="width:100%">
+                            <i class="fa fa-search float-left mt-1 mr-1"></i>
+                            <input #siteSearch type="text" class="float-left" pInputText placeholder="Search">
+                        </div>
+                    </p-header>
+                    <p-column field="code" header="Code">
+                        <ng-template let-site="rowData" pTemplate="body">
+                            <a [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-site/' + site.id">{{site.code}}</a>
+                        </ng-template>
+                    </p-column>
+                    <p-column field="name" header="Name"></p-column>
+                    <p-column field="comments" header="Comments"></p-column>
+                    <p-column styleClass="col-button">
+                        <ng-template pTemplate="header">
+                            <p-checkbox label="Select All" [(ngModel)]="selectAllSites" binary="true"></p-checkbox>
+                        </ng-template>
+                        <ng-template let-site="rowData" pTemplate="body">
+                            <p-checkbox [value]="site.id" [(ngModel)]="selectedSites"></p-checkbox>
+                        </ng-template>
+                    </p-column>
+                    <p-footer>
+                        <div class="ui-helper-clearfix" style="width:100%">
+                            <button type="button" pButton icon="fa-trash" style="float:left" label="Delete"
+                                    (click)="confirmDeleteSelectedSites()"></button>
+                            <button type="button" class="ml-1" pButton icon="fa-plus" style="float:right" label="Add"
+                                    [routerLink]="'/management/projects/edit-project/' + project.id + '/create-site'"></button>
+                            <button type="button" pButton icon="fa-reply" style="float:right" label="Import"
+                                    [routerLink]="'/management/projects/edit-project/' + project.id + '/upload-sites'"></button>
+
+                        </div>
+                    </p-footer>
+                </p-dataTable>
+            </div>
         </div>
     </div>
-    <div *ngIf="project.id" class="row mt-3 mb-3">
-        <div class="col-md">
-            <h4>Sites</h4>
-            <p-dataTable [value]="sites" [globalFilter]="siteSearch" [paginator]="true" [rows]="10" [responsive]="true">
-                <p-header>
-                    <div class="ui-helper-clearfix" style="width:100%">
-                        <i class="fa fa-search float-left mt-1 mr-1"></i>
-                        <input #siteSearch type="text" class="float-left" pInputText placeholder="Search">
-                    </div>
-                </p-header>
-                <p-column field="code" header="Code">
-                    <ng-template let-site="rowData" pTemplate="body">
-                        <a [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-site/' + site.id">{{site.code}}</a>
-                    </ng-template>
-                </p-column>
-                <p-column field="name" header="Name"></p-column>
-                <p-column field="comments" header="Comments"></p-column>
-                <p-column styleClass="col-button">
-                    <ng-template pTemplate="header">
-                        <p-checkbox label="Select All" [(ngModel)]="selectAllSites" binary="true"></p-checkbox>
-                    </ng-template>
-                    <ng-template let-site="rowData" pTemplate="body">
-                        <p-checkbox [value]="site.id" [(ngModel)]="selectedSites"></p-checkbox>
-                    </ng-template>
-                </p-column>
-                <p-footer>
-                    <div class="ui-helper-clearfix" style="width:100%">
-                        <button type="button" pButton icon="fa-trash" style="float:left" label="Delete"
-                                (click)="confirmDeleteSelectedSites()"></button>
-                        <button type="button" class="ml-1" pButton icon="fa-plus" style="float:right" label="Add"
-                                [routerLink]="'/management/projects/edit-project/' + project.id + '/create-site'"></button>
-                        <button type="button" pButton icon="fa-reply" style="float:right" label="Import"
-                                [routerLink]="'/management/projects/edit-project/' + project.id + '/upload-sites'"></button>
 
-                    </div>
-                </p-footer>
-            </p-dataTable>
-        </div>
-    </div>
-</div>
-
-<p-confirmDialog header="Confirm Delete" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+    <p-confirmDialog header="Confirm Delete" icon="fa fa-question-circle" width="425"></p-confirmDialog>

@@ -8,7 +8,6 @@ import { ConfirmationService, Message, SelectItem } from 'primeng/primeng';
     moduleId: module.id,
     selector: 'biosys-edit-roject',
     templateUrl: 'edit-project.component.html',
-    styleUrls: [],
 })
 
 export class EditProjectComponent implements OnInit {
@@ -135,6 +134,18 @@ export class EditProjectComponent implements OnInit {
                 severity: 'success',
                 summary: 'Dataset saved',
                 detail: 'The dataset was saved'
+            });
+        } else if('siteDeleted' in params) {
+            this.messages.push({
+                severity: 'success',
+                summary: 'Site deleted',
+                detail: 'The site was deleted'
+            });
+        } else if('datasetDeleted' in params) {
+            this.messages.push({
+                severity: 'success',
+                summary: 'Dataset deleted',
+                detail: 'The dataset was deleted'
             });
         }
     }

@@ -2,6 +2,10 @@
     text-align: center;
 }
 
+.field-label {
+    font-weight: bold;
+}
+
 .ui-breadcrumb {
     border: none;
     background: none;
@@ -16,13 +20,6 @@
 .ui-menuitem .ui-state-active {
     border: none;
     background: none;
-}
-
-.ui-dropdown-label {
-    font-weight: bold !important;
-}
-
-.ui-chkbox {
 }
 
 .ui-chkbox-label {

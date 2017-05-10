@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { APIService, APIError, Project, Dataset } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { JsonEditorComponent, JsonEditorOptions } from '../../../shared/index';
-import { SelectItem, Message } from 'primeng/primeng';
+import { ConfirmationService, SelectItem, Message } from 'primeng/primeng';
 import { ModelChoice } from '../../../shared/services/api/api.interfaces';
 
 @Component({
@@ -13,6 +13,12 @@ import { ModelChoice } from '../../../shared/services/api/api.interfaces';
 })
 
 export class EditDatasetComponent implements OnInit {
+    @Input()
+    public isValid: boolean = true;
+
+    @ViewChild(JsonEditorComponent)
+    public editor: JsonEditorComponent;
+
     public breadcrumbItems: any = [];
     public typeChoices: SelectItem[];
     public messages: Message[] = [];
@@ -21,15 +27,12 @@ export class EditDatasetComponent implements OnInit {
 
     public dsErrors: any = {};
 
-    @Input()
-    public isValid: boolean = true;
-
-    @ViewChild(JsonEditorComponent)
-    public editor: JsonEditorComponent;
+    private completeUrl: string;
 
     constructor(private apiService: APIService,
                 private router: Router,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                private confirmationService: ConfirmationService) {
         this.editorOptions = new JsonEditorOptions();
         this.editorOptions.mode = 'text';
         this.editorOptions.modes = ['form', 'text', 'tree', 'view'];
@@ -87,25 +90,39 @@ export class EditDatasetComponent implements OnInit {
         if (!('id' in params)) {
             this.breadcrumbItems.push({label: 'Create Dataset '});
         }
+
+        this.completeUrl = '/management/projects/edit-project/' + projId;
     }
 
     public save() {
-        let successUrl = '/management/projects/edit-project/' + this.ds.project;
         if (this.ds.id) {
             this.apiService.updateDataset(this.ds).subscribe(
-                () => this.router.navigate([successUrl, {'datasetSaved': true}]),
+                () => this.router.navigate([this.completeUrl, {'datasetSaved': true}]),
                 (errors: APIError) => this.dsErrors = errors.text
             );
         } else {
             this.apiService.createDataset(this.ds).subscribe(
-                () => this.router.navigate([successUrl, {'datasetSaved': true}]),
+                () => this.router.navigate([this.completeUrl, {'datasetSaved': true}]),
                 (errors: APIError) => this.dsErrors = errors.text
             );
         }
     }
 
     public cancel() {
-        this.router.navigate(['/management/projects/edit-project/' + this.ds.project]);
+        this.router.navigate([this.completeUrl]);
+    }
+
+    public confirmDelete(event:any) {
+        this.confirmationService.confirm({
+            message: 'Are you sure that you want to delete this dataset?',
+            accept: () =>  this.apiService.deleteDataset(this.ds.id).subscribe(
+                (ds: Dataset) => this.onDeleteSuccess(),
+                (error: APIError) => this.onDeleteError(error))
+        });
+    }
+
+    private onDeleteSuccess() {
+        this.router.navigate([this.completeUrl, {'datasetDeleted': true}]);
     }
 
     private onEditorChanged() {
@@ -118,7 +135,6 @@ export class EditDatasetComponent implements OnInit {
     }
 
     private showError(error: APIError) {
-        this.messages = [];
         let addErrorMessage = (detail: any) => {
             this.messages.push({
                 severity: 'error',
@@ -127,13 +143,6 @@ export class EditDatasetComponent implements OnInit {
             });
         };
         if (typeof error.msg === 'object') {
-            // API message format:
-            /**
-             * {
-             *   'field_name': [error1, error2, ...],
-             *   ....
-             * }
-             */
             for (let field in error.msg) {
                 if (error.msg.hasOwnProperty(field)) {
                     addErrorMessage(field + ': ' + error.msg[field].join(';'));
@@ -142,5 +151,13 @@ export class EditDatasetComponent implements OnInit {
         } else {
             addErrorMessage(error.msg);
         }
+    }
+
+    private onDeleteError(error: any) {
+        this.messages.push({
+            severity: 'error',
+            summary: 'Dataset delete error',
+            detail: 'There were error(s) deleting the dataset'
+        });
     }
 }

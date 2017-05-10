@@ -3,21 +3,24 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { EditDatasetComponent } from './edit-dataset.component';
 import { APIService } from '../../../shared/services/api/index';
-import * as primeng from 'primeng/primeng';
+import { InputTextModule, ButtonModule, DropdownModule, GrowlModule, ConfirmDialogModule,
+    ConfirmationService } from 'primeng/primeng';
 import { JSONEditorModule } from '../../../shared/index';
 
 @NgModule({
     imports: [
         CommonModule,
         SharedModule,
-        primeng.ButtonModule,
-        primeng.DropdownModule,
-        primeng.MessagesModule,
+        InputTextModule,
+        ButtonModule,
+        DropdownModule,
+        GrowlModule,
+        ConfirmDialogModule,
         JSONEditorModule,
     ],
     declarations: [EditDatasetComponent],
     exports: [EditDatasetComponent],
-    providers: [APIService]
+    providers: [APIService, ConfirmationService]
 })
 export class EditDatasetModule {
 }
