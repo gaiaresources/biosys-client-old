@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { APIService, APIError, Project, Site, FeatureMapComponent } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ConfirmationService, Message } from 'primeng/primeng';
 
 @Component({
     moduleId: module.id,
@@ -16,12 +17,15 @@ export class EditSiteComponent implements OnInit {
     public featureMapComponent: FeatureMapComponent;
 
     public site: Site = <Site>{};
-
     public siteErrors: any = {};
+    public messages: Message[] = [];
+
+    private completeUrl: string;
 
     constructor(private apiService: APIService,
                 private router: Router,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                private confirmationService: ConfirmationService) {
     }
 
     ngOnInit() {
@@ -47,7 +51,7 @@ export class EditSiteComponent implements OnInit {
                 (error: APIError) => console.log('error.msg', error.msg),
             );
         } else {
-            this.site.project = Number(params['projId']);
+            this.site.project = projId;
         }
 
         this.breadcrumbItems = [
@@ -57,26 +61,48 @@ export class EditSiteComponent implements OnInit {
         if (!('id' in params)) {
             this.breadcrumbItems.push({label: 'Create Site '});
         }
+
+        this.completeUrl = '/management/projects/edit-project/' + projId;
     }
 
     public save() {
         this.site.geometry = this.featureMapComponent.getFeatureGeometry();
 
-        let successUrl = 'management/projects/edit-project/' + this.site.project;
         if (this.site.id) {
             this.apiService.updateSite(this.site).subscribe(
-                () => this.router.navigate([successUrl, {'siteSaved': true}]),
+                () => this.router.navigate([this.completeUrl, {'siteSaved': true}]),
                 (errors: APIError) => this.siteErrors = errors.text
             );
         } else {
             this.apiService.createSite(this.site).subscribe(
-                () => this.router.navigate([successUrl, {'siteSaved': true}]),
+                () => this.router.navigate([this.completeUrl, {'siteSaved': true}]),
                 (errors: APIError) => this.siteErrors = errors.text
             );
         }
     }
 
     public cancel() {
-        this.router.navigate(['management/projects/edit-project/' + this.site.project]);
+        this.router.navigate([this.completeUrl]);
+    }
+
+    public confirmDelete(event:any) {
+        this.confirmationService.confirm({
+            message: 'Are you sure that you want to delete this site?',
+            accept: () =>  this.apiService.deleteSite(this.site.id).subscribe(
+                (site: Site) => this.onDeleteSuccess(this.site),
+                (error: APIError) => this.onDeleteError(error))
+        });
+    }
+
+    private onDeleteSuccess(site: Site) {
+        this.router.navigate([this.completeUrl, {'siteDeleted': true}]);
+    }
+
+    private onDeleteError(recordErrors: any) {
+        this.messages.push({
+            severity: 'error',
+            summary: 'Site delete error',
+            detail: 'There were error(s) deleting the site'
+        });
     }
 }

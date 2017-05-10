@@ -25,7 +25,7 @@ export class ManageDataComponent implements OnInit {
     public projId: number;
     public datasetId: number;
     public dataset: Dataset = <Dataset>{};
-    public records: Record[] = [];
+    public flatRecords: any[] = [];
     public recordErrors: any = {};
     public tablePlaceholder: string = 'Loading Records';
     public messages: Message[] = [];
@@ -67,7 +67,7 @@ export class ManageDataComponent implements OnInit {
 
         this.apiService.getDataByDatasetId(this.datasetId)
             .subscribe(
-                (data: any[]) => this.records = data,
+                (data: any[]) => this.flatRecords = data.map((r:Record) => Object.assign({id: r.id}, r.data)),
                 (error: APIError) => console.log('error.msg', error.msg),
                 () => this.tablePlaceholder = 'No records found'
             );
@@ -109,10 +109,6 @@ export class ManageDataComponent implements OnInit {
         }
     }
 
-    public getRecordsData(): any[] {
-        return this.records.map((r) => Object.assign({recordId: r.id}, r.data));
-    }
-
     public add() {
         this.router.navigate(['/data/projects/' + this.projId + '/datasets/' + this.datasetId + '/create-record/']);
     }
@@ -126,7 +122,7 @@ export class ManageDataComponent implements OnInit {
 
         this.apiService.getDataByDatasetId(this.dataset.id)
             .subscribe(
-                (data: any[]) => this.records = data,
+                (data: any[]) => this.flatRecords = data.map((r:Record) => Object.assign({id: r.id}, r.data)),
                 (error: APIError) => console.log('error.msg', error.msg),
                 () => this.tablePlaceholder = 'No records found'
             );

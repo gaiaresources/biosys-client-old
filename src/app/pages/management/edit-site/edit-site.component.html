@@ -2,51 +2,67 @@
     <biosys-header></biosys-header>
     <biosys-navbar></biosys-navbar>
     <biosys-breadcrumbs [items]="breadcrumbItems"></biosys-breadcrumbs>
+    <p-growl [value]="messages"></p-growl>
     <div class="row mt-1">
         <div class="col-md-4">
             <h3 *ngIf="site.id">Edit Site</h3>
             <h3 *ngIf="!site.id">Create Site</h3>
-            <p *ngIf="site.id">Edit the site by changing the details below. Fields in <strong>bold</strong> are
-                mandatory.</p>
-            <p *ngIf="!site.id">Create the site by entering the details below. Fields in <strong>bold</strong> are
-                mandatory.</p>
+            <p *ngIf="site.id">
+                Edit the site by changing the details below. Fields marked with a <strong>*</strong> are required.
+            </p>
+            <p *ngIf="!site.id">
+                Create the site by entering the details below. Fields marked with a <strong>*</strong> are required.
+            </p>
         </div>
     </div>
     <div class="row mt-1">
         <div class="col-md-6">
-            <div class="row mb-1">
-                <div class="col-md-3"><label for="name">Name</label></div>
-                <div class="col-md-5">
-                    <input id="name" type="text" pInputText [(ngModel)]="site.name" name="name"
-                           size="21"/>
+            <div class="ui-fluid">
+                <div class="row mb-1">
+                    <div class="col-md-4">
+                        <label class="field-label">Name *</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input id="name" type="text" pInputText [(ngModel)]="site.name" name="name"/>
+                        <div class="text-danger">{{siteErrors['name']}}</div>
+                    </div>
                 </div>
-                <div class="col-md-4 text-danger">{{siteErrors['name']}}</div>
-            </div>
-            <div class="row mb-1">
-                <div class="col-md-3"><strong>Code</strong></div>
-                <div class="col-md-5">
-                    <input id="code" type="text" pInputText [(ngModel)]="site.code" name="code"
-                           size="21"/>
+                <div class="row mb-1">
+                    <div class="col-md-4">
+                        <label class="field-label">Code *</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input id="code" type="text" pInputText [(ngModel)]="site.code" name="code"/>
+                        <div class="text-danger">{{siteErrors['code']}}</div>
+                    </div>
                 </div>
-                <div class="col-md-4 text-danger">{{siteErrors['code']}}</div>
-            </div>
-            <div class="row mb-1">
-                <div class="col-md-3"><label>Comments</label></div>
-                <div class="col-md-5">
-                        <textarea pInputText [(ngModel)]="site.comments" [ngModelOptions]="{standalone: true}"
-                                  size="21"></textarea>
+                <div class="row mb-1">
+                    <div class="col-md-4">
+                        <label class="field-label">Comments</label>
+                    </div>
+                    <div class="col-md-8">
+                        <textarea pInputTextarea rows="3" [(ngModel)]="site.comments"></textarea>
+                        <div class="col-md-4 text-danger">{{siteErrors['comments']}}</div>
+                    </div>
                 </div>
-                <div class="col-md-4 text-danger">{{siteErrors['comments']}}</div>
             </div>
-            <button pButton icon="fa-close" label="Cancel" (click)="cancel()"></button>
-            <button pButton icon="fa-save" label="Save" (click)="save()"></button>
         </div>
         <div class="col-md-6">
-            <label>Location</label>
+            <label class="field-label">Location</label>
             <biosys-featuremap
                 [isEditing]="true"
                 [geometry]="site.geometry"
                 [drawFeatureTypes]="['POINT', 'LINE', 'POLYGON']"></biosys-featuremap>
         </div>
     </div>
+    <div class="row mt-3 mb-3">
+        <div class="col-2">
+            <button pButton icon="fa-close" (click)="confirmDelete()" label="Delete"></button>
+        </div>
+        <div class="col-4">
+            <button pButton icon="fa-close" label="Cancel" (click)="cancel()"></button>
+            <button pButton icon="fa-check" label="Save" (click)="save()"></button>
+        </div>
+    </div>
 </div>
+<p-confirmDialog header="Confirm Delete" icon="fa fa-question-circle" width="425"></p-confirmDialog>

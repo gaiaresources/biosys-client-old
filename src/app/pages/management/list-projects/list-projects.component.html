@@ -20,9 +20,9 @@
                     </ng-template>
                 </p-column>
                 <p-column field="code" header="Code" [sortable]="true"></p-column>
-                <p-column header="Custodians">
+                <p-column header="Comments">
                     <ng-template let-project="rowData" pTemplate="body">
-                        {{getCustodiansAsText(project.custodians)}}
+                        <label [innerHtml]="project.comments"></label>
                     </ng-template>
                 </p-column>
                 <p-column styleClass="col-button" header="Delete">
