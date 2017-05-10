@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit, AfterViewInit } from '@angular/core';
 import { APIService, APIError, Project, Dataset, Record } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Message, FileUpload } from 'primeng/primeng';
@@ -10,7 +10,7 @@ import { Message, FileUpload } from 'primeng/primeng';
     styleUrls: ['manage-data.component.css'],
 })
 
-export class ManageDataComponent implements OnInit {
+export class ManageDataComponent implements OnInit, AfterViewInit {
     private static COLUMN_WIDTH: number = 240;
     private static ACCEPTED_TYPES: string[] = [
         'text/csv',
@@ -36,6 +36,8 @@ export class ManageDataComponent implements OnInit {
 
     @ViewChild(FileUpload)
     public uploader: FileUpload;
+
+    private uploadButton: any;
 
     constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute) {
     }
@@ -91,7 +93,10 @@ export class ManageDataComponent implements OnInit {
             });
         }
     }
-
+    public ngAfterViewInit() {
+        // TODO: find a better way to access the upload button.
+        this.uploadButton = document.querySelector('p-fileupload button[icon="fa-upload"]');
+    }
     public getDataTableWidth(): any {
         if (!('data_package' in this.dataset)) {
             return {width: '100%'};
@@ -127,6 +132,7 @@ export class ManageDataComponent implements OnInit {
     }
 
     public onBeforeUpload(event: any) {
+        this.uploadButton.disabled = true;
         event.formData.append('create_site', this.uploadCreateSites);
         event.formData.append('delete_previous', this.uploadDeleteExistingRecords);
     }

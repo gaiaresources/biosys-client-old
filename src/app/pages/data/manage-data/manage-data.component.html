@@ -8,7 +8,8 @@
             <h3>Records for {{dataset?.name}}</h3>
             <p>Select a particular record to edit or click Add to add a new record</p>
             <div class="data-table-container">
-                <p-dataTable [tableStyle]="getDataTableWidth()" [value]="getRecordsData()" [emptyMessage]="tablePlaceholder"
+                <p-dataTable [tableStyle]="getDataTableWidth()" [value]="getRecordsData()"
+                             [emptyMessage]="tablePlaceholder"
                              [paginator]="true" [rows]="10" [globalFilter]="recordSearch">
                     <p-header>
                         <div class="ui-helper-clearfix" style="width:100%">
@@ -18,7 +19,8 @@
                     </p-header>
                     <p-column field="id" header="Record ID" [sortable]="true">
                         <ng-template let-data="rowData" pTemplate="body">
-                            <a class="table-link" [routerLink]="'/data/projects/' + projId + '/datasets/' + datasetId + '/record/' + data.recordId">{{data.recordId}}</a>
+                            <a class="table-link"
+                               [routerLink]="'/data/projects/' + projId + '/datasets/' + datasetId + '/record/' + data.recordId">{{data.recordId}}</a>
                         </ng-template>
                     </p-column>
                     <p-column *ngFor="let field of dataset?.data_package?.resources[0]?.schema?.fields"
@@ -29,7 +31,8 @@
                     </p-column>
                     <p-footer>
                         <div class="ui-helper-clearfix" style="width:100%">
-                            <button type="button" pButton icon="fa-plus" style="float:right" label="Add" (click)="add()"></button>
+                            <button type="button" pButton icon="fa-plus" style="float:right" label="Add"
+                                    (click)="add()"></button>
                         </div>
                     </p-footer>
                 </p-dataTable>
@@ -47,8 +50,12 @@
                           (onSelect)="onUploadSelect($event)" (onBeforeSend)="onUploadBeforeSend($event)"
                           (onBeforeUpload)="onBeforeUpload($event)">
                 <ng-template pTemplate="content">
-                    <p-checkbox styleClass="mr-3" label="Create Sites"[(ngModel)]="uploadCreateSites" binary="true"></p-checkbox>
-                    <p-checkbox label="Delete Existing Records"[(ngModel)]="uploadDeleteExistingRecords" binary="true"></p-checkbox>
+                    <p-checkbox styleClass="mr-3" label="Create Sites" [(ngModel)]="uploadCreateSites" binary="true"
+                                pTooltip="Sites that doesn't exist will be created on the fly with the provided code.">
+                    </p-checkbox>
+                    <p-checkbox label="Delete Existing Records" [(ngModel)]="uploadDeleteExistingRecords" binary="true"
+                                pTooltip="If selected, previous records for this dataset will be deleted.">
+                    </p-checkbox>
                 </ng-template>
             </p-fileUpload>
         </div>
