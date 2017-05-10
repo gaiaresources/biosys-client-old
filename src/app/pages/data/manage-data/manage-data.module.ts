@@ -4,11 +4,11 @@ import { SharedModule } from '../../../shared/shared.module';
 import { ManageDataComponent } from './manage-data.component';
 import { APIService } from '../../../shared/services/api/index';
 import { DataTableModule, ButtonModule, GrowlModule, MessagesModule,
-    FileUploadModule, CheckboxModule } from 'primeng/primeng';
+    FileUploadModule, CheckboxModule, TooltipModule } from 'primeng/primeng';
 
 @NgModule({
     imports: [CommonModule, SharedModule, DataTableModule, ButtonModule, GrowlModule, MessagesModule,
-        FileUploadModule, CheckboxModule],
+        FileUploadModule, CheckboxModule, TooltipModule],
     declarations: [ManageDataComponent],
     exports: [ManageDataComponent],
     providers: [APIService]
