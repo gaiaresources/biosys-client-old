@@ -232,6 +232,15 @@ export class EditProjectComponent implements OnInit {
         });
     }
 
+    public formatAttributes(attributes: any) {
+        if (!attributes) {
+            return '';
+        }
+
+        return Object.keys(attributes).map((k) => [k, attributes[k]]).reduce((a, b) =>
+            '<strong>' + a[0] + '</strong>: ' + a[1] + '; <strong>' + b[0] + '</strong>: ' + b[1]);
+    }
+
     private onDeleteDatasetSuccess(dataset: Dataset) {
         for (let i = 0; i < this.datasets.length; i++) {
             if (this.datasets[i].id === dataset.id) {

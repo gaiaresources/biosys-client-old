@@ -19,30 +19,63 @@
         <div class="col-md-6">
             <div class="ui-fluid">
                 <div class="row mb-1">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="field-label">Code *</label>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-9">
                         <input id="code" type="text" pInputText [(ngModel)]="site.code" name="code"/>
                         <div class="text-danger">{{siteErrors['code']}}</div>
                     </div>
                 </div>
                 <div class="row mb-1">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="field-label">Name</label>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-9">
                         <input id="name" type="text" pInputText [(ngModel)]="site.name" name="name"/>
                         <div class="text-danger">{{siteErrors['name']}}</div>
                     </div>
                 </div>
                 <div class="row mb-1">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="field-label">Comments</label>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-9">
                         <textarea pInputTextarea rows="3" [(ngModel)]="site.comments"></textarea>
                         <div class="col-md-4 text-danger">{{siteErrors['comments']}}</div>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <div class="col-md-3">
+                        <label class="field-label">Additional Attributes</label>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="field-label">Name</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="field-label">Value</label>
+                            </div>
+                        </div>
+                        <div *ngFor="let keyVal of additionalAttributes; let i = index">
+                            <div class="row mb-1">
+                                <div class="col-md-5">
+                                    <input pInputText [(ngModel)]="keyVal[0]"/>
+                                </div>
+                                <div class="col-md-6">
+                                    <input pInputText [(ngModel)]="keyVal[1]"/>
+                                </div>
+                                <div class="col-md-1">
+                                    <button pButton icon="fa-minus" class="float-right" style="width: 29px" (click)="removeAdditionalAttribute(i)">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-1">
+                            <button pButton icon="fa-plus" class="float-right" style="width: 29px" (click)="addAdditionalAttribute()">
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

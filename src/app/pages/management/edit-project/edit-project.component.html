@@ -121,7 +121,7 @@
                     <p-header>
                         <div class="ui-helper-clearfix" style="width:100%">
                             <i class="fa fa-search float-left mt-1 mr-1"></i>
-                            <input #datasetSearch type="text" class="float-left" pInputText placeholder="Search">
+                            <input #datasetSearch type="text" class="float-left" placeholder="Search">
                         </div>
                     </p-header>
                     <p-column field="name" header="Name">
@@ -157,7 +157,7 @@
                     <p-header>
                         <div class="ui-helper-clearfix" style="width:100%">
                             <i class="fa fa-search float-left mt-1 mr-1"></i>
-                            <input #siteSearch type="text" class="float-left" pInputText placeholder="Search">
+                            <input #siteSearch type="text" class="float-left" placeholder="Search">
                         </div>
                     </p-header>
                     <p-column field="code" header="Code">
@@ -167,6 +167,11 @@
                     </p-column>
                     <p-column field="name" header="Name"></p-column>
                     <p-column field="comments" header="Comments"></p-column>
+                    <p-column field="attributes" header="Attributes">
+                        <ng-template let-site="rowData" pTemplate="body">
+                            <label [innerHtml]="formatAttributes(site.attributes)"></label>
+                        </ng-template>
+                    </p-column>
                     <p-column styleClass="col-button">
                         <ng-template pTemplate="header">
                             <p-checkbox label="Select All" [(ngModel)]="selectAllSites" binary="true"></p-checkbox>
@@ -183,13 +188,11 @@
                                     [routerLink]="'/management/projects/edit-project/' + project.id + '/create-site'"></button>
                             <button type="button" pButton icon="fa-reply" style="float:right" label="Import"
                                     [routerLink]="'/management/projects/edit-project/' + project.id + '/upload-sites'"></button>
-
                         </div>
                     </p-footer>
                 </p-dataTable>
             </div>
         </div>
     </div>
-
     <p-confirmDialog header="Confirm Delete" icon="fa fa-question-circle" width="425"></p-confirmDialog>
 </div>

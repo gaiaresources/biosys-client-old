@@ -19,6 +19,7 @@ export class EditSiteComponent implements OnInit {
     public site: Site = <Site>{};
     public siteErrors: any = {};
     public messages: Message[] = [];
+    public additionalAttributes: [[string, string]] = [['', '']];
 
     private completeUrl: string;
 
@@ -46,6 +47,9 @@ export class EditSiteComponent implements OnInit {
             this.apiService.getSiteById(Number(params['id'])).subscribe(
                 (site: Site) => {
                     this.site = site;
+                    if (this.site.attributes) {
+                        this.additionalAttributes = Object.keys(this.site.attributes).map((k) => [k, this.site.attributes[k]]);
+                    }
                     this.breadcrumbItems.push({label: 'Edit ' + this.site.name});
                 },
                 (error: APIError) => console.log('error.msg', error.msg),
@@ -65,7 +69,22 @@ export class EditSiteComponent implements OnInit {
         this.completeUrl = '/management/projects/edit-project/' + projId;
     }
 
+    public addAdditionalAttribute() {
+        this.additionalAttributes.push(['', '']);
+    }
+
+    public removeAdditionalAttribute(index: number) {
+        this.additionalAttributes.splice(index, 1);
+    }
+
     public save() {
+        this.site.attributes = this.additionalAttributes.reduce((acc: any, cur: any) => {
+                acc[cur[0]] = cur[1];
+                return acc;
+            },
+            {}
+        );
+
         this.site.geometry = this.featureMapComponent.getFeatureGeometry();
 
         if (this.site.id) {
