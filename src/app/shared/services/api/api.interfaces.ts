@@ -32,6 +32,7 @@ export interface Project {
     timezone?: string;
     datum?: number | string | null;
     attributes?: {[key: string]: string} | null;
+    comments?: string;
     geometry?: GeoJSON.DirectGeometryObject | null;
     centroid?: GeoJSON.DirectGeometryObject | null;
     site_data_package?: {} | null;
