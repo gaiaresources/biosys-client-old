@@ -106,7 +106,8 @@
                         <biosys-featuremap [isEditing]="isEditing" [geometry]="project.geometry"
                                            [drawFeatureTypes]="['POLYGON', 'LINE']">
                             <biosys-marker *ngFor="let site of sites" [geometry]="site.centroid"
-                                           [popupText]="site.name ? site.name : site.code"></biosys-marker>
+                                           [popupText]="formatSitePopup(site)">
+                            </biosys-marker>
                         </biosys-featuremap>
                     </div>
                 </div>
