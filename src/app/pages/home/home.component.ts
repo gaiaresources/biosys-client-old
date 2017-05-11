@@ -64,14 +64,15 @@ export class HomeComponent implements OnInit {
                 let marker = L.geoJSON(project.centroid).addTo(this.map);
                 let popupContent: string = '<p class="m-0"><strong>' + project.title + '</strong></p>';
                 if (project.comments) {
-                    popupContent += '<p class="mt-1">' + project.comments + '</p>';
+                    popupContent += '<p class="mt-1 mb-0">' + project.comments + '</p>';
+                }
+                if (this.user && project.custodians.indexOf(this.user.id) > -1) {
+                    popupContent += '<p class="mt-1"><a href="#/management/projects/edit-project/' + project.id +
+                        '">Project Details</a></p>';
                 }
                 marker.bindPopup(popupContent);
                 marker.on('mouseover', function (e) {
                     this.openPopup();
-                });
-                marker.on('mouseout', function (e) {
-                    this.closePopup();
                 });
                 marker.addTo(this.map);
             }
