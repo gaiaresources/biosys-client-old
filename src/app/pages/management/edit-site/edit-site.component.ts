@@ -19,7 +19,7 @@ export class EditSiteComponent implements OnInit {
     public site: Site = <Site>{};
     public siteErrors: any = {};
     public messages: Message[] = [];
-    public additionalAttributes: [[string, string]] = [['', '']];
+    public additionalAttributes: string[][] = [['', '']];
 
     private completeUrl: string;
 
@@ -79,10 +79,11 @@ export class EditSiteComponent implements OnInit {
 
     public save() {
         this.site.attributes = this.additionalAttributes.reduce((acc: any, cur: any) => {
-                acc[cur[0]] = cur[1];
+                if (cur[0]) {
+                    acc[cur[0]] = cur[1];
+                }
                 return acc;
-            },
-            {}
+            }, {}
         );
 
         this.site.geometry = this.featureMapComponent.getFeatureGeometry();

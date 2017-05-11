@@ -6,7 +6,7 @@ import { HeaderComponent } from './header/index';
 import { NavbarComponent } from './navbar/index';
 import { BreadcrumbsComponent } from './breadcrumbs/index';
 import { FeatureMapComponent, MarkerDirective } from './featuremap/index';
-import { TruncatePipe, MapToIterablePipe } from './pipes/index';
+import { TruncatePipe } from './pipes/index';
 import { APIService } from './services/api/index';
 import { MenubarModule, BreadcrumbModule } from 'primeng/primeng';
 
@@ -17,9 +17,9 @@ import { MenubarModule, BreadcrumbModule } from 'primeng/primeng';
 @NgModule({
   imports: [CommonModule, RouterModule, MenubarModule, BreadcrumbModule],
   declarations: [HeaderComponent, NavbarComponent, BreadcrumbsComponent, FeatureMapComponent, MarkerDirective,
-      TruncatePipe, MapToIterablePipe],
+      TruncatePipe],
   exports: [CommonModule, FormsModule, RouterModule, HeaderComponent, NavbarComponent, BreadcrumbsComponent,
-      FeatureMapComponent, MarkerDirective, TruncatePipe, MapToIterablePipe]
+      FeatureMapComponent, MarkerDirective, TruncatePipe]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

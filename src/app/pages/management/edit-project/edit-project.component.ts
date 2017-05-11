@@ -237,8 +237,17 @@ export class EditProjectComponent implements OnInit {
             return '';
         }
 
-        return Object.keys(attributes).map((k) => [k, attributes[k]]).reduce((a, b) =>
-            '<strong>' + a[0] + '</strong>: ' + a[1] + '; <strong>' + b[0] + '</strong>: ' + b[1]);
+        let attributeString: string = '';
+        let keys: string[] = Object.keys(attributes);
+        for (let i = 0; i < keys.length && i <= 3; i++) {
+            if (i < 3) {
+                attributeString += '<p class="m-0"><strong>' + keys[i] + ': </strong>' + attributes[keys[i]];
+            } else {
+                attributeString += '<p class="m-0">&hellip;</p>';
+            }
+        }
+
+        return attributeString;
     }
 
     private onDeleteDatasetSuccess(dataset: Dataset) {
