@@ -158,6 +158,15 @@ export class EditProjectComponent implements OnInit {
         return this.datamTypeChoices.filter(d => d.value === value).pop().label;
     }
 
+    public formatSitePopup(site: Site): string {
+        let popupContent: string = '<p class="m-0"><strong>' + (site.name ? site.name : site.code) + '</strong></p>';
+        if (site.comments) {
+            popupContent += '<p class="mt-1">' + site.comments + '</p>';
+        }
+
+        return popupContent;
+    }
+
     public getSelectedCustodiansLabel(custodians: number[]): string {
         if (!this.custodianChoices || !custodians || !custodians.length) {
             return '';

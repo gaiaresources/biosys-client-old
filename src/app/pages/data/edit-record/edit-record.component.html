@@ -31,6 +31,7 @@
                     </div>
                     <div *ngSwitchDefault>
                         <p-dropdown *ngIf="field.constraints?.enum"
+                                    [placeholder]="'Select a ' + field.name.toLowerCase()"
                                     [options]="getDropdownOptions(field.name, field.constraints.enum)"
                                     [(ngModel)]="record.data[field.name]"
                                     [autoWidth]="false">
