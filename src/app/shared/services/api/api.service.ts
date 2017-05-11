@@ -190,20 +190,20 @@ export class APIService {
         return this.fetch('records/' + id, {});
     }
 
-    public createRecord(genericRecord: Record, strict=true): Observable<Record> {
+    public createRecord(record: Record, strict=true): Observable<Record> {
         let urlParams = strict ? {strict: 'true'} : {};
         return this.fetch('records', {
             method: 'Post',
-            data: genericRecord,
+            data: record,
             urlParams: urlParams
         });
     }
 
-    public updateRecord(id: number, genericRecord: Record, strict=true): Observable<Record> {
+    public updateRecord(id: number, record: Record, strict=true): Observable<Record> {
         let urlParams = strict ? {strict: 'true'} : {};
         return this.fetch('records/' + id, {
             method: 'Put',
-            data: genericRecord,
+            data: record,
             urlParams: urlParams
         });
     }
