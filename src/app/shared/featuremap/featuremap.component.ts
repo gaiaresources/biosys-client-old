@@ -147,7 +147,7 @@ export class FeatureMapComponent implements OnInit, OnChanges {
                 return (<L.Polygon>this.drawnFeatures.getLayers()[0]).toGeoJSON().geometry;
             } else if (this.drawnFeatureType === 'polyline') {
                 return (<L.Polyline>this.drawnFeatures.getLayers()[0]).toGeoJSON().geometry;
-            } else if (this.drawnFeatureType === 'marker') {
+            } else if (this.drawnFeatureType === 'marker' || this.drawnFeatureType === 'point') {
                 return (<L.CircleMarker>this.drawnFeatures.getLayers()[0]).toGeoJSON().geometry;
             }
         }

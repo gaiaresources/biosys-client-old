@@ -135,6 +135,7 @@
                             {{DATASET_TYPE_MAP[dataset.type]}}
                         </ng-template>
                     </p-column>
+                    <p-column field="record_count" header="Records" [sortable]="true" [style]="{'width':'120px'}"></p-column>
                     <p-column styleClass="col-button" header="Action">
                         <ng-template let-dataset="rowData" pTemplate="body">
                             <button type="button" pButton icon="fa-trash-o" title="Delete"
@@ -173,7 +174,7 @@
                             <label [innerHtml]="formatAttributes(site.attributes)"></label>
                         </ng-template>
                     </p-column>
-                    <p-column styleClass="col-button">
+                    <p-column styleClass="col-button" [style]="{'width':'140px'}">
                         <ng-template pTemplate="header">
                             <p-checkbox label="Select All" [(ngModel)]="selectAllSites" binary="true"></p-checkbox>
                         </ng-template>

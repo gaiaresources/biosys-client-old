@@ -7,7 +7,8 @@
         <div class="col-md">
             <h3>Projects</h3>
             <p>Select a project to edit or delete or click add to create a new project</p>
-            <p-dataTable [value]="projects" [globalFilter]="projectSearch" [paginator]="true" [rows]="15" [responsive]="true">
+            <p-dataTable [value]="projects" [globalFilter]="projectSearch" [paginator]="true" [rows]="15"
+                         [responsive]="true">
                 <p-header>
                     <div class="ui-helper-clearfix" style="width:100%">
                         <i class="fa fa-search float-left mt-1 mr-1"></i>
@@ -19,13 +20,16 @@
                         <a class="table-link" [routerLink]="'/management/projects/edit-project/' + project.id">{{project.title}}</a>
                     </ng-template>
                 </p-column>
-                <p-column field="code" header="Code" [sortable]="true"></p-column>
+                <p-column field="code" header="Code" [sortable]="true" [style]="{'width':'160px'}"></p-column>
                 <p-column header="Description">
                     <ng-template let-project="rowData" pTemplate="body">
                         <label [innerHtml]="project.comments"></label>
                     </ng-template>
                 </p-column>
-                <p-column styleClass="col-button" header="Delete">
+                <p-column field="dataset_count" header="Datasets" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                <p-column field="site_count" header="Sites" [sortable]="true" [style]="{'width':'100px'}"></p-column>
+                <p-column field="record_count" header="Records" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                <p-column styleClass="col-button" header="Delete" [style]="{'width':'100px'}">
                     <ng-template let-project="rowData" pTemplate="body">
                         <button type="button" pButton icon="fa-trash-o" title="Delete"
                                 (click)="confirmDelete(project)"></button>
