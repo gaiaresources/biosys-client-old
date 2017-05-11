@@ -37,6 +37,9 @@ export interface Project {
     centroid?: GeoJSON.DirectGeometryObject | null;
     site_data_package?: {} | null;
     custodians?: number[];
+    dataset_count?: number;
+    site_count?: number;
+    record_count?: number;
 }
 export interface Site {
     id?: number;
@@ -57,6 +60,7 @@ export interface Dataset {
     data_package?: {
         'resources'?: any[]
     };
+    record_count?: number;
 }
 export interface Record {
     id?: number;
