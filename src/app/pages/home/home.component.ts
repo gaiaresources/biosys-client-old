@@ -22,24 +22,25 @@ export class HomeComponent implements OnInit {
     constructor(public apiService: APIService) {}
 
     ngOnInit() {
-        this.apiService.getProjects()
-            .subscribe(
+
+        // need to get user before projects so use Promise 'then' syntax
+        this.apiService.whoAmI()
+            .toPromise()
+            .then((user: User) => this.user = user,
+                (error: APIError) => console.log('error.msg', error.msg)
+            )
+            .then(() => this.apiService.getProjects()
+                .subscribe(
                 (projects: Project[]) => {
                     this.projects = projects;
                     this.loadProjectMarkers();
                 },
                 (error: APIError) => console.log('error.msg', error.msg)
-            );
+            ));
 
         this.apiService.getStatistics()
             .subscribe(
                 (statistic: Statistic) => this.statistic = statistic,
-                (error: APIError) => console.log('error.msg', error.msg)
-            );
-
-        this.apiService.whoAmI()
-            .subscribe(
-                (user: User) => this.user = user,
                 (error: APIError) => console.log('error.msg', error.msg)
             );
 
