@@ -232,6 +232,24 @@ export class EditProjectComponent implements OnInit {
         });
     }
 
+    public formatAttributes(attributes: any) {
+        if (!attributes) {
+            return '';
+        }
+
+        let attributeString: string = '';
+        let keys: string[] = Object.keys(attributes);
+        for (let i = 0; i < keys.length && i <= 3; i++) {
+            if (i < 3) {
+                attributeString += '<p class="m-0"><strong>' + keys[i] + ': </strong>' + attributes[keys[i]];
+            } else {
+                attributeString += '<p class="m-0">&hellip;</p>';
+            }
+        }
+
+        return attributeString;
+    }
+
     private onDeleteDatasetSuccess(dataset: Dataset) {
         for (let i = 0; i < this.datasets.length; i++) {
             if (this.datasets[i].id === dataset.id) {

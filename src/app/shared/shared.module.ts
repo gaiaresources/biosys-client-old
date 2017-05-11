@@ -16,7 +16,8 @@ import { MenubarModule, BreadcrumbModule } from 'primeng/primeng';
 
 @NgModule({
   imports: [CommonModule, RouterModule, MenubarModule, BreadcrumbModule],
-  declarations: [HeaderComponent, NavbarComponent, BreadcrumbsComponent, FeatureMapComponent, MarkerDirective, TruncatePipe],
+  declarations: [HeaderComponent, NavbarComponent, BreadcrumbsComponent, FeatureMapComponent, MarkerDirective,
+      TruncatePipe],
   exports: [CommonModule, FormsModule, RouterModule, HeaderComponent, NavbarComponent, BreadcrumbsComponent,
       FeatureMapComponent, MarkerDirective, TruncatePipe]
 })
