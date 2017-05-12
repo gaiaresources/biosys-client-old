@@ -16,15 +16,18 @@
                             <input #recordSearch type="text" class="float-left" pInputText placeholder="Search">
                         </div>
                     </p-header>
-                    <p-column field="id" header="Record ID" [sortable]="true">
+                    <p-column field="id" header="Record ID" [sortable]="true" [style]="{'width':'120px'}">
                         <ng-template let-flatRecord="rowData" pTemplate="body">
                             <a class="table-link" [routerLink]="'/data/projects/' + projId + '/datasets/' + datasetId + '/record/' + flatRecord.id">{{flatRecord.id}}</a>
                         </ng-template>
                     </p-column>
+                    <p-column field="source_info" header="Original Source" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                    <p-column field="created" header="Created" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                    <p-column field="last_modified" header="Last Modified" [sortable]="true" [style]="{'width':'200px'}"></p-column>
                     <p-column *ngFor="let field of dataset?.data_package?.resources[0]?.schema?.fields"
                               [field]="field.name" [header]="field.name" [sortable]="true">
                         <ng-template let-flatRecord="rowData" let-col pTemplate="body">
-                            <span [innerHTML]="flatRecord[col.field] | truncate:30"></span>
+                            <span [innerHTML]="flatRecord[col.field] | truncate:28"></span>
                         </ng-template>
                     </p-column>
                     <p-footer>

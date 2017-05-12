@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, AfterContentInit, AfterViewInit } from '@
 import { APIService, APIError, Project, Dataset, Record } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Message, FileUpload } from 'primeng/primeng';
+import * as moment from 'moment/moment';
 
 @Component({
     moduleId: module.id,
@@ -12,6 +13,7 @@ import { Message, FileUpload } from 'primeng/primeng';
 
 export class ManageDataComponent implements OnInit, AfterViewInit {
     private static COLUMN_WIDTH: number = 240;
+    private static FIXED_COLUMNS_TOTAL_WIDTH = 720;
     private static ACCEPTED_TYPES: string[] = [
         'text/csv',
         'text/comma-separated-values',
@@ -20,6 +22,10 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
         'application/vnd.ms-excel',
         'application/vnd.msexcel'
     ];
+    private static DATETIME_FORMAT = 'DD/MM/YYYY h:mm:ssa';
+
+    @ViewChild(FileUpload)
+    public uploader: FileUpload;
 
     public breadcrumbItems: any = [];
     public projId: number;
@@ -35,9 +41,6 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
     public uploadErrorMessages: Message[] = [];
     public uploadWarningMessages: Message[] = [];
 
-    @ViewChild(FileUpload)
-    public uploader: FileUpload;
-
     private uploadButton: any;
 
     constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute) {
@@ -52,7 +55,7 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
         this.apiService.getProjectById(this.projId)
             .subscribe(
                 (project: Project) => this.breadcrumbItems.splice(1, 0, {
-                    label: 'Datasets for ' + project.title,
+                    label: project.title,
                     routerLink: ['/data/projects/' + this.projId + '/datasets']
                 }),
                 (error: APIError) => console.log('error.msg', error.msg)
@@ -62,14 +65,14 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
             .subscribe(
                 (dataset: Dataset) => {
                     this.dataset = dataset;
-                    this.breadcrumbItems.push({label: 'Records for ' + this.dataset.name});
+                    this.breadcrumbItems.push({label: this.dataset.name});
                 },
                 (error: APIError) => console.log('error.msg', error.msg)
             );
 
         this.apiService.getDataByDatasetId(this.datasetId)
             .subscribe(
-                (data: any[]) => this.flatRecords = data.map((r:Record) => Object.assign({id: r.id}, r.data)),
+                (data: any[]) => this.flatRecords = this.formatFlatRecords(data),
                 (error: APIError) => console.log('error.msg', error.msg),
                 () => this.tablePlaceholder = 'No records found'
             );
@@ -77,7 +80,7 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
         this.uploadURL = this.apiService.getRecordsUploadURL(this.datasetId);
 
         this.breadcrumbItems = [
-            {label:'Enter Records - Project List', routerLink: '/data/projects'}
+            {label:'Enter Records - Projects', routerLink: '/data/projects'}
         ];
 
         if ('recordSaved' in params) {
@@ -107,8 +110,9 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
         let data_package: any = this.dataset.data_package;
         let resources: any = data_package['resources'];
 
-        if (resources[0].schema.fields.length > 3) {
-            return {'width': String(resources[0].schema.fields.length * ManageDataComponent.COLUMN_WIDTH) + 'px'};
+        if (resources[0].schema.fields.length > 0) {
+            return {'width': String(ManageDataComponent.FIXED_COLUMNS_TOTAL_WIDTH +
+                (resources[0].schema.fields.length * ManageDataComponent.COLUMN_WIDTH)) + 'px'};
         } else {
             return {width: '100%'};
         }
@@ -122,7 +126,7 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
         this.parseAndDisplayResponse(event.xhr.response);
         this.apiService.getDataByDatasetId(this.dataset.id)
             .subscribe(
-                (data: any[]) => this.flatRecords = data.map((r:Record) => Object.assign({id: r.id}, r.data)),
+                (data: any[]) => this.flatRecords = this.formatFlatRecords(data),
                 (error: APIError) => console.log('error.msg', error.msg),
                 () => this.tablePlaceholder = 'No records found'
             );
@@ -174,6 +178,15 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
             // put back the file in the list
             files.push(file);
         }
+    }
+
+    private formatFlatRecords(records: Record[]) {
+        return records.map((r:Record) => Object.assign({
+            id: r.id,
+            source_info: r.source_info ? r.source_info.file_name + ' row ' + r.source_info.row: 'Manually created',
+            created: moment(r.created).format(ManageDataComponent.DATETIME_FORMAT),
+            last_modified: moment(r.last_modified).format(ManageDataComponent.DATETIME_FORMAT)
+        }, r.data));
     }
 
     private parseAndDisplayResponse(resp: any) {

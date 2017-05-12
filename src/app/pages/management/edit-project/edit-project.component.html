@@ -87,7 +87,7 @@
                             <div class="col-md-8">
                                 <label [hidden]="isEditing" [innerHtml]="project.comments"></label>
                                 <textarea [hidden]="!isEditing" pInputTextarea [(ngModel)]="project.comments"
-                                          size="21">
+                                          rows="7">
                             </textarea>
                                 <div [hidden]="!isEditing" class="text-danger">{{projectErrors['custodians']}}</div>
                             </div>
@@ -112,89 +112,91 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <hr *ngIf="project.id" class="mt-3"/>
-        <div *ngIf="project.id" class="row mt-1">
-            <div class="col-md">
-                <h4>Datasets</h4>
-                <p-dataTable [value]="datasets" [globalFilter]="datasetSearch" [paginator]="true" [rows]="10"
-                             [responsive]="true">
-                    <p-header>
-                        <div class="ui-helper-clearfix" style="width:100%">
-                            <i class="fa fa-search float-left mt-1 mr-1"></i>
-                            <input #datasetSearch type="text" class="float-left" placeholder="Search">
-                        </div>
-                    </p-header>
-                    <p-column field="name" header="Name">
-                        <ng-template let-dataset="rowData" pTemplate="body">
-                            <a [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-dataset/' + dataset.id">{{dataset.name}}</a>
-                        </ng-template>
-                    </p-column>
-                    <p-column field="type" header="Type">
-                        <ng-template let-dataset="rowData" pTemplate="body">
-                            {{DATASET_TYPE_MAP[dataset.type]}}
-                        </ng-template>
-                    </p-column>
-                    <p-column field="record_count" header="Records" [sortable]="true" [style]="{'width':'120px'}"></p-column>
-                    <p-column styleClass="col-button" header="Action">
-                        <ng-template let-dataset="rowData" pTemplate="body">
-                            <button type="button" pButton icon="fa-trash-o" title="Delete"
-                                    (click)="confirmDeleteDataset(dataset)"></button>
-                        </ng-template>
-                    </p-column>
-                    <p-footer>
-                        <div class="ui-helper-clearfix" style="width:100%">
-                            <button type="button" pButton icon="fa-plus" style="float:right" label="Add"
-                                    [routerLink]="'/management/projects/edit-project/' + project.id + '/create-dataset'"></button>
-                        </div>
-                    </p-footer>
-                </p-dataTable>
+            <hr *ngIf="project.id" class="mt-3"/>
+            <div *ngIf="project.id" class="row mt-1">
+                <div class="col-md">
+                    <h4>Datasets</h4>
+                    <p-dataTable [value]="datasets" [globalFilter]="datasetSearch" [paginator]="true" [rows]="10"
+                                 [responsive]="true">
+                        <p-header>
+                            <div class="ui-helper-clearfix" style="width:100%">
+                                <i class="fa fa-search float-left mt-1 mr-1"></i>
+                                <input #datasetSearch type="text" class="float-left" placeholder="Search">
+                            </div>
+                        </p-header>
+                        <p-column field="name" header="Name">
+                            <ng-template let-dataset="rowData" pTemplate="body">
+                                <a [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-dataset/' + dataset.id">{{dataset.name}}</a>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="type" header="Type">
+                            <ng-template let-dataset="rowData" pTemplate="body">
+                                {{DATASET_TYPE_MAP[dataset.type]}}
+                            </ng-template>
+                        </p-column>
+                        <p-column field="record_count" header="Records" [sortable]="true"
+                                  [style]="{'width':'120px'}"></p-column>
+                        <p-column styleClass="col-button" header="Action">
+                            <ng-template let-dataset="rowData" pTemplate="body">
+                                <button type="button" pButton icon="fa-trash-o" title="Delete"
+                                        (click)="confirmDeleteDataset(dataset)"></button>
+                            </ng-template>
+                        </p-column>
+                        <p-footer>
+                            <div class="ui-helper-clearfix" style="width:100%">
+                                <button type="button" pButton icon="fa-plus" style="float:right" label="Add"
+                                        [routerLink]="'/management/projects/edit-project/' + project.id + '/create-dataset'"></button>
+                            </div>
+                        </p-footer>
+                    </p-dataTable>
+                </div>
+            </div>
+            <div *ngIf="project.id" class="row mt-3 mb-3">
+                <div class="col-md">
+                    <h4>Sites</h4>
+                    <p-dataTable [value]="sites" [globalFilter]="siteSearch" [paginator]="true" [rows]="10"
+                                 [responsive]="true">
+                        <p-header>
+                            <div class="ui-helper-clearfix" style="width:100%">
+                                <i class="fa fa-search float-left mt-1 mr-1"></i>
+                                <input #siteSearch type="text" class="float-left" placeholder="Search">
+                            </div>
+                        </p-header>
+                        <p-column field="code" header="Code">
+                            <ng-template let-site="rowData" pTemplate="body">
+                                <a [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-site/' + site.id">{{site.code}}</a>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="name" header="Name"></p-column>
+                        <p-column field="comments" header="Comments"></p-column>
+                        <p-column field="attributes" header="Attributes">
+                            <ng-template let-site="rowData" pTemplate="body">
+                                <label [innerHtml]="formatAttributes(site.attributes)"></label>
+                            </ng-template>
+                        </p-column>
+                        <p-column styleClass="col-button" [style]="{'width':'140px'}">
+                            <ng-template pTemplate="header">
+                                <p-checkbox label="Select All" [(ngModel)]="selectAllSites" binary="true"></p-checkbox>
+                            </ng-template>
+                            <ng-template let-site="rowData" pTemplate="body">
+                                <p-checkbox [value]="site.id" [(ngModel)]="selectedSites"></p-checkbox>
+                            </ng-template>
+                        </p-column>
+                        <p-footer>
+                            <div class="ui-helper-clearfix" style="width:100%">
+                                <button type="button" pButton icon="fa-trash" style="float:left" label="Delete"
+                                        (click)="confirmDeleteSelectedSites()"></button>
+                                <button type="button" class="ml-1" pButton icon="fa-plus" style="float:right"
+                                        label="Add"
+                                        [routerLink]="'/management/projects/edit-project/' + project.id + '/create-site'"></button>
+                                <button type="button" pButton icon="fa-reply" style="float:right" label="Import"
+                                        [routerLink]="'/management/projects/edit-project/' + project.id + '/upload-sites'"></button>
+                            </div>
+                        </p-footer>
+                    </p-dataTable>
+                </div>
             </div>
         </div>
-        <div *ngIf="project.id" class="row mt-3 mb-3">
-            <div class="col-md">
-                <h4>Sites</h4>
-                <p-dataTable [value]="sites" [globalFilter]="siteSearch" [paginator]="true" [rows]="10"
-                             [responsive]="true">
-                    <p-header>
-                        <div class="ui-helper-clearfix" style="width:100%">
-                            <i class="fa fa-search float-left mt-1 mr-1"></i>
-                            <input #siteSearch type="text" class="float-left" placeholder="Search">
-                        </div>
-                    </p-header>
-                    <p-column field="code" header="Code">
-                        <ng-template let-site="rowData" pTemplate="body">
-                            <a [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-site/' + site.id">{{site.code}}</a>
-                        </ng-template>
-                    </p-column>
-                    <p-column field="name" header="Name"></p-column>
-                    <p-column field="comments" header="Comments"></p-column>
-                    <p-column field="attributes" header="Attributes">
-                        <ng-template let-site="rowData" pTemplate="body">
-                            <label [innerHtml]="formatAttributes(site.attributes)"></label>
-                        </ng-template>
-                    </p-column>
-                    <p-column styleClass="col-button" [style]="{'width':'140px'}">
-                        <ng-template pTemplate="header">
-                            <p-checkbox label="Select All" [(ngModel)]="selectAllSites" binary="true"></p-checkbox>
-                        </ng-template>
-                        <ng-template let-site="rowData" pTemplate="body">
-                            <p-checkbox [value]="site.id" [(ngModel)]="selectedSites"></p-checkbox>
-                        </ng-template>
-                    </p-column>
-                    <p-footer>
-                        <div class="ui-helper-clearfix" style="width:100%">
-                            <button type="button" pButton icon="fa-trash" style="float:left" label="Delete"
-                                    (click)="confirmDeleteSelectedSites()"></button>
-                            <button type="button" class="ml-1" pButton icon="fa-plus" style="float:right" label="Add"
-                                    [routerLink]="'/management/projects/edit-project/' + project.id + '/create-site'"></button>
-                            <button type="button" pButton icon="fa-reply" style="float:right" label="Import"
-                                    [routerLink]="'/management/projects/edit-project/' + project.id + '/upload-sites'"></button>
-                        </div>
-                    </p-footer>
-                </p-dataTable>
-            </div>
-        </div>
+        <p-confirmDialog header="Confirm Delete" icon="fa fa-question-circle" width="425"></p-confirmDialog>
     </div>
-    <p-confirmDialog header="Confirm Delete" icon="fa fa-question-circle" width="425"></p-confirmDialog>
 </div>

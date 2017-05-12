@@ -36,7 +36,7 @@ export class EditRecordComponent implements OnInit {
 
         this.apiService.getProjectById(projId).subscribe(
             (project: Project) => this.breadcrumbItems.splice(1, 0, {
-                label: 'Datasets for ' + project.title,
+                label: project.title,
                 routerLink: ['/data/projects/' + projId + '/datasets']
             }),
             (error: APIError) => console.log('error.msg', error.msg)
@@ -46,7 +46,7 @@ export class EditRecordComponent implements OnInit {
             (dataset: Dataset) => {
                 this.dataset = dataset;
                 this.breadcrumbItems.splice(1, 0, {
-                    label: 'Records for dataset ' + dataset.name,
+                    label: dataset.name,
                     routerLink: ['/data/projects/' + projId + '/datasets/' + datasetId]
                 });
 
@@ -73,7 +73,7 @@ export class EditRecordComponent implements OnInit {
         );
 
         this.breadcrumbItems = [
-            {label: 'Management - Project List', routerLink: ['/data/projects']},
+            {label: 'Enter Records - Projects', routerLink: ['/data/projects']},
             {label: 'recordId' in params ? 'Edit Record' : 'Create Record'}
         ];
 

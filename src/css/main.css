@@ -6,6 +6,10 @@
     font-weight: bold;
 }
 
+table td {
+    vertical-align: top;
+}
+
 .ui-breadcrumb {
     border: none;
     background: none;

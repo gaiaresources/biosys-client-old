@@ -7,38 +7,38 @@
             <span *ngIf="user" class="float-right mt-2">Logged in as {{user.first_name}} {{user.last_name}}</span>
         </div>
     </div>
-	<div class="row mt-1 main-section">
+    <div class="row mt-1 main-section">
         <div class="col-3">
-            <div class="card mb-2">
-                <div class="card-block">
-                    <h5 class="card-title text-center">Manage Projects / Sites / Datasets</h5>
-                </div>
-                <a routerLink="/management/projects">
+            <a routerLink="/management/projects">
+                <div class="card mb-2">
+                    <div class="card-block">
+                        <h5 class="card-title text-center">Manage Projects / Sites / Datasets</h5>
+                    </div>
                     <img class="card-img-bottom" src="/assets/img/project.jpg">
-                </a>
-            </div>
-            <div class="card mb-2">
-                <div class="card-block">
-                    <h5 class="card-title text-center">Create / Import / Edit / Delete Records</h5>
                 </div>
-                <a routerLink="/data/projects">
+            </a>
+            <a routerLink="/data/projects">
+                <div class="card mb-2">
+                    <div class="card-block">
+                        <h5 class="card-title text-center">Create / Import / Edit / Delete Records</h5>
+                    </div>
                     <img class="card-img-bottom" src="/assets/img/data.jpg">
-                </a>
-            </div>
-            <div class="card mb-2">
-                <div class="card-block">
-                    <h5 class="card-title text-center">View and Export Records</h5>
                 </div>
-                <a routerLink="/view">
+            </a>
+            <a routerLink="/view">
+                <div class="card mb-2">
+                    <div class="card-block">
+                        <h5 class="card-title text-center">View and Export Records</h5>
+                    </div>
                     <img class="card-img-bottom" src="/assets/img/export.jpg">
-                </a>
-            </div>
+                </div>
+            </a>
         </div>
         <div class="col-6">
             <div id="map" class="main-section">
             </div>
-	    </div>
-	    <div class="col-3">
+        </div>
+        <div class="col-3">
             <div class="card statistics-card">
                 <div class="card-header">
                     Biosys summary
@@ -57,6 +57,6 @@
                     <p class="small">Number of species records: {{ statistic.records.speciesObservation.total }}</p>
                 </div>
             </div>
-	    </div>
-	</div>
+        </div>
+    </div>
 </div>

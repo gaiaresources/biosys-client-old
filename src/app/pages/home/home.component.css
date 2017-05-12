@@ -29,6 +29,14 @@ h2 {
     height: 478px;
 }
 
+.main-section a {
+    text-decoration: none;
+}
+
+.main-section a h5 {
+    color: #000000;
+}
+
 .statistics-card {
     height: 100%;
 }

@@ -40,7 +40,7 @@ export class UploadSitesComponent implements OnInit {
         this.apiService.getProjectById(this.projectId)
             .subscribe(
                 (project: Project) => this.breadcrumbItems.splice(1, 0, {
-                    label: 'Edit ' + project.title,
+                    label: project.title,
                     routerLink: ['/management/projects/edit-project/' + this.projectId]
                 }),
                 (error: APIError) => console.log('error.msg', error.msg)
@@ -49,7 +49,7 @@ export class UploadSitesComponent implements OnInit {
         this.url = this.apiService.getProjectSiteUploadURL(this.projectId);
 
         this.breadcrumbItems = [
-            {label: 'Management - Project List', routerLink: ['/management/projects']},
+            {label: 'Manage - Projects', routerLink: ['/management/projects']},
             {label: 'Upload sites', routerLink: ['/management/projects/edit-project' + this.projectId + '/upload-sites']},
         ];
     }

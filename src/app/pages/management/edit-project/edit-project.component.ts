@@ -63,7 +63,7 @@ export class EditProjectComponent implements OnInit {
             this.apiService.getProjectById(Number(params['id'])).subscribe(
                 (project: Project) => {
                     this.project = project;
-                    this.breadcrumbItems.push({label: 'Edit ' + this.project.title});
+                    this.breadcrumbItems.push({label: this.project.title});
                 },
                 (error: APIError) => console.log('error.msg', error.msg)
             );
@@ -110,7 +110,7 @@ export class EditProjectComponent implements OnInit {
             );
 
         this.breadcrumbItems = [
-            {label:'Management - Project List', routerLink: ['/management/projects']},
+            {label:'Manage - Projects', routerLink: ['/management/projects']},
         ];
 
         if (this.isEditing) {
@@ -162,6 +162,13 @@ export class EditProjectComponent implements OnInit {
         let popupContent: string = '<p class="m-0"><strong>' + (site.name ? site.name : site.code) + '</strong></p>';
         if (site.comments) {
             popupContent += '<p class="mt-1">' + site.comments + '</p>';
+        }
+
+        let projId = this.project.id ? this.project.id : Number(this.route.snapshot.params['id']);
+
+        if (projId) {
+            popupContent += '<p class="mt-1"><a href="#/management/projects/edit-project/' + projId + '/edit-site/' +
+                site.id + '">Edit Site</a></p>';
         }
 
         return popupContent;
@@ -260,12 +267,10 @@ export class EditProjectComponent implements OnInit {
     }
 
     private onDeleteDatasetSuccess(dataset: Dataset) {
-        for (let i = 0; i < this.datasets.length; i++) {
-            if (this.datasets[i].id === dataset.id) {
-                this.datasets.splice(i, 1);
-                break;
-            }
-        }
+        this.apiService.getAllDatasetsForProjectID(this.project.id).subscribe(
+            (datasets: Dataset[]) => this.datasets = datasets,
+            (error: APIError) => console.log('error.msg', error.msg)
+        );
 
         this.messages.push({
             severity: 'success',

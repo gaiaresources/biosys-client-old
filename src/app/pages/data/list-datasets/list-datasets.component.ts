@@ -28,7 +28,7 @@ export class ListDatasetsComponent implements OnInit {
             .subscribe(
                 (project: Project) => {
                     this.project = project;
-                    this.breadcrumbItems.push({label: 'Datasets for ' + this.project.title});
+                    this.breadcrumbItems.push({label: this.project.title});
                 },
                 (error: APIError) => console.log('error.msg', error.msg)
             );
@@ -40,7 +40,7 @@ export class ListDatasetsComponent implements OnInit {
             );
 
         this.breadcrumbItems = [
-            {label: 'Enter Data - Project List', routerLink: ['/data/projects']},
+            {label: 'Enter Records - Projects', routerLink: ['/data/projects']},
         ];
     }
 }

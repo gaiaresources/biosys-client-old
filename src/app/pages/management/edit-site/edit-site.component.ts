@@ -37,7 +37,7 @@ export class EditSiteComponent implements OnInit {
         this.apiService.getProjectById(projId)
             .subscribe(
                 (project: Project) => this.breadcrumbItems.splice(1, 0, {
-                    label: 'Edit ' + project.title,
+                    label: project.title,
                     routerLink: ['/management/projects/edit-project/' + projId]
                 }),
                 (error: APIError) => console.log('error.msg', error.msg)
@@ -50,7 +50,7 @@ export class EditSiteComponent implements OnInit {
                     if (this.site.attributes) {
                         this.additionalAttributes = Object.keys(this.site.attributes).map((k) => [k, this.site.attributes[k]]);
                     }
-                    this.breadcrumbItems.push({label: 'Edit ' + this.site.name});
+                    this.breadcrumbItems.push({label: this.site.code ? this.site.code: this.site.name});
                 },
                 (error: APIError) => console.log('error.msg', error.msg),
             );
@@ -59,7 +59,7 @@ export class EditSiteComponent implements OnInit {
         }
 
         this.breadcrumbItems = [
-            {label: 'Management - Project List', routerLink: ['/management/projects']},
+            {label: 'Manage - Projects', routerLink: ['/management/projects']},
         ];
 
         if (!('id' in params)) {
