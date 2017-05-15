@@ -13,40 +13,36 @@ import { ConfirmationService, Message, SelectItem } from 'primeng/primeng';
 export class EditProjectComponent implements OnInit {
     public static DEFAULT_TIMEZONE: string = 'Australia/Perth';
 
-    public DATASET_TYPE_MAP: string = DATASET_TYPE_MAP;
-
-    public breadcrumbItems: any = [];
-
-    public project: Project = <Project> {
-        timezone: EditProjectComponent.DEFAULT_TIMEZONE,
-        custodians: []
-    };
-
-    public sites: Site[];
-    public datasets: Dataset[];
+    private static COLUMN_WIDTH: number = 240;
+    private static FIXED_COLUMNS_TOTAL_WIDTH = 700;
 
     @Input()
     set selectAllSites(selected: boolean) {
         this.isAllSitesSelected = selected;
-        this.selectedSites = selected ? this.sites.map((site:Site) => site.id): [];
+        this.selectedSites = selected ? this.flatSites.map((site:Site) => site.id): [];
     }
     get selectAllSites(): boolean {
         return this.isAllSitesSelected;
     }
 
-    public selectedSites: number[] = [];
-
-    public isEditing: boolean;
-
-    public datamTypeChoices: SelectItem[];
-    public custodianChoices: SelectItem[];
-
-    public projectErrors: any = {};
-
-    public messages: Message[] = [];
-
     @ViewChild(FeatureMapComponent)
     public featureMapComponent: FeatureMapComponent;
+
+    public DATASET_TYPE_MAP: string = DATASET_TYPE_MAP;
+    public selectedSites: number[] = [];
+    public flatSites: any[];
+    public siteAttributeKeys: string[] = [];
+    public breadcrumbItems: any = [];
+    public project: Project = <Project> {
+        timezone: EditProjectComponent.DEFAULT_TIMEZONE,
+        custodians: []
+    };
+    public datasets: Dataset[];
+    public isEditing: boolean;
+    public datamTypeChoices: SelectItem[];
+    public custodianChoices: SelectItem[];
+    public projectErrors: any = {};
+    public messages: Message[] = [];
 
     private isAllSitesSelected: boolean = false;
 
@@ -74,7 +70,10 @@ export class EditProjectComponent implements OnInit {
             );
 
             this.apiService.getAllSitesForProjectID(Number(params['id'])).subscribe(
-                (sites: Site[]) => this.sites = sites,
+                (sites: Site[]) => {
+                    this.flatSites = this.formatFlatSites(sites);
+                    this.siteAttributeKeys = sites.length > 0 ? this.extractSiteAttributeKeys(sites[0]) : [];
+                },
                 (error: APIError) => console.log('error.msg', error.msg)
             );
         }
@@ -156,6 +155,15 @@ export class EditProjectComponent implements OnInit {
         }
 
         return this.datamTypeChoices.filter(d => d.value === value).pop().label;
+    }
+
+    public getSiteTableWidth(): any {
+        if (this.siteAttributeKeys.length > 0) {
+            return {'width': String(EditProjectComponent.FIXED_COLUMNS_TOTAL_WIDTH +
+                (this.siteAttributeKeys.length * EditProjectComponent.COLUMN_WIDTH)) + 'px'};
+        } else {
+            return {width: '100%'};
+        }
     }
 
     public formatSitePopup(site: Site): string {
@@ -248,24 +256,6 @@ export class EditProjectComponent implements OnInit {
         });
     }
 
-    public formatAttributes(attributes: any) {
-        if (!attributes) {
-            return '';
-        }
-
-        let attributeString: string = '';
-        let keys: string[] = Object.keys(attributes);
-        for (let i = 0; i < keys.length && i <= 3; i++) {
-            if (i < 3) {
-                attributeString += '<p class="m-0"><strong>' + keys[i] + ': </strong>' + attributes[keys[i]];
-            } else {
-                attributeString += '<p class="m-0">&hellip;</p>';
-            }
-        }
-
-        return attributeString;
-    }
-
     private onDeleteDatasetSuccess(dataset: Dataset) {
         this.apiService.getAllDatasetsForProjectID(this.project.id).subscribe(
             (datasets: Dataset[]) => this.datasets = datasets,
@@ -287,9 +277,30 @@ export class EditProjectComponent implements OnInit {
         });
     }
 
+    private extractSiteAttributeKeys(site: Site): string[] {
+        // For now just use attributes for first site in array as all sites *should* have the same
+        // attributes. In future use site schema associated with project.
+        return site ? Object.keys(site.attributes) : [];
+    }
+
+    private formatFlatSites(sites: Site[]): any[] {
+        return sites.map((s:Site) => Object.assign({
+            id: s.id,
+            code: s.code,
+            name: s.name,
+            comments: s.comments,
+            centroid: s.centroid
+        }, s.attributes));
+    }
+
     private onDeleteSitesSuccess() {
+        this.flatSites = [];
+
         this.apiService.getAllSitesForProjectID(this.project.id).subscribe(
-            (sites: Site[]) => this.sites = sites,
+            (sites: Site[]) => {
+                this.flatSites = this.formatFlatSites(sites);
+                this.siteAttributeKeys = sites.length > 0 ? this.extractSiteAttributeKeys(sites[0]) : [];
+            },
             (error: APIError) => console.log('error.msg', error.msg)
         );
 

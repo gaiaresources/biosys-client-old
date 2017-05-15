@@ -42,12 +42,6 @@ export class ManagementListProjectsComponent implements OnInit {
                 }
             }, (error: APIError) => console.log('error.msg', error.msg));
 
-        this.apiService.getProjects()
-            .subscribe(
-                (projects: Project[]) => this.projects = projects,
-                (error: APIError) => console.log('error.msg', error.msg)
-            );
-
         this.breadcrumbItems = [
             {label:'Manage - Projects'}
         ];

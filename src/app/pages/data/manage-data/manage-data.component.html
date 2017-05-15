@@ -7,7 +7,7 @@
         <div class="col-md">
             <h3>Records for {{dataset?.name}}</h3>
             <p>Select a particular record to edit or click Add to add a new record</p>
-            <div class="data-table-container">
+            <div class="scrollable-table-container">
                 <p-dataTable [tableStyle]="getDataTableWidth()" [value]="flatRecords" [emptyMessage]="tablePlaceholder"
                              [paginator]="true" [rows]="10" [globalFilter]="recordSearch">
                     <p-header>
@@ -30,8 +30,18 @@
                             <span [innerHTML]="flatRecord[col.field] | truncate:28"></span>
                         </ng-template>
                     </p-column>
+                    <p-column styleClass="col-button" [style]="{'width':'140px'}">
+                        <ng-template pTemplate="header">
+                            <p-checkbox label="Select All" [(ngModel)]="selectAllRecords" binary="true"></p-checkbox>
+                        </ng-template>
+                        <ng-template let-flatRecord="rowData" pTemplate="body">
+                            <p-checkbox [value]="flatRecord.id" [(ngModel)]="selectedRecords"></p-checkbox>
+                        </ng-template>
+                    </p-column>
                     <p-footer>
                         <div class="ui-helper-clearfix" style="width:100%">
+                            <button type="button" pButton icon="fa-trash" style="float:left" label="Delete"
+                                    (click)="confirmDeleteSelectedRecords()"></button>
                             <button type="button" pButton icon="fa-plus" style="float:right" label="Add" (click)="add()"></button>
                         </div>
                     </p-footer>
@@ -61,3 +71,4 @@
         </div>
     </div>
 </div>
+<p-confirmDialog header="Confirm Delete" icon="fa fa-question-circle" width="425"></p-confirmDialog>

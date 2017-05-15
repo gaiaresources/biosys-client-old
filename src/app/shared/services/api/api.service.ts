@@ -171,12 +171,12 @@ export class APIService {
         });
     }
 
-    public getDataByDatasetId(id: number): Observable<any[]> {
-        return this.fetch('datasets/' + id + '/data/', {});
+    public getRecordsByDatasetId(id: number): Observable<any[]> {
+        return this.fetch('datasets/' + id + '/records/', {});
     }
 
-    public createDataForDatasetId(id: number, data: any[]) {
-        return this.fetch('datasets/' + id + '/data/', {
+    public createRecordsForDatasetId(id: number, data: any[]) {
+        return this.fetch('datasets/' + id + '/records/', {
             method: 'Post',
             data: data
         });
@@ -211,6 +211,13 @@ export class APIService {
     public deleteRecord(id: number): Observable<Record> {
         return this.fetch('records/' + id, {
             method: 'Delete',
+        });
+    }
+
+    public deleteRecords(datasetId: number, recordIds: number[]): Observable<void> {
+        return this.fetch('datasets/' + datasetId + '/records/', {
+            method: 'Delete',
+            data: recordIds
         });
     }
 

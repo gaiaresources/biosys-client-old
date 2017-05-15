@@ -1,14 +1,13 @@
-import { Component, OnInit, ViewChild, AfterContentInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { APIService, APIError, Project, Dataset, Record } from '../../../shared/index';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Message, FileUpload } from 'primeng/primeng';
+import { Message, ConfirmationService, FileUpload } from 'primeng/primeng';
 import * as moment from 'moment/moment';
 
 @Component({
     moduleId: module.id,
     selector: 'biosys-data-dataset-list',
-    templateUrl: 'manage-data.component.html',
-    styleUrls: ['manage-data.component.css'],
+    templateUrl: 'manage-data.component.html'
 })
 
 export class ManageDataComponent implements OnInit, AfterViewInit {
@@ -22,11 +21,21 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
         'application/vnd.ms-excel',
         'application/vnd.msexcel'
     ];
-    private static DATETIME_FORMAT = 'DD/MM/YYYY h:mm:ssa';
+    private static DATETIME_FORMAT = 'DD/MM/YYYY H:mm:ss';
 
     @ViewChild(FileUpload)
     public uploader: FileUpload;
 
+    @Input()
+    set selectAllRecords(selected: boolean) {
+        this.isAllRecordsSelected = selected;
+        this.selectedRecords = selected ? this.flatRecords.map((record:Record) => record.id): [];
+    }
+    get selectAllRecords(): boolean {
+        return this.isAllRecordsSelected;
+    }
+
+    public selectedRecords: number[] = [];
     public breadcrumbItems: any = [];
     public projId: number;
     public datasetId: number;
@@ -42,8 +51,10 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
     public uploadWarningMessages: Message[] = [];
 
     private uploadButton: any;
+    private isAllRecordsSelected: boolean = false;
 
-    constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute) {
+    constructor(private apiService: APIService, private router: Router, private route: ActivatedRoute,
+                private confirmationService: ConfirmationService) {
     }
 
     public ngOnInit() {
@@ -70,7 +81,7 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
                 (error: APIError) => console.log('error.msg', error.msg)
             );
 
-        this.apiService.getDataByDatasetId(this.datasetId)
+        this.apiService.getRecordsByDatasetId(this.datasetId)
             .subscribe(
                 (data: any[]) => this.flatRecords = this.formatFlatRecords(data),
                 (error: APIError) => console.log('error.msg', error.msg),
@@ -97,10 +108,12 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
             });
         }
     }
+
     public ngAfterViewInit() {
         // TODO: find a better way to access the upload button.
         this.uploadButton = document.querySelector('p-fileupload button[icon="fa-upload"]');
     }
+
     public getDataTableWidth(): any {
         if (!('data_package' in this.dataset)) {
             return {width: '100%'};
@@ -122,9 +135,22 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
         this.router.navigate(['/data/projects/' + this.projId + '/datasets/' + this.datasetId + '/create-record/']);
     }
 
+    public confirmDeleteSelectedRecords() {
+        this.confirmationService.confirm({
+            message: 'Are you sure that you want to delete all selected records?',
+            accept: () => {
+                this.apiService.deleteRecords(this.datasetId, this.selectedRecords)
+                .subscribe(
+                    () => this.onDeleteRecordsSuccess(),
+                    (error: APIError) => this.onDeleteRecordError(error)
+                );
+            }
+        });
+    }
+
     public onUpload(event: any) {
         this.parseAndDisplayResponse(event.xhr.response);
-        this.apiService.getDataByDatasetId(this.dataset.id)
+        this.apiService.getRecordsByDatasetId(this.dataset.id)
             .subscribe(
                 (data: any[]) => this.flatRecords = this.formatFlatRecords(data),
                 (error: APIError) => console.log('error.msg', error.msg),
@@ -187,6 +213,31 @@ export class ManageDataComponent implements OnInit, AfterViewInit {
             created: moment(r.created).format(ManageDataComponent.DATETIME_FORMAT),
             last_modified: moment(r.last_modified).format(ManageDataComponent.DATETIME_FORMAT)
         }, r.data));
+    }
+
+    private onDeleteRecordsSuccess() {
+        this.flatRecords = [];
+
+        this.apiService.getRecordsByDatasetId(this.datasetId)
+        .subscribe(
+            (data: any[]) => this.flatRecords = this.formatFlatRecords(data),
+            (error: APIError) => console.log('error.msg', error.msg),
+            () => this.tablePlaceholder = 'No records found'
+        );
+
+        this.messages.push({
+            severity: 'success',
+            summary: 'Record(s) deleted',
+            detail: 'The record(s) was deleted'
+        });
+    }
+
+    private onDeleteRecordError(error: APIError) {
+        this.messages.push({
+            severity: 'error',
+            summary: 'Record delete error',
+            detail: 'There were error(s) deleting the site(s): ' + error.msg
+        });
     }
 
     private parseAndDisplayResponse(resp: any) {
