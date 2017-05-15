@@ -7,7 +7,7 @@
         <div class="col-md">
             <h3>Records for {{dataset?.name}}</h3>
             <p>Select a particular record to edit or click Add to add a new record</p>
-            <div class="data-table-container">
+            <div class="scrollable-table-container">
                 <p-dataTable [tableStyle]="getDataTableWidth()" [value]="flatRecords" [emptyMessage]="tablePlaceholder"
                              [paginator]="true" [rows]="10" [globalFilter]="recordSearch">
                     <p-header>
@@ -16,19 +16,32 @@
                             <input #recordSearch type="text" class="float-left" pInputText placeholder="Search">
                         </div>
                     </p-header>
-                    <p-column field="id" header="Record ID" [sortable]="true">
+                    <p-column field="id" header="Record ID" [sortable]="true" [style]="{'width':'120px'}">
                         <ng-template let-flatRecord="rowData" pTemplate="body">
                             <a class="table-link" [routerLink]="'/data/projects/' + projId + '/datasets/' + datasetId + '/record/' + flatRecord.id">{{flatRecord.id}}</a>
                         </ng-template>
                     </p-column>
+                    <p-column field="source_info" header="Original Source" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                    <p-column field="created" header="Created" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                    <p-column field="last_modified" header="Last Modified" [sortable]="true" [style]="{'width':'200px'}"></p-column>
                     <p-column *ngFor="let field of dataset?.data_package?.resources[0]?.schema?.fields"
                               [field]="field.name" [header]="field.name" [sortable]="true">
                         <ng-template let-flatRecord="rowData" let-col pTemplate="body">
-                            <span [innerHTML]="flatRecord[col.field] | truncate:30"></span>
+                            <span [innerHTML]="flatRecord[col.field] | truncate:28"></span>
+                        </ng-template>
+                    </p-column>
+                    <p-column styleClass="col-button" [style]="{'width':'140px'}">
+                        <ng-template pTemplate="header">
+                            <p-checkbox label="Select All" [(ngModel)]="selectAllRecords" binary="true"></p-checkbox>
+                        </ng-template>
+                        <ng-template let-flatRecord="rowData" pTemplate="body">
+                            <p-checkbox [value]="flatRecord.id" [(ngModel)]="selectedRecords"></p-checkbox>
                         </ng-template>
                     </p-column>
                     <p-footer>
                         <div class="ui-helper-clearfix" style="width:100%">
+                            <button type="button" pButton icon="fa-trash" style="float:left" label="Delete"
+                                    (click)="confirmDeleteSelectedRecords()"></button>
                             <button type="button" pButton icon="fa-plus" style="float:right" label="Add" (click)="add()"></button>
                         </div>
                     </p-footer>
@@ -58,3 +71,4 @@
         </div>
     </div>
 </div>
+<p-confirmDialog header="Confirm Delete" icon="fa fa-question-circle" width="425"></p-confirmDialog>

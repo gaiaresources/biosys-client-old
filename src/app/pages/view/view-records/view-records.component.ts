@@ -61,7 +61,7 @@ export class ViewRecordsComponent implements OnInit {
         );
 
         this.breadcrumbItems = [
-            {label: 'View and export records'},
+            {label: 'View and Export Records'},
         ];
     }
 

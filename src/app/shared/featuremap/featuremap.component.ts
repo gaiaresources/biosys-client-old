@@ -32,9 +32,6 @@ export class FeatureMapComponent implements OnInit, OnChanges {
                 leafletMarker.on('mouseover', function (e) {
                     this.openPopup();
                 });
-                leafletMarker.on('mouseout', function (e) {
-                    this.closePopup();
-                });
                 this.map.addLayer(leafletMarker);
             }
         });

@@ -28,7 +28,7 @@ export class DataListProjectsComponent implements OnInit {
             );
 
         this.breadcrumbItems = [
-            {label:'Enter Records - Project List'},
+            {label:'Enter Records - Projects'},
         ];
     }
 }

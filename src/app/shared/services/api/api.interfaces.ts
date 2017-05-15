@@ -66,6 +66,9 @@ export interface Record {
     id?: number;
     dataset?: number;
     site?: number | null;
+    source_info: any;
+    last_modified?: string;
+    created?: string;
     data?: {[key: string]: any} | null;
     datetime?: string;
     geometry?: GeoJSON.DirectGeometryObject | null;

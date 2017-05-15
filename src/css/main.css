@@ -6,6 +6,14 @@
     font-weight: bold;
 }
 
+table td {
+    vertical-align: top;
+}
+
+.scrollable-table-container {
+    overflow-x: auto;
+}
+
 .ui-breadcrumb {
     border: none;
     background: none;
