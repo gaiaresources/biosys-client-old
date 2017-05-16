@@ -163,6 +163,15 @@
                                     <input #siteSearch type="text" class="float-left" placeholder="Search">
                                 </div>
                             </p-header>
+                            <p-column styleClass="col-button" [style]="{'width':'140px'}">
+                                <ng-template pTemplate="header">
+                                    <p-checkbox label="Select All" [(ngModel)]="selectAllSites"
+                                                binary="true"></p-checkbox>
+                                </ng-template>
+                                <ng-template let-flatSite="rowData" pTemplate="body">
+                                    <p-checkbox [value]="flatSite.id" [(ngModel)]="selectedSites"></p-checkbox>
+                                </ng-template>
+                            </p-column>
                             <p-column field="code" header="Code" [style]="{'width':'160px'}">
                                 <ng-template let-flatSite="rowData" pTemplate="body">
                                     <a [routerLink]="'/management/projects/edit-project/' + project.id + '/edit-site/' + flatSite.id">{{flatSite.code}}</a>
@@ -175,15 +184,6 @@
                                 <ng-template let-flatSite="rowData" let-col pTemplate="body">
                                     <span
                                         [innerHTML]="flatSite.hasOwnProperty(col.field) ? (flatSite[col.field] | truncate:28) : ''"></span>
-                                </ng-template>
-                            </p-column>
-                            <p-column styleClass="col-button" [style]="{'width':'140px'}">
-                                <ng-template pTemplate="header">
-                                    <p-checkbox label="Select All" [(ngModel)]="selectAllSites"
-                                                binary="true"></p-checkbox>
-                                </ng-template>
-                                <ng-template let-flatSite="rowData" pTemplate="body">
-                                    <p-checkbox [value]="flatSite.id" [(ngModel)]="selectedSites"></p-checkbox>
                                 </ng-template>
                             </p-column>
                             <p-footer>
