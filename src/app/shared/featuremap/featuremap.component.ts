@@ -1,6 +1,6 @@
 import { OnInit, Component, Directive, ContentChildren, Input, QueryList, OnChanges, SimpleChange }
     from '@angular/core';
-import { WA_CENTER } from '../../shared/index';
+import { WA_CENTER, getDefaultBaseLayer, getOverlayLayers } from '../../shared/index';
 import * as L from 'leaflet';
 import 'leaflet-draw';
 
@@ -29,7 +29,7 @@ export class FeatureMapComponent implements OnInit, OnChanges {
                 let coord: GeoJSON.Position = marker.geometry.coordinates as GeoJSON.Position;
                 let leafletMarker: L.Marker = L.marker(L.GeoJSON.coordsToLatLng([coord[0], coord[1]]), {icon: this.icon});
                 leafletMarker.bindPopup(marker.popupText);
-                leafletMarker.on('mouseover', function (e) {
+                leafletMarker.on('mouseover', function () {
                     this.openPopup();
                 });
                 this.map.addLayer(leafletMarker);
@@ -82,12 +82,17 @@ export class FeatureMapComponent implements OnInit, OnChanges {
 
         this.map = L.map('map', {
             zoom: 4,
-            center: WA_CENTER
+            center: WA_CENTER,
         });
+
         this.map.addLayer(L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
-            attribution: 'Open Street Map'
+            attribution: 'Open Street Map',
+            layers: [getDefaultBaseLayer()]
         }));
+
+        L.control.layers(null, getOverlayLayers()).addTo(this.map);
+
         this.map.addLayer(this.drawnFeatures);
         this.map.on('draw:created', (e: any) => this.onFeatureCreated(e));
 
