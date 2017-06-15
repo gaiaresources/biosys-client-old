@@ -83,13 +83,8 @@ export class FeatureMapComponent implements OnInit, OnChanges {
         this.map = L.map('map', {
             zoom: 4,
             center: WA_CENTER,
-        });
-
-        this.map.addLayer(L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Open Street Map',
             layers: [getDefaultBaseLayer()]
-        }));
+        });
 
         L.control.layers(null, getOverlayLayers()).addTo(this.map);
 
