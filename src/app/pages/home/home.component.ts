@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, APIError, Project, Statistic, User, WA_CENTER } from '../../shared/index';
+import { APIService, APIError, Project, Statistic, User, WA_CENTER, getDefaultBaseLayer, getOverlayLayers }
+    from '../../shared/index';
 import * as L from 'leaflet';
 
 /**
@@ -46,13 +47,11 @@ export class HomeComponent implements OnInit {
 
         this.map = L.map('map', {
             zoom: 4,
-            center: WA_CENTER
+            center: WA_CENTER,
+            layers: [getDefaultBaseLayer()]
         });
 
-        this.map.addLayer(L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Open Street Map'
-        }));
+        L.control.layers(null, getOverlayLayers()).addTo(this.map);
     }
 
     public onMapReady(map: L.Map) {
@@ -72,7 +71,7 @@ export class HomeComponent implements OnInit {
                         '">Project Details</a></p>';
                 }
                 marker.bindPopup(popupContent);
-                marker.on('mouseover', function (e) {
+                marker.on('mouseover', function () {
                     this.openPopup();
                 });
                 marker.addTo(this.map);
